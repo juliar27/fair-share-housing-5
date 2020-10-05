@@ -112,5 +112,3 @@ def parse_addresses(addresses):
         else:
             streetname += " " + addresses[i]
     return [i + streetname for i in numbers]
-
-parse_file("SampleforPrincetonclass.xlsx")
