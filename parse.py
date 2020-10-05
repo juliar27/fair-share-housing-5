@@ -1,7 +1,20 @@
 import xlrd
 from database import Database
+from flask import Flask, render_template, request
 
-def parse_file(filename):
+
+app = Flask(__name__)
+
+@app.route('/')
+def upload_file():
+    return render_template('admin.html')
+
+@app.route('/upload', methods = ['GET', 'POST'])
+def parse_file():
+    if request.method == 'GET':
+        return
+
+    filename = request.files['sheet']
     wb = xlrd.open_workbook(filename)
     sheet = wb.sheet_by_index(2)
 
