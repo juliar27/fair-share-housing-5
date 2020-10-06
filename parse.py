@@ -9,7 +9,7 @@ app = Flask(__name__)
 def upload_file():
     return render_template('admin.html')
 
-@app.route('/upload', methods = ['GET', 'POST'])
+#@app.route('/upload', methods = ['GET', 'POST'])
 def parse_file():
     if request.method == 'GET':
         return
