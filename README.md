@@ -1,5 +1,7 @@
 # fair-share-housing-5
 
+-------------------------------------
+Bootstrap copyright: 
 Thank you for using our template!
 
 For more awesome templates please visit https://colorlib.com/wp/templates/
