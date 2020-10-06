@@ -53,4 +53,6 @@ def show_props_single():
 def show_services():
     t = render_template('services.html')
     return make_response(t)
-app.run(port=55555)
+
+if __name__ "__main__":
+    app.run(port=55555)
