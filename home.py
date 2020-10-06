@@ -54,5 +54,5 @@ def show_services():
     t = render_template('services.html')
     return make_response(t)
 
-if __name__ "__main__":
+if __name__ == "__main__":
     app.run(port=55555)
