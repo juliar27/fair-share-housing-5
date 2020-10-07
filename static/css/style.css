@@ -9755,13 +9755,13 @@ textarea.form-control {
 .block-23 ul {
   padding: 0; }
   .block-23 ul li {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.7); }
     .block-23 ul li, .block-23 ul li > a {
       display: table;
       line-height: 1.5;
       margin-bottom: 15px; }
     .block-23 ul li span {
-      color: rgba(255, 255, 255, 0.5); }
+      color: rgba(255, 255, 255, 0.7); }
     .block-23 ul li .icon, .block-23 ul li .text {
       display: table-cell;
       vertical-align: top; }
