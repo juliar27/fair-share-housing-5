@@ -1,4 +1,24 @@
-removed from about.html
+[REMOVED FROM HOME.PY]
+@app.route('/contact')
+def show_contact():
+    t = render_template('contact.html')
+    return make_response(t)
+
+@app.route('/properties')
+def show_props():
+    t = render_template('properties.html')
+    return make_response(t)
+
+@app.route('/properties-single')
+def show_props_single():
+    t = render_template('properties-single.html')
+    return make_response(t)
+
+@app.route('/services')
+def show_services():
+    t = render_template('services.html')
+    return make_response(t)
+
 
 [THIS IS THE TESTIMONIAL SECTION, A LITTLE WIDGET]
     <section class="ftco-section testimony-section bg-light">
