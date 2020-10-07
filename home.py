@@ -14,14 +14,14 @@ def show_about():
     t = render_template('about.html')
     return make_response(t)
 
-@app.route('/agent')
+@app.route('/listings')
 def show_agent():
-    t = render_template('agent.html')
+    t = render_template('listings.html')
     return make_response(t)
 
-@app.route('/blog')
+@app.route('/admin')
 def show_blog():
-    t = render_template('blog.html')
+    t = render_template('admin.html')
     return make_response(t)
 
 @app.route('/blog-single')
