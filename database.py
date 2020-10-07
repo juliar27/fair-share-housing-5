@@ -1,6 +1,8 @@
 import os
 from psycopg2 import connect
 
+def double_up(s):
+        return s.replace("'", "''")
 class Database:
     def __init__(self):
         self._connection = None
@@ -12,16 +14,24 @@ class Database:
     def disconnect(self):
         self._connection.commit()
         self._connection.close()
+    
+    def clear(self):
+        cursor = self._connection.cursor()
+        cursor.execute("DELETE FROM listings")
+        cursor.execute("DELETE FROM addresses")
+        cursor.execute("DELETE FROM cities")
+        cursor.execute("DELETE FROM counties")
 
     def add_record(self, record):
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
+        
         for column, value in record.items():
-            if column == "address":
+            if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + ", "
-            if column == "compliance":
-                values += "'" + value + "', "
+            if column in ("compliance", 'name', 'developer', 'status'):
+                values += "'" + double_up(value) + "', "
             else:
                 values += value + ", "
         stmt = stmt[:-2] + ") "
@@ -32,8 +42,21 @@ class Database:
             for address in record["address"]:
                 print(address)
                 stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                    + "('%s', '%s')" % (record["listingid"], address)
+                    + "('%s', '%s')" % (record["listingid"], double_up(address))
                 cursor.execute(stmt)
+        stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
+        cursor.execute(stmt)
+        if cursor.fetchone() is None:
+            stmt = "INSERT INTO cities (municode, muni, county)" \
+                + " VALUES (" + record['municode'] + ", '" + double_up(record['municipality']) + "', '" \
+                + double_up(record['county']) + "')"
+            cursor.execute(stmt)
+        stmt = "SELECT * FROM counties WHERE county = '" + double_up(record['county']) + "'"
+        cursor.execute(stmt)
+        if cursor.fetchone() is None:
+            stmt = "INSERT INTO counties (county, region)" \
+                + " VALUES ('" + double_up(record['county']) + "', " + record['region'] + ")"
+            cursor.execute(stmt)
         cursor.close()
     
     def edit_record(self, record):
@@ -59,12 +82,13 @@ class Database:
         cursor.close()
     
     def insert(self, record):
-        cursor = self._connection.cursor()
-        cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
-        row = cursor.fetchone()
-        if row is None:
-            self.add_record(record)
-        else:
-            self.edit_record(record)
-        cursor.close()
+        # cursor = self._connection.cursor()
+        # cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
+        # row = cursor.fetchone()
+        self.add_record(record)
+        # if row is None:
+        #     self.add_record(record)
+        # else:
+        #     self.edit_record(record)
+        # cursor.close()
 
