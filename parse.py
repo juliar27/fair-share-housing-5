@@ -7,7 +7,6 @@ app = Flask(__name__, template_folder='.')
 
 @app.route('/')
 def upload_file():
-    print("AAAAAAAAAAAA")
     return render_template('admin.html')
 
 @app.route('/upload', methods = ['GET', 'POST'])
