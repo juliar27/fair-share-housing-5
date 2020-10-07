@@ -15,43 +15,23 @@ def show_about():
     return make_response(t)
 
 @app.route('/listings')
-def show_agent():
+def show_listings():
     t = render_template('listings.html')
     return make_response(t)
 
 @app.route('/admin')
-def show_blog():
+def show_admin():
     t = render_template('admin.html')
     return make_response(t)
 
-@app.route('/blog-single')
-def show_blog_single():
-    t = render_template('blog-single.html')
-    return make_response(t)
-
-@app.route('/contact')
-def show_contact():
-    t = render_template('contact.html')
+@app.route('/map')
+def show_map():
+    t = render_template('map.html')
     return make_response(t)
 
 @app.route('/main')
 def show_main():
     t = render_template('main.html')
-    return make_response(t)
-
-@app.route('/properties')
-def show_props():
-    t = render_template('properties.html')
-    return make_response(t)
-
-@app.route('/properties-single')
-def show_props_single():
-    t = render_template('properties-single.html')
-    return make_response(t)
-
-@app.route('/services')
-def show_services():
-    t = render_template('services.html')
     return make_response(t)
 
 if __name__ == "__main__":
