@@ -6,14 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tables - SB Admin</title>
+        <title>mapFSH: Tables</title>
+        <link rel='icon' href='static/images/favicon.ico' type='image/x-icon' >
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
         <link href="static/css/styles-admin.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="admin">Start Bootstrap</a>
+            <a class="navbar-brand" href="admin">mapFSH</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -47,7 +49,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <!-- <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Layouts
@@ -89,11 +91,15 @@
                                         </nav>
                                     </div>
                                 </nav>
-                            </div>
-                            <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
+                            </div> -->
+                            <div class="sb-sidenav-menu-heading">Data</div>
+                            <a class="nav-link" href="upload">
+                                <div class="sb-nav-link-icon"><i class="fas fa-upload"></i></div>
+                                Upload Data
+                            </a>
+                            <a class="nav-link" href="edit">
+                                <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+                                Add/Edit Data
                             </a>
                             <a class="nav-link" href="tables">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -103,7 +109,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        Test User
                     </div>
                 </nav>
             </div>

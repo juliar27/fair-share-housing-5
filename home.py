@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, make_response
+from parse import parse_file
 
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
@@ -41,36 +42,6 @@ def show_register():
     t = render_template('admin/dist/register.html')
     return make_response(t)
 
-@app.route('/401')
-def show_401():
-    t = render_template('admin/dist/401.html')
-    return make_response(t)
-
-@app.route('/404')
-def show_404():
-    t = render_template('admin/dist/404.html')
-    return make_response(t)
-
-@app.route('/500')
-def show_500():
-    t = render_template('admin/dist/500.html')
-    return make_response(t)
-
-@app.route('/layout-static')
-def show_static():
-    t = render_template('admin/dist/layout-static.html')
-    return make_response(t)
-
-@app.route('/layout-sidenav-light')
-def show_sidenav():
-    t = render_template('admin/dist/layout-sidenav-light.html')
-    return make_response(t)
-
-@app.route('/charts')
-def show_charts():
-    t = render_template('admin/dist/charts.html')
-    return make_response(t)
-
 
 @app.route('/tables')
 def show_tables():
@@ -82,10 +53,24 @@ def show_map():
     t = render_template('site/map.html')
     return make_response(t)
 
-@app.route('/main')
-def show_main():
-    t = render_template('main.html')
+
+@app.route('/upload')
+def show_upload():
+    t = render_template('admin/dist/upload.html')
+    return make_response(t)
+
+@app.route('/uploaded', methods = ['GET', 'POST'])
+def show_uploaded():
+    if request.method == "POST":
+        filename = request.files['file']
+        parse_file(filename)
+    t = render_template('admin/dist/uploaded.html')
+    return make_response(t)
+
+@app.route('/edit')
+def show_edit():
+    t = render_template('admin/dist/edit.html')
     return make_response(t)
 
 if __name__ == "__main__":
-    app.run(port=55535)
+    app.run(port=44440)

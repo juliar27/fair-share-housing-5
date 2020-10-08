@@ -40,7 +40,6 @@ class Database:
         cursor.execute(stmt + values)
         if "address" in record:
             for address in record["address"]:
-                print(address)
                 stmt = "INSERT INTO addresses (listingid, address) VALUES " \
                     + "('%s', '%s')" % (record["listingid"], double_up(address))
                 cursor.execute(stmt)

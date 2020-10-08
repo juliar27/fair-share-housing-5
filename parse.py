@@ -1,20 +1,7 @@
 import xlrd
 from database import Database
-from flask import Flask, render_template, request
 
-
-app = Flask(__name__, template_folder='.')
-
-@app.route('/')
-def upload_file():
-    return render_template('admin.html')
-
-@app.route('/upload', methods = ['GET', 'POST'])
-def parse_file():
-    if request.method == 'GET':
-        return
-
-    filename = request.files['file']
+def parse_file(filename):
     wb = xlrd.open_workbook(file_contents=filename.read())
     sheet = wb.sheet_by_index(0)
 
@@ -170,6 +157,3 @@ def parse_address(s):
     split = s.split('; ')
     split = sum([parse_comma(x) for x in split], [])
     return split
-
-if __name__ == "__main__":
-    app.run(port=55555)
