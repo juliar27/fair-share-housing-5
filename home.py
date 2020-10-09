@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, make_response
-from parse import parse_file
+from data.parse import parse_file
 
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'

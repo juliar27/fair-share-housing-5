@@ -1,5 +1,5 @@
 import xlrd
-from database import Database
+from data.database import Database
 
 def parse_file(filename):
     wb = xlrd.open_workbook(file_contents=filename.read())
