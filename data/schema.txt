@@ -1,25 +1,61 @@
 cities:
-municode | muni | county
+municode | municipality
+
 
 counties:
 county | region
 
+
 listings:
-listingid | name | developer | status | compliance | municode | proposed | 
-completed | v1 | v2 | v3 | l1 | l2 | l3 | m1 | m2 | m3 | vssn | lssn | mssn | 
-famsale | famrent | srsale | srrent | ssnsale | ssnrent
+listingid | name  | developer  | municode  | v1 | v2 | v3 | l1 | l2
+| l3 | m1 | m2 | m3 | vssn | lssn | mssn | famsale | famrent | srsale | srrent | ssnsale | ssnrent
+
+
+services:
+listingid | status | compliance | permit | datesite | ecompletion | round | dcbegan | locontrols | proposed
+| completed | cpil
+
 
 listingscontacts:
 listingid | contactid
 
+
 contacts:
-contactid | name | phone | email
+contactid | name | phone | email | developer | admin_agent
+
 
 addresses:
-listingid | address
+listingid | address | block | lot
+
+
+demographics:
+trental | tunits  | tfamily  | ffsale | frental  | tsenior | ssntotal | srsale | srrent | ssnsale | ssnrent
+| obrtotal | tbrtotal | thbrtotal | tvliu | tliu | tmiu | tsale
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 admins: (unsure about this one)
 username | password
 
+# ----------------------------------------------------------------------------------------------------------------------
+
 psql -h ec2-52-21-247-176.compute-1.amazonaws.com -U lxntyzuehczhml -d dcg0o6mcmqmeat
 password: 53f5293f5c753debb9340b4e662a0ba2c2f69a75ea5f18aa8dea9ca415a2df49
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE cities (municode int,	municipality int)
+
+CREATE TABLE counties (county varchar,	region int)
+
+CREATE TABLE listings (listingid int,  name varchar, developer varchar, municode int, v1 int, v2 int, v3 int, l1 int,
+l2 int, l3 int, m1 int, m2 int, m3 int, vssn int, lssn int, mssn int, famsale int, famrent int,
+srsale int, srrent int, ssnsale int, ssnrent int)
+
+CREATE TABLE services (listingid int, status varchar, compliance varchar, permit date, datesite date,
+ecompletion date, round int, dcbegan varchar, locontrols varchar, cpil int)
+
+CREATE TABLE listingscontacts (listingid int, contactid int)
+
+CREATE TABLE addresses (listingid int, address varchar, block int, lot varchar)

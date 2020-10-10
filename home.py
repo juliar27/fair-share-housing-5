@@ -6,6 +6,8 @@ app._static_folder = 'static'
 
 @app.route('/', methods=['GET'])
 @app.route('/index')
+
+
 def show_home():
     t = render_template('site/index.html')
     return make_response(t)
@@ -30,18 +32,15 @@ def show_admin():
     t = render_template('admin/dist/index.html')
     return make_response(t)
 
-
 @app.route('/password')
 def show_password():
     t = render_template('admin/dist/password.html')
     return make_response(t)
 
-
 @app.route('/register')
 def show_register():
     t = render_template('admin/dist/register.html')
     return make_response(t)
-
 
 @app.route('/tables')
 def show_tables():
@@ -52,7 +51,6 @@ def show_tables():
 def show_map():
     t = render_template('site/map.html')
     return make_response(t)
-
 
 @app.route('/upload')
 def show_upload():
