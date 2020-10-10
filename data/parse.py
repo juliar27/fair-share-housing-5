@@ -18,7 +18,11 @@ XL_CELL_DATE = 3
 # ----------------------------------------------------------------------------------------------------------------------
 def error(col_name, row_number):
 
-    errorMsg = "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number)
+    if col_name == 'Inserting':
+        errorMsg = "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
+
+    else:
+        errorMsg = "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number)
 
     try:
         return url_for('show_parseerror', errorMsg=errorMsg)
@@ -50,7 +54,6 @@ def insert(sheet):
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
                 record['municode'] = str(row[d['Municode']].value)
         except:
-            print(row[d['Municode']].value)
             return False, error('Municode', row_number)
 
         try:
