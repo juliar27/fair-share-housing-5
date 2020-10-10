@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file
 
 app = Flask(__name__, template_folder='.')
@@ -6,8 +6,6 @@ app._static_folder = 'static'
 
 @app.route('/', methods=['GET'])
 @app.route('/index')
-
-
 def show_home():
     t = render_template('site/index.html')
     return make_response(t)
@@ -57,11 +55,21 @@ def show_upload():
     t = render_template('admin/dist/upload.html')
     return make_response(t)
 
+@app.route('/parse-error')
+def show_parseerror():
+    errorMsg = request.args.get('errorMsg')
+    t = render_template('admin/dist/parse-error.html', errorMsg=errorMsg)
+    return make_response(t)
+
 @app.route('/uploaded', methods = ['GET', 'POST'])
 def show_uploaded():
     if request.method == "POST":
         filename = request.files['file']
-        parse_file(filename)
+        flag, possible_redirect = parse_file(filename)
+
+        if flag == False:
+            return redirect(possible_redirect)
+
     t = render_template('admin/dist/uploaded.html')
     return make_response(t)
 
