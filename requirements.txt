@@ -9,3 +9,4 @@ PyQt5==5.15.1
 PyQt5-sip==12.8.1
 Werkzeug==1.0.1
 xlrd==1.2.0
+gunicorn==19.9.0
