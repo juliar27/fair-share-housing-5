@@ -121,8 +121,8 @@ class Database:
     # ------------------------------------------------------------------------------------------------------------------
     def get_rows(self):
         cursor = self._connection.cursor()
-        stmt = "SELECT listings.*, addresses.address, cities.municipality, counties.county, counties.region FROM " + \
-            "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+        stmt =  "SELECT listings.*, addresses.address, cities.municipality, counties.county, counties.region FROM " + \
+                "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
                 "listings.municode = cities.municode AND cities.county = counties.county"
         cursor.execute(stmt)
         rows = []
@@ -132,5 +132,7 @@ class Database:
             row = cursor.fetchone()
         cursor.close()
         return rows
+    # ------------------------------------------------------------------------------------------------------------------
+
 # ----------------------------------------------------------------------------------------------------------------------
 
