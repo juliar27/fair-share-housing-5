@@ -67,7 +67,7 @@ class Database:
         cursor.execute(stmt)
         
         if cursor.fetchone() is None:
-            stmt = "INSERT INTO cities (municode, muni, county)" \
+            stmt = "INSERT INTO cities (municode, municipality, county)" \
                 + " VALUES (" + record['municode'] + ", '" + double_up(record['municipality']) + "', '" \
                 + double_up(record['county']) + "')"
             cursor.execute(stmt)
@@ -118,5 +118,19 @@ class Database:
         # cursor.close()
     # ------------------------------------------------------------------------------------------------------------------
 
+    # ------------------------------------------------------------------------------------------------------------------
+    def get_rows(self):
+        cursor = self._connection.cursor()
+        stmt = "SELECT listings.*, addresses.address, cities.municipality, counties.county, counties.region FROM " + \
+            "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+                "listings.municode = cities.municode AND cities.county = counties.county"
+        cursor.execute(stmt)
+        rows = []
+        row = cursor.fetchone()
+        while row is not None:
+            rows.append(row)
+            row = cursor.fetchone()
+        cursor.close()
+        return rows
 # ----------------------------------------------------------------------------------------------------------------------
 

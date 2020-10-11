@@ -33,7 +33,7 @@ def error(col_name, row_number):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def insert(sheet):
+def insert(sheet, database):
 
     d = {}
     row = sheet.row(0)
@@ -92,23 +92,23 @@ def insert(sheet):
         except:
             return False, error('ComplianceMechanism', row_number)
 
-        try:
-            if row[d['Round']].ctype == XL_CELL_NUMBER:
-                record['round'] = str(row[d['Round']].value)
-        except:
-            return False, error('Round', row_number)
+        # try:
+        #     if row[d['Round']].ctype == XL_CELL_NUMBER:
+        #         record['round'] = str(row[d['Round']].value)
+        # except:
+        #     return False, error('Round', row_number)
 
-        try:
-            if row[d['Block']].ctype == XL_CELL_NUMBER:
-                record['block'] = str(row[d['Block']].value)
-        except:
-            return False, error('Block', row_number)
+        # try:
+        #     if row[d['Block']].ctype == XL_CELL_NUMBER:
+        #         record['block'] = str(row[d['Block']].value)
+        # except:
+        #     return False, error('Block', row_number)
 
-        try:
-            if row[d['Lot']].ctype == XL_CELL_NUMBER:
-                record['lot'] = str(row[d['Lot']].value)
-        except:
-            return False, error('Lot', row_number)
+        # try:
+        #     if row[d['Lot']].ctype == XL_CELL_NUMBER:
+        #         record['lot'] = str(row[d['Lot']].value)
+        # except:
+        #     return False, error('Lot', row_number)
 
 
         try:
@@ -126,88 +126,88 @@ def insert(sheet):
         except:
             return False, error('Status', row_number)
 
-        try:
-            if row[d['DateBuildingPermitReceived']].ctype == XL_CELL_DATE:
-                record['permit'] = row[d['DateBuildingPermitReceived']].value
-        except:
-            return False, error('DateBuildingPermitReceived', row_number)
+        # try:
+        #     if row[d['DateBuildingPermitReceived']].ctype == XL_CELL_DATE:
+        #         record['permit'] = row[d['DateBuildingPermitReceived']].value
+        # except:
+        #     return False, error('DateBuildingPermitReceived', row_number)
 
-        try:
-            if row[d['DateSitePlanSubdivision']].ctype == XL_CELL_DATE:
-                record['datesite'] = row[d['DateSitePlanSubdivision']].value
-        except:
-            return False, error('DateSitePlanSubdivision', row_number)
+        # try:
+        #     if row[d['DateSitePlanSubdivision']].ctype == XL_CELL_DATE:
+        #         record['datesite'] = row[d['DateSitePlanSubdivision']].value
+        # except:
+        #     return False, error('DateSitePlanSubdivision', row_number)
 
-        try:
-            if row[d['ExpectedCompletion']].ctype == XL_CELL_DATE:
-                record['ecompletion'] = row[d['ExpectedCompletion']].value
-        except:
-            return False, error('ExpectedCompletion', row_number)
+        # try:
+        #     if row[d['ExpectedCompletion']].ctype == XL_CELL_DATE:
+        #         record['ecompletion'] = row[d['ExpectedCompletion']].value
+        # except:
+        #     return False, error('ExpectedCompletion', row_number)
 
-        try:
-            if row[d['DateControlsBegan']].ctype == XL_CELL_DATE:
-                record['dcbegan'] = row[d['DateControlsBegan']].value
-        except:
-            return False, error('DateControlsBegan', row_number)
+        # try:
+        #     if row[d['DateControlsBegan']].ctype == XL_CELL_DATE:
+        #         record['dcbegan'] = row[d['DateControlsBegan']].value
+        # except:
+        #     return False, error('DateControlsBegan', row_number)
 
-        try:
-            if row[d['LengthofControls']].ctype == XL_CELL_NUMBER:
-                record['locontrols'] = str(row[d['LengthofControls']].value)
-        except:
-            return False, error('LengthofControls', row_number)
+        # try:
+        #     if row[d['LengthofControls']].ctype == XL_CELL_NUMBER:
+        #         record['locontrols'] = str(row[d['LengthofControls']].value)
+        # except:
+        #     return False, error('LengthofControls', row_number)
 
-        try:
-            if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
-                record['admin_agent'] = row[d['AdminAgent']].value
-        except:
-            return False, error('AdminAgent', row_number)
+        # try:
+        #     if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
+        #         record['admin_agent'] = row[d['AdminAgent']].value
+        # except:
+        #     return False, error('AdminAgent', row_number)
 
-        try:
-            if row[d['Contribution_PIL']].ctype == XL_CELL_NUMBER:
-                record['cpil'] = row[d['Contribution_PIL']].value
-        except:
-            return False, error('Contribution_PIL', row_number)
+        # try:
+        #     if row[d['Contribution_PIL']].ctype == XL_CELL_NUMBER:
+        #         record['cpil'] = row[d['Contribution_PIL']].value
+        # except:
+        #     return False, error('Contribution_PIL', row_number)
 
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
-                record['tunits'] = row[d['OverallTotalUnits']].value
+                record['total'] = str(row[d['OverallTotalUnits']].value)
         except:
             return False, error('OverallTotalUnits', row_number)
 
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
-                record['tfamily'] = row[d['TotalFamily']].value
+                record['family'] = str(row[d['TotalFamily']].value)
         except:
             return False, error('TotalFamily', row_number)
 
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
-                record['ffsale'] = row[d['FamilyForSale']].value
+                record['famsale'] = str(row[d['FamilyForSale']].value)
         except:
             return False, error('FamilyForSale', row_number)
 
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
-                record['frental'] = row[d['FamilyRental']].value
+                record['famrent'] = str(row[d['FamilyRental']].value)
         except:
             return False, error('FamilyRental', row_number)
 
 
-      # try:
-      #      if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
-      #          record['proposed'] = str(row[d['TotalAHProposed']].value)
-      #  except:
-      #      error('TotalAHProposed', row_number)
+        try:
+           if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
+               record['proposed'] = str(row[d['TotalAHProposed']].value)
+        except:
+           error('TotalAHProposed', row_number)
 
-      #  try:
-      #      if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
-      #          record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
-      #  except:
-      #      error('TotalAHUnitsCompleted', row_number)
+        try:
+           if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
+               record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
+        except:
+           error('TotalAHUnitsCompleted', row_number)
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
-                record["tsenior"] = str(row[d['TotalSenior']].value)
+                record["sr"] = str(row[d['TotalSenior']].value)
         except:
             return False, error('TotalSenior', row_number)
 
@@ -231,7 +231,7 @@ def insert(sheet):
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
-                record["ssntotal"] = str(row[d['SSNTotal']].value)
+                record["ssn"] = str(row[d['SSNTotal']].value)
         except:
             return False, error('SSNTotal', row_number)
 
@@ -250,7 +250,7 @@ def insert(sheet):
 
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
-                record["obrtotal"] = str(row[d['OneBRTotal']].value)
+                record["br1"] = str(row[d['OneBRTotal']].value)
         except:
             return False, error('OneBRTotal', row_number)
 
@@ -274,7 +274,7 @@ def insert(sheet):
 
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
-                record["tbrtotal"] = str(row[d['TwoBRTotal']].value)
+                record["br2"] = str(row[d['TwoBRTotal']].value)
         except:
             return False, error('TwoBRTotal', row_number)
 
@@ -298,7 +298,7 @@ def insert(sheet):
 
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
-                record["thbrtotal"] = str(row[d['ThreeBRTotal']].value)
+                record["br3"] = str(row[d['ThreeBRTotal']].value)
         except:
             return False, error('ThreeBRTotal', row_number)
 
@@ -339,42 +339,13 @@ def insert(sheet):
         except:
             return False, error('SSNBRMod', row_number)
 
-        try:
-            if row[d['Total Very Low Income Units']].ctype == XL_CELL_NUMBER:
-                record["tvliu"] = str(row[d['Total Very Low Income Units']].value)
-        except:
-            return False, error('Total Very Low Income Units', row_number)
-
-        try:
-            if row[d['Total Low-Income Units']].ctype == XL_CELL_NUMBER:
-                record["tliu"] = str(row[d['Total Low-Income Units']].value)
-        except:
-            return False, error('Total Low-Income Units', row_number)
-
-        try:
-            if row[d['Total Moderate-Income Units']].ctype == XL_CELL_NUMBER:
-                record["tmiu"] = str(row[d['Total Moderate-Income Units']].value)
-        except:
-            return False, error('Total Moderate-Income Units', row_number)
-
-        try:
-            if row[d['Rental']].ctype == XL_CELL_NUMBER:
-                record["trental"] = str(row[d['Rental']].value)
-        except:
-            return False, error('Rental', row_number)
-
-        try:
-            if row[d['For Sale']].ctype == XL_CELL_NUMBER:
-                record["tsale"] = str(row[d['For Sale']].value)
-        except:
-            return False, error('For Sale', row_number)
-
         if len(record) > 0:
             record["listingid"] = str(i)
             try:
                 database.insert(record)
                 i = i + 1
-            except:
+            except Exception as e:
+                print(e)
                 return False, error('Inserting', row_number)
 
         row_number += 1
@@ -393,7 +364,7 @@ def parse_file(filename):
     database.connect()
     database.clear()
 
-    html_status = insert(sheet)
+    html_status = insert(sheet, database)
 
     database.disconnect()
     return html_status
@@ -431,6 +402,12 @@ def parse_comma(s):
     commas = len(split)
     split = [x.split() for x in split]
     split = [x for y in split for x in y]
+    if split[commas - 1] == 'and':
+        split.pop(commas - 1)
+        commas += 1
+    elif split[commas] == 'and':
+        split.pop(commas)
+        commas += 1
     numbers = []
     for i in range(commas):
         parse_hyphen(split[i], numbers)
@@ -444,7 +421,10 @@ def parse_comma(s):
 def parse_address(s):
     if len(s) == 0:
         return []
-    split = s.split('; ')
+    split = s.split(';')
+    for i in range(len(split)):
+        if split[i][0] in (' ', '\t', '\n'):
+            split[i] = split[i][1:]
     split = sum([parse_comma(x) for x in split], [])
     return split
 # ----------------------------------------------------------------------------------------------------------------------

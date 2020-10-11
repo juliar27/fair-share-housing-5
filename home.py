@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file
+from data.database import Database
 
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
@@ -27,7 +28,11 @@ def show_login():
 
 @app.route('/admin')
 def show_admin():
-    t = render_template('admin/dist/index.html')
+    database = Database()
+    database.connect()
+    rows = database.get_rows()
+    t = render_template('admin/dist/index.html', rows=rows)
+    database.disconnect()
     return make_response(t)
 
 @app.route('/password')
@@ -42,7 +47,11 @@ def show_register():
 
 @app.route('/tables')
 def show_tables():
-    t = render_template('admin/dist/tables.html')
+    database = Database()
+    database.connect()
+    rows = database.get_rows()
+    t = render_template('admin/dist/tables.html', rows=rows)
+    database.disconnect()
     return make_response(t)
 
 @app.route('/map')
@@ -79,4 +88,4 @@ def show_edit():
     return make_response(t)
 
 if __name__ == "__main__":
-    app.run(port=44440)
+    app.run(port=44424)
