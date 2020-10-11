@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, make_response
-from parse import parse_file
+from flask import Flask, render_template, request, make_response, redirect
+from data.parse import parse_file
 
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
@@ -30,18 +30,15 @@ def show_admin():
     t = render_template('admin/dist/index.html')
     return make_response(t)
 
-
 @app.route('/password')
 def show_password():
     t = render_template('admin/dist/password.html')
     return make_response(t)
 
-
 @app.route('/register')
 def show_register():
     t = render_template('admin/dist/register.html')
     return make_response(t)
-
 
 @app.route('/tables')
 def show_tables():
@@ -53,17 +50,26 @@ def show_map():
     t = render_template('site/map.html')
     return make_response(t)
 
-
 @app.route('/upload')
 def show_upload():
     t = render_template('admin/dist/upload.html')
+    return make_response(t)
+
+@app.route('/parse-error')
+def show_parseerror():
+    errorMsg = request.args.get('errorMsg')
+    t = render_template('admin/dist/parse-error.html', errorMsg=errorMsg)
     return make_response(t)
 
 @app.route('/uploaded', methods = ['GET', 'POST'])
 def show_uploaded():
     if request.method == "POST":
         filename = request.files['file']
-        parse_file(filename)
+        flag, possible_redirect = parse_file(filename)
+
+        if flag == False:
+            return redirect(possible_redirect)
+
     t = render_template('admin/dist/uploaded.html')
     return make_response(t)
 
