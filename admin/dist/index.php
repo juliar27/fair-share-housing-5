@@ -20,7 +20,13 @@
 
  -->
  
- <?php echo include ('./head.php'); ?>
+     <head>
+        <?php 
+            include('./head.php');
+        ?>
+    </head>
+
+ 
  
 
     <body class="sb-nav-fixed">
