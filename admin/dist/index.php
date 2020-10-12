@@ -23,10 +23,12 @@
      <head>
 
 
-<?php ini_set( 'error_reporting', E_ALL );
-ini_set( 'display_errors', true );
+<?php
+      ini_set("display_errors","on");
+error_reporting(E_ALL);
 
-      < ? php include "header.php"; ? >  
+     
+      include "header.php"; ? >  
      
 
     </head>
