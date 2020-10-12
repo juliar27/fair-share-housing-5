@@ -23,7 +23,7 @@
      <head>
 
 
-<?php require ('./header.php'); ?>
+<?php require ('admin/dist/header.php'); ?>
 
       <?php error_reporting(E_ALL);?>
 
