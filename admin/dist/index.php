@@ -21,10 +21,7 @@
  -->
  
      <head>
-        <?php 
-            include './header.php';
-      
-        ?>
+
 
 <?php require ('./header.php'); ?>
 
