@@ -2,7 +2,7 @@
 <html lang="en">
 
  <head>
- <?php include ("/header.php"); ?>
+ <?php include ("admin/dist/header.php"); ?>
 
  <!-- 
         <meta charset="utf-8" />
