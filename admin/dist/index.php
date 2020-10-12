@@ -19,7 +19,9 @@
       </head>  
 
  -->
- <?php include "./header.php" ; ?>
+ 
+ <?php echo include ('./head.php'); ?>
+ 
 
     <body class="sb-nav-fixed">
      
