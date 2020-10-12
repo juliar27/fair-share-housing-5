@@ -16,7 +16,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head> -->
     
- <?php include ("/header.html"); ?>
+ <?php include ("/header.php"); ?>
 
     <body class="sb-nav-fixed">
      
