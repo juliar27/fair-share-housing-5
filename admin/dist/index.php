@@ -15,10 +15,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head> -->
 
-            <?php include ("/admin/dist/header.html"); ?>
     <body class="sb-nav-fixed">
      
-     
+     <?php include ("/admin/dist/header.html"); ?>
      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="admin">mapFSH</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
