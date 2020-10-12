@@ -31,7 +31,7 @@ def show_admin():
     database = Database()
     database.connect()
     rows = database.get_rows()
-    t = render_template('admin/dist/index.html', rows=rows)
+    t = render_template('admin/dist/index.php', rows=rows)
     database.disconnect()
     return make_response(t)
 
