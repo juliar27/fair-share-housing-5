@@ -23,9 +23,11 @@
      <head>
 
 
-<?php require ('admin/dist/header.php'); ?>
+<?php ini_set( 'error_reporting', E_ALL );
+ini_set( 'display_errors', true );
 
-      <?php error_reporting(E_ALL);?>
+      require ('admin/dist/header.php'); ?>
+
 
     </head>
 
