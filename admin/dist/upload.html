@@ -96,9 +96,9 @@
                              <div class="sb-nav-link-icon"><i class="fas fa-upload"></i></div>
                              Upload Data
                          </a>
-                         <a class="nav-link" href="edit">
+                         <a class="nav-link" href="add">
                              <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
-                             Add/Edit Data
+                             Add Data
                          </a>
                          <a class="nav-link" href="tables">
                              <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -115,10 +115,7 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="admin">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Upload Data</li>
-                        </ol>
+                        
                         <form action = "/uploaded" method = "POST" 
                         enctype = "multipart/form-data">
                         <input type = "file" name = "file" accept=".xlsx"/>

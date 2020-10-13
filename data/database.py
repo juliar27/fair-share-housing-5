@@ -41,6 +41,7 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def add_record(self, record):
+        print(record)
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
         
@@ -63,21 +64,24 @@ class Database:
                 stmt = "INSERT INTO addresses (listingid, address) VALUES " \
                     + "('%s', '%s')" % (record["listingid"], double_up(address))
                 cursor.execute(stmt)
-        stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
-        cursor.execute(stmt)
-        
-        if cursor.fetchone() is None:
-            stmt = "INSERT INTO cities (municode, municipality, county)" \
-                + " VALUES (" + record['municode'] + ", '" + double_up(record['municipality']) + "', '" \
-                + double_up(record['county']) + "')"
+        if "municode" in record:
+            stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
             cursor.execute(stmt)
-        stmt = "SELECT * FROM counties WHERE county = '" + double_up(record['county']) + "'"
-        cursor.execute(stmt)
         
-        if cursor.fetchone() is None:
-            stmt = "INSERT INTO counties (county, region)" \
-                + " VALUES ('" + double_up(record['county']) + "', " + record['region'] + ")"
+            if cursor.fetchone() is None:
+                stmt = "INSERT INTO cities (municode, municipality, county)" \
+                    + " VALUES (" + record['municode'] + ", '" + double_up(record['municipality']) + "', '" \
+                    + double_up(record['county']) + "')"
+                cursor.execute(stmt)
+
+        if "county" in record:
+            stmt = "SELECT * FROM counties WHERE county = '" + double_up(record['county']) + "'"
             cursor.execute(stmt)
+            
+            if cursor.fetchone() is None:
+                stmt = "INSERT INTO counties (county, region)" \
+                    + " VALUES ('" + double_up(record['county']) + "', " + record['region'] + ")"
+                cursor.execute(stmt)
         cursor.close()
     # ------------------------------------------------------------------------------------------------------------------
 
