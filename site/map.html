@@ -46,15 +46,41 @@
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span> <span>Map <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">Map</h1>
+          <!-- <div class="col-md-9 ftco-animate pb-0 text-center"> -->
+          <div class="col-md-12"></div>
+            <head>
+              <style>
+                /* Set the size of the div element that contains the map */
+                #map {
+                  height: 400px;
+                  width: 100%;  
+                 }
+              </style>
+            </head>
+            <body>
+              <!--The div element for the map -->
+              <div id="map"></div>
+              <script>
+          // Initialize and add the map
+          function initMap() {
+            // The location of princeton
+            var princeton = {lat: 40.3431, lng: -74.6551};
+            // The map, centered at princeton
+            var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 4, center: princeton});
+            // The marker, positioned at princeton
+            var marker = new google.maps.Marker({position: princeton, map: map});
+          }
+              </script>
+              <script defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
+              </script>
+            </body>
           </div>
         </div>
       </div>
     </section>
 
-   
     <footer class="ftco-footer ftco-section">
       <div class="container">
         <!--<div class="row mb-5">
@@ -143,7 +169,6 @@
   <script src="static/js/jquery.magnific-popup.min.js"></script>
   <script src="static/js/jquery.animateNumber.min.js"></script>
   <script src="static/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="static/js/google-map.js"></script>
   <script src="static/js/main.js"></script>
     
