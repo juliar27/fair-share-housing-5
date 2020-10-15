@@ -20,7 +20,20 @@ def show_about():
 
 @app.route('/listings')
 def show_listings():
-    t = render_template('site/listings.html')
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    stmt =  "SELECT addresses.address, cities.municipality, counties.county, listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
+            "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+            "listings.municode = cities.municode AND cities.county = counties.county"
+    cursor.execute(stmt)
+    rows = []
+    row = cursor.fetchone()
+    while row is not None:
+        rows.append(row)
+        row = cursor.fetchone()
+    t = render_template('site/listings.html', rows=rows)
+    database.disconnect()
     return make_response(t)
 
 @app.route('/login')
