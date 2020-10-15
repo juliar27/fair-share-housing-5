@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file, parse_address
 from data.database import Database
-from form import LoginForm
+# from form import LoginForm
 
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
