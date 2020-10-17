@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file, parse_address
-from data.listings import get_listings
-from data.added import add
-from data.tables import get_tables
+from data.tables import get_tables, add_to_table, get_listings
 from form import LoginForm
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -85,7 +83,6 @@ def show_register():
 def show_tables():
     rows = get_tables()
     t = render_template('admin/dist/tables.html', rows=rows)
-    database.disconnect()
     return make_response(t)
 
 
@@ -159,7 +156,7 @@ def show_add():
 def show_added():
     if request.method == "POST":
         form = request.form
-        add(form)
+        add_to_table(form)
     t = render_template('admin/dist/uploaded.html')
     return make_response(t)
 
