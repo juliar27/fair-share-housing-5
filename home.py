@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file, parse_address
 from data.tables import get_tables, add_to_table, get_listings
-from data.account import make_account
+from data.account import make_account, check_account
 from form import LoginForm
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -59,17 +59,6 @@ def show_listings():
 @app.route('/login')
 def show_login():
     t = render_template('admin/dist/login.html')
-    return make_response(t)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/admin')
-def show_admin():
-    rows = get_tables()
-    t = render_template('admin/dist/index.html', rows=rows)
     return make_response(t)
 
 
@@ -183,13 +172,40 @@ def show_added():
 @app.route('/create', methods=['POST'])
 def show_create():
     flag = make_account(request.form.to_dict())
+
     if not flag:
         t = render_template('admin/dist/used-email.html')
         return make_response(t)
 
     else:
-        t = render_template('admin/dist/create.html', user=request.form.to_dict())
+        return show_admin()
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/check', methods=['POST'])
+def show_check():
+    flag = check_account(request.form.to_dict())
+
+    if not flag:
+        # error message needs to put here
+        t = render_template('admin/dist/login.html')
         return make_response(t)
+
+    else:
+        return show_admin()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/admin')
+def show_admin():
+    rows = get_tables()
+    t = render_template('admin/dist/index.html', rows=rows)
+    return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
