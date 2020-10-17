@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 
+# ----------------------------------------------------------------------------------------------------------------------
 class LoginForm(FlaskForm):
     municode = StringField('Municode')
     municipality = StringField('Municipality')
@@ -43,3 +44,4 @@ class LoginForm(FlaskForm):
     br2 = StringField('Total # 2 Bedroom Units')
     br3 = StringField('Total # 3 Bedroom Units')
     submit = SubmitField('Submit')
+# ----------------------------------------------------------------------------------------------------------------------
