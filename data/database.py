@@ -47,11 +47,13 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def add_record(self, record):
-        print(record)
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
 
         for column, value in record.items():
+            if column == "br3":
+                print(value)
+                
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + ", "
