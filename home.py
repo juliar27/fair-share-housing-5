@@ -97,7 +97,7 @@ def show_upload():
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
-def show_parseerror():
+def show_parse_error():
     errorMsg = request.args.get('errorMsg')
     t = render_template('admin/dist/parse-error.html', errorMsg=errorMsg)
     return make_response(t)

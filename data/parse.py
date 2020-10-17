@@ -5,37 +5,39 @@ from flask import redirect, url_for
 
 # ----------------------------------------------------------------------------------------------------------------------
 # a Unicode string
-XL_CELL_TEXT = 1	
+XL_CELL_TEXT = 1
 
 # float
-XL_CELL_NUMBER = 2	
+XL_CELL_NUMBER = 2
 
 # date 
-XL_CELL_DATE = 3 
+XL_CELL_DATE = 3
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 def error(col_name, row_number):
-
     if col_name == 'Inserting':
         errorMsg = "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
 
     else:
-        errorMsg = "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number)
+        errorMsg = "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". " + \
+                   "Please fix the excel and try again."
 
     try:
-        return url_for('show_parseerror', errorMsg=errorMsg)
+        return url_for('show_parse_error', errorMsg=errorMsg)
 
     except Exception as e:
         print(argv[0] + ": " + str(e))
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 def insert(sheet, database):
-
     d = {}
     row = sheet.row(0)
     for i in range(len(row)):
@@ -61,7 +63,7 @@ def insert(sheet, database):
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
                 record['municipality'] = row[d['Municipality']].value
         except:
-            return  False, error('Municipality', row_number)
+            return False, error('Municipality', row_number)
 
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
@@ -111,10 +113,10 @@ def insert(sheet, database):
         # except:
         #     return False, error('Lot', row_number)
 
-
         try:
             if row[d['Address']].ctype == XL_CELL_TEXT:
-                if row[d['Address']].value not in ("TBD", "n/a", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
+                if row[d['Address']].value not in (
+                "TBD", "n/a", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
                     record['address'] = parse_address(row[d['Address']].value)
                 else:
                     return False, error('Address', row_number)
@@ -193,18 +195,17 @@ def insert(sheet, database):
         except:
             return False, error('FamilyRental', row_number)
 
+        try:
+            if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
+                record['proposed'] = str(row[d['TotalAHProposed']].value)
+        except:
+            error('TotalAHProposed', row_number)
 
         try:
-           if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
-               record['proposed'] = str(row[d['TotalAHProposed']].value)
+            if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
+                record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
         except:
-           error('TotalAHProposed', row_number)
-
-        try:
-           if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
-               record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
-        except:
-           error('TotalAHUnitsCompleted', row_number)
+            error('TotalAHUnitsCompleted', row_number)
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
@@ -224,18 +225,17 @@ def insert(sheet, database):
         except:
             return False, error('SeniorRental', row_number)
 
-     #   try:
-      #      if row[d['TotalSSN']].ctype == XL_CELL_NUMBER:
-      #          record["total_ssn"] = str(row[d['TotalSSN']].value)
-      #  except:
-      #      error('TotalSSN', row_number)
+        #   try:
+        #      if row[d['TotalSSN']].ctype == XL_CELL_NUMBER:
+        #          record["total_ssn"] = str(row[d['TotalSSN']].value)
+        #  except:
+        #      error('TotalSSN', row_number)
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
                 record["ssn"] = str(row[d['SSNTotal']].value)
         except:
             return False, error('SSNTotal', row_number)
-
 
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
@@ -321,7 +321,6 @@ def insert(sheet, database):
         except:
             return False, error('ThreeBRMod', row_number)
 
-
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
                 record["vssn"] = str(row[d['SSNBRVLI']].value)
@@ -353,9 +352,10 @@ def insert(sheet, database):
 
     return True, "<br>Your records have been added to the database.</br>"
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 
-    
+
 # ----------------------------------------------------------------------------------------------------------------------
 def parse_file(filename):
     wb = xlrd.open_workbook(file_contents=filename.read())
@@ -369,6 +369,8 @@ def parse_file(filename):
 
     database.disconnect()
     return html_status
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -379,6 +381,8 @@ def is_int(s):
         return True
     except:
         return False
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -390,13 +394,15 @@ def parse_hyphen(s, numbers):
         if is_int(s[:index]):
             start = int(s[:index])
         if is_int(s[index + 1:]):
-            end = int(s[index+1:])
-        
+            end = int(s[index + 1:])
+
         if start > 0 and end > 0:
             numbers += [str(x) for x in range(start, end + 1)]
     except:
         if is_int(s) or s[-1].isalpha() and is_int(s[:-1]):
             numbers.append(s)
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -419,6 +425,8 @@ def parse_comma(s):
         return [s]
     streetname = ' '.join(split[commas:])
     return list(dict.fromkeys([x + " " + streetname for x in numbers]))
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
