@@ -136,7 +136,12 @@ class Database:
     # ------------------------------------------------------------------------------------------------------------------
     def get_rows(self):
         cursor = self._connection.cursor()
-        stmt = "SELECT listings.*, addresses.address, cities.municipality, counties.county, counties.region FROM " + \
+        stmt = "SELECT listings.listingid, listings.name, listings.developer, listings.status, listings.compliance, " + \
+                "addresses.address, cities.municipality, counties.county, cities.municode, counties.region, " + \
+                "listings.v1, listings.v2, listings.v3, listings.l1, listings.l2, listings.l3, listings.m1, " + \
+                "listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.famsale, " + \
+                "listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent, " + \
+                "listings.total, listings.family, listings.sr, listings.ssn, listings.br1, listings.br2, listings.br3 FROM " + \
                "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
                "listings.municode = cities.municode AND cities.county = counties.county"
         cursor.execute(stmt)
@@ -149,45 +154,5 @@ class Database:
         return rows
     # ------------------------------------------------------------------------------------------------------------------
 
-    def get_row(self, listingid):
-        cursor = self._connection.cursor()
-        stmt = "SELECT listings.*, cities.municipality, counties.county, counties.region FROM " + \
-                "listings, cities, counties WHERE listings.listingid = " + str(listingid) + " AND " + \
-                "listings.municode = cities.municode AND cities.county = counties.county"
-        cursor.execute(stmt)
-        row = cursor.fetchone()
-        result = {}
-        result['name'] = row[1]
-        result['developer'] = row[2]
-        result['status'] = row[3]
-        result['compliance'] = row[4]
-        result['vli1'] = row[6]
-        result['vli2'] = row[7]
-        result['vli3'] = row[8]
-        result['li1'] = row[9]
-        result['li2'] = row[10]
-        result['li3'] = row[11]
-        result['m1'] = row[12]
-        result['m2'] = row[13] 
-        result['m3'] = row[14]
-        result['vssn'] = row[15]
-        result['lssn'] = row[16]
-        result['mssn'] = row[17]
-        result['famsale'] = row[18]
-        result['famrent'] = row[19]
-        result['srsale'] = row[20]
-        result['srrent'] = row[21]
-        result['ssnsale'] = row[22]
-        result['ssnrent'] = row[23]
-        result['total'] = row[24]
-        result['family'] = row[25]
-        result['senior'] = row[26]
-        result['ssn'] = row[27]
-        result['total1'] = row[28]
-        result['total2'] = row[29]
-        result['total3'] = row[30]
-        result['muni'] = row[31]
-        result['county'] = row[32]
-        cursor.close()
-        return result
+   
 # ----------------------------------------------------------------------------------------------------------------------

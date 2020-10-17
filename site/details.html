@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>mapFSH</title>
+    </head>
+    <body>
+        {% include 'site/header.html' %}
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+            <div class="container">
+              <a class="navbar-brand" href="index">mapFSH</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+              </button>
+    
+              <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
+                  <li class="nav-item"><a href="about" class="nav-link">About</a></li>
+                  <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
+                  <li class="nav-item active"><a href="listings" class="nav-link">Listings</a></li>
+                  <li class="nav-item"><a href="admin" class="nav-link">Admin</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <section class="hero-wrap hero-wrap-2" style="background-image: url('static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="container">
+              <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate pb-0 text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
+                         <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p>
+                  <h1 class="mb-3 bread">{{adr}}</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="ftco-section ftco-no-pb ftco-no-pt">
+			<div class="container">
+				<div class="row">	   
+					<div class="col-md-5 wrap-about py-md-5 ftco-animate">
+                        <p><b>Address:</b></p>
+                        <p> {{adr}}</p>
+                        <p> {{row['muni']}}</p>
+                        <p> {{row['county']}} County, NJ</p>
+                        <p><b>Program Name:</b></p>
+                        <p> {{row['name']}}</p>
+                        {% if row['developer'] %}
+                        <p><b>Developer:</b></p>
+                        <p> {{row['developer']}}</p>
+                        {% endif %}
+                        <p><b>Status:</b></p>
+                        <p> {{row['status']}}</p>
+                        <p><b>Compliance Mechanism:</b></p>
+                        <p> {{row['compliance']}}</p>
+                    </div>
+                    <div class="col-md-5 wrap-about py-md-5 ftco-animate">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>1 Bedroom</th>
+                                    <th>2 Bedrooms</th>
+                                    <th>3+ Bedrooms</th>
+                                    <th>SSN</th>
+                                    <th>Total</th>
+                                </tr>
+                            <tbody>
+                                <tr>
+                                    <th>Very Low Income</th>
+                                    <td>{{row['vli1']}}</td>
+                                    <td>{{row['vli2']}}</td>
+                                    <td>{{row['vli3']}}</td>
+                                    <td>{{row['vssn']}}</td>
+                                    <th>{{row['vli1'] + row['vli2'] + row['vli3'] + row['vssn']}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Low Income</th>
+                                    <td>{{row['li1']}}</td>
+                                    <td>{{row['li2']}}</td>
+                                    <td>{{row['li3']}}</td>
+                                    <td>{{row['lssn']}}</td>
+                                    <th>{{row['li1'] + row['li2'] + row['li3'] + row['lssn']}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Moderate Income</th>
+                                    <td>{{row['m1']}}</td>
+                                    <td>{{row['m2']}}</td>
+                                    <td>{{row['m3']}}</td>
+                                    <td>{{row['mssn']}}</td>
+                                    <th>{{row['m1'] + row['m2'] + row['m3'] + row['mssn']}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>{{row['vli1'] + row['li1'] + row['m1']}}</th>
+                                    <th>{{row['vli2'] + row['li2'] + row['m2']}}</th>
+                                    <th>{{row['vli3'] + row['li3'] + row['m3']}}</th>
+                                    <th>{{row['vssn'] + row['lssn'] + row['mssn']}}</th>
+                                    <th>{{row['vli1'] + row['li1'] + row['m1'] + 
+                                        row['vli2'] + row['li2'] + row['m2'] + 
+                                        row['vli3'] + row['li3'] + row['m3'] + 
+                                        row['vssn'] + row['lssn'] + row['mssn']}}</th>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Family</th>
+                                        <th>Senior</th>
+                                        <th>SSN</th>
+                                        <th>Total</th>
+                                    </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>For Rent</th>
+                                        <td>{{row['famrent']}}</td>
+                                        <td>{{row['srrent']}}</td>
+                                        <td>{{row['ssnrent']}}</td>
+                                        <th>{{row['famrent'] + row['srrent'] + row['ssnrent']}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>For Sale</th>
+                                        <td>{{row['famsale']}}</td>
+                                        <td>{{row['srsale']}}</td>
+                                        <td>{{row['ssnsale']}}</td>
+                                        <th>{{row['famsale'] + row['srsale'] + row['ssnsale']}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>{{row['famsale'] + row['famrent']}}</th>
+                                        <th>{{row['srsale'] + row['srrent']}}</th>
+                                        <th>{{row['ssnsale'] + row['ssnrent']}}</th>
+                                        <th>{{row['famsale'] + row['famrent'] + 
+                                            row['srsale'] + row['srrent'] + 
+                                            row['ssnsale'] + row['ssnrent']}}</th>
+                                    </tr>
+                                </tbody>
+                                </table>
+                    </div>
+                </div>
+			</div>
+		</section>
+    
+        {% include 'site/footer.html' %}
+    </body>
+</html>

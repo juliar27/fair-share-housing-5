@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file, parse_address
-from data.tables import get_tables, add_to_table, get_listings
+from data.tables import get_tables, add_to_table, get_listings, get_row
 from data.account import make_account, check_account
+from data.database import Database
 from form import LoginForm
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -47,18 +48,29 @@ def show_map():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/listings')
 def show_listings():
-    rows = get_listings()
-    t = render_template('site/listings.html', rows=rows)
+    rows, ids = get_listings()
+    t = render_template('site/listings.html', rows=rows, ids=ids)
     return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/details')
+def show_details():
+    lid = request.args.get('id')
+    adr = request.args.get('adr')
+    row = get_row(lid)
+    t = render_template('site/details.html', row=row, adr=adr)
+    return make_response(t)
+
+#-----------------------------------------------------------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/login')
 def show_login():
-    t = render_template('admin/dist/login.html')
+    t = render_template('site/login.html')
     return make_response(t)
 
 
@@ -68,7 +80,7 @@ def show_login():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/password')
 def show_password():
-    t = render_template('admin/dist/password.html')
+    t = render_template('site/password.html')
     return make_response(t)
 
 
@@ -78,7 +90,7 @@ def show_password():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/register')
 def show_register():
-    t = render_template('admin/dist/register.html')
+    t = render_template('site/register.html')
     return make_response(t)
 
 
@@ -89,7 +101,7 @@ def show_register():
 @app.route('/tables')
 def show_tables():
     rows = get_tables()
-    t = render_template('admin/dist/tables.html', rows=rows)
+    t = render_template('site/tables.html', rows=rows)
     return make_response(t)
 
 
@@ -99,7 +111,7 @@ def show_tables():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/upload')
 def show_upload():
-    t = render_template('admin/dist/upload.html')
+    t = render_template('site/upload.html')
     return make_response(t)
 
 
@@ -110,7 +122,7 @@ def show_upload():
 @app.route('/parse-error')
 def show_parse_error():
     errorMsg = request.args.get('errorMsg')
-    t = render_template('admin/dist/parse-error.html', errorMsg=errorMsg)
+    t = render_template('site/parse-error.html', errorMsg=errorMsg)
     return make_response(t)
 
 
@@ -127,7 +139,7 @@ def show_uploaded():
         if not flag:
             return redirect(possible_redirect)
 
-    t = render_template('admin/dist/uploaded.html')
+    t = render_template('site/uploaded.html')
     return make_response(t)
 
 
@@ -138,7 +150,7 @@ def show_uploaded():
 @app.route('/add', methods=['GET', 'POST'])
 def show_add():
     form = LoginForm()
-    t = render_template('admin/dist/add.html', form=form)
+    t = render_template('site/add.html', form=form)
     return make_response(t)
 
 
@@ -151,7 +163,7 @@ def show_added():
     if request.method == "POST":
         form = request.form
         add_to_table(form)
-    t = render_template('admin/dist/uploaded.html')
+    t = render_template('site/uploaded.html')
     return make_response(t)
 
 
@@ -164,7 +176,7 @@ def show_create():
     flag = make_account(request.form.to_dict())
 
     if not flag:
-        t = render_template('admin/dist/used-email.html')
+        t = render_template('site/used-email.html')
         return make_response(t)
 
     else:
@@ -180,7 +192,7 @@ def show_check():
 
     if not flag:
         # error message needs to put here
-        t = render_template('admin/dist/login.html')
+        t = render_template('site/login.html')
         return make_response(t)
 
     else:
@@ -194,7 +206,7 @@ def show_check():
 @app.route('/admin')
 def show_admin():
     rows = get_tables()
-    t = render_template('admin/dist/index.html', rows=rows)
+    t = render_template('site/admin.html', rows=rows)
     return make_response(t)
 
 
@@ -203,5 +215,5 @@ def show_admin():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(port=44424)
+    app.run(port=44434)
 # ----------------------------------------------------------------------------------------------------------------------

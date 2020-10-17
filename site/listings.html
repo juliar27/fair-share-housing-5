@@ -18,7 +18,7 @@
 }
 </style>
 <head>
-      {% include 'header.html' %}
+      {% include 'site/header.html' %}
 </head>
 <body>
 
@@ -116,10 +116,11 @@
                                         <!-- <th>Region</th> -->
                                     </tr>
                                 <tbody>
-                                  {% for row in rows: %}
+                                  {% for i in range(rows|length): %}
                                   <tr>
-                                    {% for field in row: %}
-                                    <td> {{ field }} </td>
+                                    <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}'>{{rows[i][0]}}</a></td>
+                                    {% for j in range(1, rows[i]|length): %}
+                                    <td> {{ rows[i][j] }} </td>
                                     {% endfor %}
                                  </tr>
                                  {% endfor %}
@@ -189,7 +190,7 @@
     </div> -->
 
 
-          {% include 'footer.html' %}
+          {% include 'site/footer.html' %}
 
   </body>
 </html>
