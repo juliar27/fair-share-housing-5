@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 class LoginForm(FlaskForm):
     municode = StringField('Municode')
@@ -38,7 +39,6 @@ class LoginForm(FlaskForm):
     vssn = StringField('# Very Low Income SSN Units')
     lssn = StringField('# Low Income SSN Units')
     mssn = StringField('# Moderate Income SSN Units')
-
 
     br1 = StringField('Total # 1 Bedroom Units')
     br2 = StringField('Total # 2 Bedroom Units')
