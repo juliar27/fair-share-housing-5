@@ -50,10 +50,7 @@ class Database:
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
 
-        for column, value in record.items():
-            if column == "br3":
-                print(value)
-                
+        for column, value in record.items():                
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + ", "
@@ -121,10 +118,11 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def insert(self, record):
+        self.add_record(record)
         # cursor = self._connection.cursor()
         # cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
         # row = cursor.fetchone()
-        self.add_record(record)
+
         # if row is None:
         #     self.add_record(record)
         # else:
