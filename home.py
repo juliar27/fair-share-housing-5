@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect
+from flask import Flask, render_template, request, make_response, redirect, url_for
 from data.parse import parse_file, parse_address
 from data.tables import get_tables, add_to_table, get_listings, get_row
 from data.account import make_account, check_account
@@ -128,16 +128,39 @@ def show_parse_error():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/upload-error')
+def show_upload_error():
+    t = render_template('site/upload-error.html')
+    return make_response(t)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/uploaded', methods=['GET', 'POST'])
-def show_uploaded():
-    if request.method == "POST":
-        filename = request.files['file']
-        flag, possible_redirect = parse_file(filename)
 
-        if not flag:
-            return redirect(possible_redirect)
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/uploaded', methods=['GET'])
+def show_uploaded_get():
+    return show_upload()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/uploaded', methods=['POST'])
+def show_uploaded_post():
+    if request.method == "POST":
+
+        if request.files['file'].filename != '':
+            filename = request.files['file']
+
+            flag, possible_redirect = parse_file(filename)
+
+            if not flag:
+                return redirect(possible_redirect)
+        else:
+            return redirect(url_for('show_upload_error'))
 
     t = render_template('site/uploaded.html')
     return make_response(t)
