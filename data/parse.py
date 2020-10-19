@@ -49,7 +49,6 @@ def get_listings(sheet, database):
     i = 0
 
     row_number = 1
-    listing_id = 1
 
     listings = {}
 
@@ -63,6 +62,9 @@ def get_listings(sheet, database):
             row_number += 1
             continue
         record = {}
+
+        if row[d['UNIQUEID']].ctype == XL_CELL_NUMBER:
+            record['listingid'] = str(int(row[d['UNIQUEID']].value))
 
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
@@ -642,13 +644,9 @@ def get_listings(sheet, database):
             if err != "":
                 missing_columns_errors.append(err)
 
-        if len(record) > 0:
-            record["listingid"] = str(listing_id)
-
         row_number += 1
-        listing_id += 1
 
-        listings[listing_id] = record
+        listings[record['listingid']] = record
 
     return (missing_columns_errors + errors), listings
 
@@ -656,15 +654,9 @@ def get_listings(sheet, database):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def insert(database, records):
-
-    errors = []
-
+def insert(database, records, errors):
     for listings in records:
-        try:
             database.insert(records[listings])
-        except Exception as e:
-            errors(error('Inserting', listings))
 
     return errors, records
 
@@ -683,8 +675,8 @@ def parse_file(filename):
     errors, listings = get_listings(sheet, database)
 
     if errors == []:
-        database.clear()
-        errors2, possible_redirect = insert(database, listings)
+        #database.clear()
+        errors2, possible_redirect = insert(database, listings, errors)
 
     else:
         database.disconnect()

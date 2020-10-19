@@ -103,24 +103,33 @@ class Database:
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     def edit_record(self, record):
+        cursor = self._connection.cursor()
+        if "addresses" in record:
+            stmt = "SELECT addresses FROM listings WHERE listingid = " + record["listingid"]
+            cursor.execute(stmt)
+            row = cursor.fetchone()
+            if row[0] == record['addresses']:
+                del record['addresses']
+                del record['address']        
+        
         stmt = "UPDATE listings SET "
         for column, value in record.items():
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + " = "
             if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
-                stmt += "'" + value + "', "
+                stmt += "'" + double_up(value) + "', "
             else:
                 stmt += value + ", "
         stmt = stmt[:-2] + "WHERE listingid = " + record["listingid"]
-        cursor = self._connection.cursor()
+
         cursor.execute(stmt)
         if "address" in record:
             stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
             cursor.execute(stmt)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], address)
+                       + "('%s', '%s')" % (record["listingid"], double_up(address))
                 cursor.execute(stmt)
         cursor.close()
 
@@ -128,16 +137,15 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def insert(self, record):
-        self.add_record(record)
-        # cursor = self._connection.cursor()
-        # cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
-        # row = cursor.fetchone()
+        cursor = self._connection.cursor()
+        cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
+        row = cursor.fetchone()
 
-        # if row is None:
-        #     self.add_record(record)
-        # else:
-        #     self.edit_record(record)
-        # cursor.close()
+        if row is None:
+            self.add_record(record)
+        else:
+            self.edit_record(record)
+        cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------
 
