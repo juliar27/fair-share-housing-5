@@ -20,6 +20,7 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def connect(self):
+        assert self
         self._connection = connect(host="ec2-52-21-247-176.compute-1.amazonaws.com",
                                    password="53f5293f5c753debb9340b4e662a0ba2c2f69a75ea5f18aa8dea9ca415a2df49",
                                    user="lxntyzuehczhml",
@@ -90,7 +91,16 @@ class Database:
         cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------
+    def delete_record(self, listingid):
+        cursor = self._connection.cursor()
+        stmt = "DELETE FROM listings WHERE listingid = " + listingid
+        cursor.execute(stmt)
+        stmt = "DELETE FROM addresses WHERE listingid = " + listingid
+        cursor.execute(stmt)
+        cursor.close()
 
+    # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     def edit_record(self, record):
         stmt = "UPDATE listings SET "

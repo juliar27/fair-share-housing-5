@@ -74,6 +74,10 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Edit Data</h1>
+                        <form action="/deleted?id={{id}}" method="post">
+                            <input type=submit value='Delete Listing'>
+                        </form>
+                        <br>
                         {% block content %}
                         <form action="/edited?id={{id}}" method="post">
                             <p>  

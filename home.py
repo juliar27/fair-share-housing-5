@@ -168,7 +168,14 @@ def show_uploaded_post():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
+@app.route('/clear', methods=['GET', 'POST'])
+def show_clear():
+    database = Database()
+    database.connect()
+    database.clear()
+    database.disconnect()
+    t = render_template('site/uploaded.html')
+    return make_response(t)
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/add', methods=['GET', 'POST'])
 def show_add():
@@ -198,8 +205,10 @@ def show_added():
     if request.method == "POST":
         form = request.form
         add_to_table(form)
-    t = render_template('site/uploaded.html')
-    return make_response(t)
+        t = render_template('site/uploaded.html')
+        return make_response(t)
+    else:
+        return redirect('/add')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -208,8 +217,28 @@ def show_edited():
     if request.method == "POST":
         form = request.form
         edit_table(form, request.args.get('id'))
-    t = render_template('site/uploaded.html')
-    return make_response(t)
+        t = render_template('site/uploaded.html')
+        return make_response(t)
+    else:
+        if request.args.get('id'):
+            return redirect('/edit?id=' + request.args.get('id'))
+        return redirect('/tables')
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/deleted', methods=['GET', 'POST'])
+def show_deleted():
+    if request.method == "POST":
+        form = request.form
+        database = Database()
+        database.connect()
+        database.delete_record(request.args.get('id'))
+        database.disconnect()
+        t = render_template('site/uploaded.html')
+        return make_response(t)
+    else:
+        if request.args.get('id'):
+            return redirect('/edit?id=' + request.args.get('id'))
+        return redirect('/tables')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
