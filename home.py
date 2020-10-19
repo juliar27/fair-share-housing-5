@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, make_response, redirect
 from data.parse import parse_file, parse_address
-from data.tables import get_tables, add_to_table, get_listings, get_row
+from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table
 from data.account import make_account, check_account
 from data.database import Database
-from form import LoginForm
-
+from form import AddForm
+from werkzeug.datastructures import MultiDict
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
@@ -149,12 +149,24 @@ def show_uploaded():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/add', methods=['GET', 'POST'])
 def show_add():
-    form = LoginForm()
+    form = AddForm()
     t = render_template('site/add.html', form=form)
     return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+
+@app.route('/edit', methods=['GET', 'POST'])
+def show_edit():
+    if request.method == 'GET':
+        record = get_row(request.args.get('id'))
+        form = AddForm(formdata=MultiDict(record))
+    else:
+        form = AddForm()
+    t = render_template('site/edit.html', form=form, id=request.args.get('id'))
+    return make_response(t)
+
+
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -168,6 +180,13 @@ def show_added():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/edited', methods=['GET', 'POST'])
+def show_edited():
+    if request.method == "POST":
+        form = request.form
+        edit_table(form, request.args.get('id'))
+    t = render_template('site/uploaded.html')
+    return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------

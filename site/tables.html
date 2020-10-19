@@ -168,8 +168,9 @@
                                         <tbody>
                                             {% for row in rows %}
                                                 <tr>
-                                                    {% for cell in row %}
-                                                        <td>{{ cell }}</td>
+                                                    <td><a href='/edit?id={{row[0]}}'>{{row[0]}}</a></td>
+                                                    {% for i in range(1, row|length) %}
+                                                        <td>{{ row[i] }}</td>
                                                     {% endfor %}
                                                 </tr>
                                             {% endfor %}

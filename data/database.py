@@ -51,9 +51,6 @@ class Database:
         values = "VALUES ("
 
         for column, value in record.items():
-            if column == "br3":
-                print(value)
-                
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + ", "
@@ -98,23 +95,23 @@ class Database:
     def edit_record(self, record):
         stmt = "UPDATE listings SET "
         for column, value in record.items():
-            if column == "address":
+            if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + " = "
-            if column == "compliance":
+            if column in ("compliance", 'name', 'developer', 'status'):
                 stmt += "'" + value + "', "
             else:
                 stmt += value + ", "
         stmt = stmt[:-2] + "WHERE listingid = " + record["listingid"]
         cursor = self._connection.cursor()
         cursor.execute(stmt)
-        if "address" in record:
-            stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
-            cursor.execute(stmt)
-            for address in record["address"]:
-                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], address)
-                cursor.execute(stmt)
+        # if "address" in record:
+        #     stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
+        #     cursor.execute(stmt)
+        #     for address in record["address"]:
+        #         stmt = "INSERT INTO addresses (listingid, address) VALUES " \
+        #                + "('%s', '%s')" % (record["listingid"], address)
+        #         cursor.execute(stmt)
         cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------

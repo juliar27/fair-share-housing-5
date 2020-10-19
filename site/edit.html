@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>mapFSH: Add Data</title>
+        <title>mapFSH: Edit Data</title>
         <link rel='icon' href='static/images/favicon.ico' type='image/x-icon' >
         <link href="static/css/styles-admin.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -73,9 +73,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Add Data</h1>
+                        <h1 class="mt-4">Edit Data</h1>
                         {% block content %}
-                        <form action="/added" method="post">
+                        <form action="/edited?id={{id}}" method="post">
                             <p>  
                                 {{form.municode.label}} <br>
                                 {{form.municode(size=32)}}

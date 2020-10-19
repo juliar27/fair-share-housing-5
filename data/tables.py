@@ -41,6 +41,7 @@ def get_row(listingid):
     result['developer'] = row[2]
     result['status'] = row[3]
     result['compliance'] = row[4]
+    result['municode'] = row[5]
     result['vli1'] = row[6]
     result['vli2'] = row[7]
     result['vli3'] = row[8]
@@ -68,6 +69,7 @@ def get_row(listingid):
     result['total3'] = row[30]
     result['muni'] = row[31]
     result['county'] = row[32]
+    result['region'] = row[33]
     cursor.close()
     database.disconnect()
     return result
@@ -84,16 +86,16 @@ def get_tables():
 
 # ----------------------------------------------------------------------------------------------------------------------
 def add_to_table(form):
-    record = {'municode': form.get('municode'), 'municipality': form.get('municipality'), 'county': form.get('county'),
+    record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
               'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
               'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
               'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
               'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
               'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),
-              'ssnrent': form.get('ssnrent'), 'v1': form.get('v1'), 'v2': form.get('v2'), 'v3': form.get('v3'),
-              'vssn': form.get('vssn'), 'l1': form.get('l1'), 'l2': form.get('l2'), 'l3': form.get('l3'),
+              'ssnrent': form.get('ssnrent'), 'v1': form.get('vli1'), 'v2': form.get('vli2'), 'v3': form.get('vli3'),
+              'vssn': form.get('vssn'), 'l1': form.get('li1'), 'l2': form.get('li2'), 'l3': form.get('li3'),
               'lssn': form.get('lssn'), 'm1': form.get('m1'), 'm2': form.get('m2'), 'm3': form.get('m3'),
-              'mssn': form.get('mssn'), 'br1': form.get('br1'), 'br2': form.get('br2'), 'br3': form.get('br3')}
+              'mssn': form.get('mssn'), 'br1': form.get('total1'), 'br2': form.get('total2'), 'br3': form.get('total3')}
 
     deletelist = []
     for column, value in record.items():
@@ -117,6 +119,32 @@ def add_to_table(form):
     database.add_record(record)
     cursor.close()
     database.disconnect()
+# ----------------------------------------------------------------------------------------------------------------------
 
-    return
+
+# ----------------------------------------------------------------------------------------------------------------------
+def edit_table(form, listingid):
+    record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
+              'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
+              'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
+              'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
+              'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
+              'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),
+              'ssnrent': form.get('ssnrent'), 'v1': form.get('vli1'), 'v2': form.get('vli2'), 'v3': form.get('vli3'),
+              'vssn': form.get('vssn'), 'l1': form.get('li1'), 'l2': form.get('li2'), 'l3': form.get('li3'),
+              'lssn': form.get('lssn'), 'm1': form.get('m1'), 'm2': form.get('m2'), 'm3': form.get('m3'),
+              'mssn': form.get('mssn'), 'br1': form.get('total1'), 'br2': form.get('total2'), 'br3': form.get('total3')}
+
+    # deletelist = []
+    # for column, value in record.items():
+    #     if value == '':
+    #         deletelist.append(column)
+    # for i in deletelist:
+    #     del record[i]
+
+    database = Database()
+    database.connect()
+    record['listingid'] = listingid
+    database.edit_record(record)
+    database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
