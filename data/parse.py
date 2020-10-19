@@ -20,17 +20,10 @@ XL_CELL_DATE = 3
 # ----------------------------------------------------------------------------------------------------------------------
 def error(col_name, row_number):
     if col_name == 'Inserting':
-        errorMsg = "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
+        return "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
 
     else:
-        errorMsg = "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". " + \
-                   "Please fix the excel and try again."
-
-    try:
-        return url_for('show_parse_error', errorMsg=errorMsg)
-
-    except Exception as e:
-        print(argv[0] + ": " + str(e))
+        return "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". "
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -50,6 +43,8 @@ def get_listings(sheet, database):
 
     listings = {}
 
+    errors = []
+
     for row in sheet.get_rows():
         if i == 0:
             i += 1
@@ -61,43 +56,43 @@ def get_listings(sheet, database):
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
                 record['municode'] = str(row[d['Municode']].value)
         except:
-            return False, error('Municode', row_number)
+            errors.append(error('Municode', row_number))
 
         try:
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
                 record['municipality'] = row[d['Municipality']].value
         except:
-            return False, error('Municipality', row_number)
+            errors.append(error('Municipality', row_number))
 
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
                 record['county'] = row[d['County']].value
         except:
-            return False, error('County', row_number)
+            errors.append(error('County', row_number))
 
         try:
             if row[d['Region']].ctype == XL_CELL_NUMBER:
                 record['region'] = str(row[d['Region']].value)
         except:
-            return False, error('Region', row_number)
+            errors.append(error('Region', row_number))
 
         try:
             if row[d['SiteProgramName']].ctype == XL_CELL_TEXT:
                 record['name'] = row[d['SiteProgramName']].value
         except:
-            return False, error('SiteProgramName', row_number)
+            errors.append(error('SiteProgramName', row_number))
 
         try:
             if row[d['ProjectDeveloper']].ctype == XL_CELL_TEXT:
                 record['developer'] = row[d['ProjectDeveloper']].value
         except:
-            return False, error('ProjectDeveloper', row_number)
+            errors.append(error('ProjectDeveloper', row_number))
 
         try:
             if row[d['ComplianceMechanism']].ctype == XL_CELL_TEXT:
                 record['compliance'] = row[d['ComplianceMechanism']].value
         except:
-            return False, error('ComplianceMechanism', row_number)
+            errors.append(error('ComplianceMechanism', row_number))
 
 
         try:
@@ -106,179 +101,179 @@ def get_listings(sheet, database):
                 "TBD", "n/a", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
                     record['address'] = parse_address(row[d['Address']].value)
                 else:
-                    return False, error('Address', row_number)
+                    errors.append(error('Address', row_number))
         except:
-            return False, error('Address', row_number)
+            errors.append(error('Address', row_number))
 
         try:
             if row[d['Status']].ctype == XL_CELL_TEXT:
                 record['status'] = row[d['Status']].value
         except:
-            return False, error('Status', row_number)
+            errors.append(error('Status', row_number))
 
 
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
                 record['total'] = str(row[d['OverallTotalUnits']].value)
         except:
-            return False, error('OverallTotalUnits', row_number)
+            errors.append(error('OverallTotalUnits', row_number))
 
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
                 record['family'] = str(row[d['TotalFamily']].value)
         except:
-            return False, error('TotalFamily', row_number)
+            errors.append(error('TotalFamily', row_number))
 
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
                 record['famsale'] = str(row[d['FamilyForSale']].value)
         except:
-            return False, error('FamilyForSale', row_number)
+            errors.append(error('FamilyForSale', row_number))
 
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
                 record['famrent'] = str(row[d['FamilyRental']].value)
         except:
-            return False, error('FamilyRental', row_number)
+            errors.append(error('FamilyRental', row_number))
 
         try:
             if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
                 record['proposed'] = str(row[d['TotalAHProposed']].value)
         except:
-            error('TotalAHProposed', row_number)
+            errors.append(error('TotalAHProposed', row_number))
 
         try:
             if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
                 record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
         except:
-            error('TotalAHUnitsCompleted', row_number)
+            errors.append(error('TotalAHUnitsCompleted', row_number))
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
                 record["sr"] = str(row[d['TotalSenior']].value)
         except:
-            return False, error('TotalSenior', row_number)
+            errors.append(error('TotalSenior', row_number))
 
         try:
             if row[d['SeniorForSale']].ctype == XL_CELL_NUMBER:
                 record["srsale"] = str(row[d['SeniorForSale']].value)
         except:
-            return False, error('SeniorForSale', row_number)
+            errors.append(error('SeniorForSale', row_number))
 
         try:
             if row[d['SeniorRental']].ctype == XL_CELL_NUMBER:
                 record["srrent"] = str(row[d['SeniorRental']].value)
         except:
-            return False, error('SeniorRental', row_number)
+            errors.append(error('SeniorRental', row_number))
 
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
                 record["ssn"] = str(row[d['SSNTotal']].value)
         except:
-            return False, error('SSNTotal', row_number)
+            errors.append(error('SSNTotal', row_number))
 
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
                 record["ssnsale"] = str(row[d['SSNForSale']].value)
         except:
-            return False, error('SSNForSale', row_number)
+            errors.append(error('SSNForSale', row_number))
 
         try:
             if row[d['SSNRental']].ctype == XL_CELL_NUMBER:
                 record["ssnrent"] = str(row[d['SSNRental']].value)
         except:
-            return False, error('SSNRental', row_number)
+            errors.append(error('SSNRental', row_number))
 
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br1"] = str(row[d['OneBRTotal']].value)
         except:
-            return False, error('OneBRTotal', row_number)
+            errors.append(error('OneBRTotal', row_number))
 
         try:
             if row[d['OneBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v1"] = str(row[d['OneBRVLI']].value)
         except:
-            return False, error('OneBRVLI', row_number)
+            errors.append(error('OneBRVLI', row_number))
 
         try:
             if row[d['OneBRLow']].ctype == XL_CELL_NUMBER:
                 record["l1"] = str(row[d['OneBRLow']].value)
         except:
-            return False, error('OneBRLow', row_number)
+            errors.append(error('OneBRLow', row_number))
 
         try:
             if row[d['OneBRMod']].ctype == XL_CELL_NUMBER:
                 record["m1"] = str(row[d['OneBRMod']].value)
         except:
-            return False, error('OneBRMod', row_number)
+           errors.append(error('OneBRMod', row_number))
 
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br2"] = str(row[d['TwoBRTotal']].value)
         except:
-            return False, error('TwoBRTotal', row_number)
+            errors.append(error('TwoBRTotal', row_number))
 
         try:
             if row[d['TwoBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v2"] = str(row[d['TwoBRVLI']].value)
         except:
-            return False, error('TwoBRVLI', row_number)
+            errors.append(error('TwoBRVLI', row_number))
 
         try:
             if row[d['TwoBRLow']].ctype == XL_CELL_NUMBER:
                 record["l2"] = str(row[d['TwoBRLow']].value)
         except:
-            return False, error('TwoBRLow', row_number)
+            errors.append(error('TwoBRLow', row_number))
 
         try:
             if row[d['TwoBRMod']].ctype == XL_CELL_NUMBER:
                 record["m2"] = str(row[d['TwoBRMod']].value)
         except:
-            return False, error('TwoBRMod', row_number)
+            errors.append(error('TwoBRMod', row_number))
 
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br3"] = str(row[d['ThreeBRTotal']].value)
         except:
-            return False, error('ThreeBRTotal', row_number)
+            errors.append(error('ThreeBRTotal', row_number))
 
         try:
             if row[d['ThreeBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v3"] = str(row[d['ThreeBRVLI']].value)
         except:
-            return False, error('ThreeBRVLI', row_number)
+            errors.append(error('ThreeBRVLI', row_number))
 
         try:
             if row[d['ThreeBRLow']].ctype == XL_CELL_NUMBER:
                 record["l3"] = str(row[d['ThreeBRLow']].value)
         except:
-            return False, error('ThreeBRLow', row_number)
+            errors.append(error('ThreeBRLow', row_number))
 
         try:
             if row[d['ThreeBRMod']].ctype == XL_CELL_NUMBER:
                 record["m3"] = str(row[d['ThreeBRMod']].value)
         except:
-            return False, error('ThreeBRMod', row_number)
+            errors.append(error('ThreeBRMod', row_number))
 
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
                 record["vssn"] = str(row[d['SSNBRVLI']].value)
         except:
-            return False, error('SSNBRVLI', row_number)
+            errors.append(error('SSNBRVLI', row_number))
 
         try:
             if row[d['SSNBRLow']].ctype == XL_CELL_NUMBER:
                 record["lssn"] = str(row[d['SSNBRLow']].value)
         except:
-            return False, error('SSNBRLow', row_number)
+            errors.append(error('SSNBRLow', row_number))
 
         try:
             if row[d['SSNBRMod']].ctype == XL_CELL_NUMBER:
                 record["mssn"] = str(row[d['SSNBRMod']].value)
         except:
-            return False, error('SSNBRMod', row_number)
+            errors.append(error('SSNBRMod', row_number))
 
         if len(record) > 0:
             record["listingid"] = str(listing_id)
@@ -288,7 +283,7 @@ def get_listings(sheet, database):
 
         listings[listing_id] = record
 
-    return True, listings
+    return errors, listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -317,16 +312,15 @@ def parse_file(filename):
     database = Database()
     database.connect()
 
-    html_status, listings = get_listings(sheet, database)
+    errors, listings = get_listings(sheet, database)
 
-
-    if html_status:
+    if errors is []:
         database.clear()
         insert_status, possible_redirect = insert(database, listings)
 
     else:
         database.disconnect()
-        return html_status, listings
+        return False, url_for('show_parse_error', errorMsg=errors)
 
     database.disconnect()
     if not insert_status:
