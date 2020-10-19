@@ -117,8 +117,8 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Tables</h1>
-                        
-                    
+
+
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table mr-1"></i>
@@ -138,7 +138,7 @@
                                                 <th>Municipality</th>
                                                 <th>County</th>
                                                 <th>Municipality Code</th>
-                                                <th>Region</th> 
+                                                <th>Region</th>
                                                 <th># Very Low Income 1Bdr</th>
                                                 <th># Very Low Income 2Bdr</th>
                                                 <th># Very Low Income 3Bdr</th>
@@ -169,7 +169,11 @@
                                             {% for row in rows %}
                                                 <tr>
                                                     {% for cell in row %}
-                                                        <td>{{ cell }}</td>
+                                                    {% if 'None' in cell|string: %}
+                                                    <td> 0 </td>
+                                                    {% else: %}
+                                                    <td> {{ cell }} </td>
+                                                    {% endif %}
                                                     {% endfor %}
                                                 </tr>
                                             {% endfor %}
