@@ -22,6 +22,8 @@ def error(col_name, row_number):
     if col_name == 'Inserting':
         return "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
 
+    elif col_name == 'Address':
+        return "Row Number: " + str(row_number) + " must have an address."
     else:
         return "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". "
 
@@ -135,18 +137,6 @@ def get_listings(sheet, database):
                 record['famrent'] = str(row[d['FamilyRental']].value)
         except:
             errors.append(error('FamilyRental', row_number))
-
-        try:
-            if row[d['TotalAHProposed']].ctype == XL_CELL_NUMBER:
-                record['proposed'] = str(row[d['TotalAHProposed']].value)
-        except:
-            errors.append(error('TotalAHProposed', row_number))
-
-        try:
-            if row[d['TotalAHUnitsCompleted']].ctype == XL_CELL_NUMBER:
-                record['completed'] = str(row[d['TotalAHUnitsCompleted']].value)
-        except:
-            errors.append(error('TotalAHUnitsCompleted', row_number))
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
@@ -283,6 +273,7 @@ def get_listings(sheet, database):
 
         listings[listing_id] = record
 
+    print(errors)
     return errors, listings
 
 
@@ -315,7 +306,7 @@ def parse_file(filename):
 
     errors, listings = get_listings(sheet, database)
 
-    if errors is []:
+    if errors == []:
         database.clear()
         errors2, possible_redirect = insert(database, listings)
 
@@ -324,7 +315,7 @@ def parse_file(filename):
         return False, url_for('show_parse_error', errorMsg=errors)
 
     database.disconnect()
-    if errors2 is []:
+    if errors2 == []:
         return True, possible_redirect
     else:
         return False, url_for('show_parse_error', errorMsg=errors2)
