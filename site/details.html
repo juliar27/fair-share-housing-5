@@ -62,6 +62,7 @@
       src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"
       data-auto-a11y="true"
     ></script>
+    <link rel='icon' href='static/images/favicon.ico' type='image/x-icon' >
     </head>
     <body>
         {% include 'site/header.html' %}
@@ -143,7 +144,7 @@
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <h2> {{ adr + ' ' + row['county']}} County, NJ </h2>
+                            <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
                               <style>
                                 /* Set the size of the div element that contains the map */
                                 #map {
