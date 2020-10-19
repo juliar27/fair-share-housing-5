@@ -181,6 +181,8 @@ def get_listings(sheet, database):
                 if row[d['Address']].value not in \
                         ("TBD", "n/a", "", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
                     record['address'] = parse_address(row[d['Address']].value)
+                    record['addresses'] = row[d['Address']].value
+
                 else:
                     missing_columns, err = error('Address', row_number, missing_columns)
                     errors.append(err)
