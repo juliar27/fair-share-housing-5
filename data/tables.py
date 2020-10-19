@@ -67,9 +67,10 @@ def get_row(listingid):
     result['total1'] = row[28]
     result['total2'] = row[29]
     result['total3'] = row[30]
-    result['muni'] = row[31]
-    result['county'] = row[32]
-    result['region'] = row[33]
+    result['address'] = row[31]
+    result['muni'] = row[32]
+    result['county'] = row[33]
+    result['region'] = row[34]
     cursor.close()
     database.disconnect()
     return result
@@ -127,6 +128,7 @@ def edit_table(form, listingid):
     record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
               'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
               'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
+              'addresses': form.get('address'),
               'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
               'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
               'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),

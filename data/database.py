@@ -54,7 +54,7 @@ class Database:
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + ", "
-            if column in ("compliance", 'name', 'developer', 'status'):
+            if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
                 values += "'" + double_up(value) + "', "
             else:
                 values += value + ", "
@@ -98,20 +98,20 @@ class Database:
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + " = "
-            if column in ("compliance", 'name', 'developer', 'status'):
+            if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
                 stmt += "'" + value + "', "
             else:
                 stmt += value + ", "
         stmt = stmt[:-2] + "WHERE listingid = " + record["listingid"]
         cursor = self._connection.cursor()
         cursor.execute(stmt)
-        # if "address" in record:
-        #     stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
-        #     cursor.execute(stmt)
-        #     for address in record["address"]:
-        #         stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-        #                + "('%s', '%s')" % (record["listingid"], address)
-        #         cursor.execute(stmt)
+        if "address" in record:
+            stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
+            cursor.execute(stmt)
+            for address in record["address"]:
+                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
+                       + "('%s', '%s')" % (record["listingid"], address)
+                cursor.execute(stmt)
         cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -135,12 +135,12 @@ class Database:
     def get_rows(self):
         cursor = self._connection.cursor()
         stmt = "SELECT listings.listingid, listings.name, listings.developer, listings.status, listings.compliance, " + \
-                "addresses.address, cities.municipality, counties.county, cities.municode, counties.region, " + \
+                "listings.addresses, cities.municipality, counties.county, cities.municode, counties.region, " + \
                 "listings.v1, listings.v2, listings.v3, listings.l1, listings.l2, listings.l3, listings.m1, " + \
                 "listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.famsale, " + \
                 "listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent, " + \
                 "listings.total, listings.family, listings.sr, listings.ssn, listings.br1, listings.br2, listings.br3 FROM " + \
-               "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+               "listings, cities, counties WHERE " + \
                "listings.municode = cities.municode AND cities.county = counties.county"
         cursor.execute(stmt)
         rows = []

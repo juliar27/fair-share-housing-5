@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
 
 
@@ -12,7 +12,7 @@ class AddForm(FlaskForm):
     name = StringField('Site Program Name')
     developer = StringField('Project Developer')
     compliance = StringField('Compliance Mechanism')
-    address = StringField('Address')
+    address = TextAreaField('Address')
     status = StringField('Status')
     total = StringField('Total # Overall Units')
     family = StringField('Total # Family Units')
