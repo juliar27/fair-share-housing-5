@@ -18,14 +18,22 @@ XL_CELL_DATE = 3
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def error(col_name, row_number):
+def error(col_name, row_number, missing_columns, missing_column=False):
     if col_name == 'Inserting':
-        return "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
+        return missing_columns, \
+               "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
 
-    elif col_name == 'Address':
-        return "Row Number: " + str(row_number) + " must have an address."
+    if missing_column == True and col_name not in missing_columns:
+        missing_columns.append(col_name)
+        return missing_columns, "Your database needs to include a " + col_name + " Column. Please add and populate a "\
+               + col_name +  " column and upload again."
+
+    elif missing_column == True and col_name in missing_columns:
+        return missing_columns, ""
+
     else:
-        return "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". "
+        return missing_columns, \
+               "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". "
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -46,6 +54,8 @@ def get_listings(sheet, database):
     listings = {}
 
     errors = []
+    missing_columns_errors = []
+    missing_columns = []
 
     for row in sheet.get_rows():
         if i == 0:
@@ -57,214 +67,446 @@ def get_listings(sheet, database):
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
                 record['municode'] = str(row[d['Municode']].value)
+            else:
+                missing_columns, err = error('Municode', row_number, missing_columns)
+                errors.append(err)
+
         except:
-            errors.append(error('Municode', row_number))
+            missing_columns, err = error('Municode', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
                 record['municipality'] = row[d['Municipality']].value
+            else:
+                missing_columns, err = error('Municipality', row_number, missing_columns)
+                errors.append(err)
+
         except:
-            errors.append(error('Municipality', row_number))
+            missing_columns, err = error('Municipality', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
                 record['county'] = row[d['County']].value
+            else:
+                missing_columns, err = error('County', row_number, missing_columns)
+                errors.append(err)
+
         except:
-            errors.append(error('County', row_number))
+            missing_columns, err = error('County', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['Region']].ctype == XL_CELL_NUMBER:
                 record['region'] = str(row[d['Region']].value)
+            else:
+                missing_columns, err = error('Region', row_number, missing_columns)
+                errors.append(err)
+
         except:
-            errors.append(error('Region', row_number))
+            missing_columns, err = error('Region', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SiteProgramName']].ctype == XL_CELL_TEXT:
                 record['name'] = row[d['SiteProgramName']].value
+            else:
+                missing_columns, err = error('SiteProgramName', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SiteProgramName', row_number))
+            missing_columns, err = error('SiteProgramName', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ProjectDeveloper']].ctype == XL_CELL_TEXT:
                 record['developer'] = row[d['ProjectDeveloper']].value
+            else:
+                missing_columns, err = error('ProjectDeveloper', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('ProjectDeveloper', row_number))
+            missing_columns, err = error('ProjectDeveloper', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ComplianceMechanism']].ctype == XL_CELL_TEXT:
                 record['compliance'] = row[d['ComplianceMechanism']].value
-        except:
-            errors.append(error('ComplianceMechanism', row_number))
+            else:
+                missing_columns, err = error('ComplianceMechanism', row_number, missing_columns)
+                errors.append(err)
 
+
+        except:
+            missing_columns, err = error('ComplianceMechanism', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['Address']].ctype == XL_CELL_TEXT:
-                if row[d['Address']].value not in (
-                "TBD", "n/a", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
+                if row[d['Address']].value not in \
+                        ("TBD", "n/a", "", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
                     record['address'] = parse_address(row[d['Address']].value)
-                    record['addresses'] = row[d['Address']].value
                 else:
-                    errors.append(error('Address', row_number))
+                    missing_columns, err = error('Address', row_number, missing_columns)
+                    errors.append(err)
+
+            else:
+                missing_columns, err = error('Address', row_number, missing_columns)
+                errors.append(err)
+
         except:
-            errors.append(error('Address', row_number))
+            missing_columns, err = error('Address', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['Status']].ctype == XL_CELL_TEXT:
                 record['status'] = row[d['Status']].value
-        except:
-            errors.append(error('Status', row_number))
+            else:
+                missing_columns, err = error('Status', row_number, missing_columns)
+                errors.append(err)
 
+
+        except:
+            missing_columns, err = error('Status', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
                 record['total'] = str(row[d['OverallTotalUnits']].value)
+            else:
+                missing_columns, err = error('OverallTotalUnits', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('OverallTotalUnits', row_number))
+            missing_columns, err = error('OverallTotalUnits', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
                 record['family'] = str(row[d['TotalFamily']].value)
+            else:
+                missing_columns, err = error('TotalFamily', row_number, missing_columns)
+                errors.append(err)
+
+
+
         except:
-            errors.append(error('TotalFamily', row_number))
+            missing_columns, err = error('TotalFamily', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
                 record['famsale'] = str(row[d['FamilyForSale']].value)
+            else:
+                missing_columns, err = error('FamilyForSale', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('FamilyForSale', row_number))
+            missing_columns, err = error('FamilyForSale', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
                 record['famrent'] = str(row[d['FamilyRental']].value)
+            else:
+                missing_columns, err = error('FamilyRental', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('FamilyRental', row_number))
+            missing_columns, err = error('FamilyRental', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
                 record["sr"] = str(row[d['TotalSenior']].value)
+            else:
+                missing_columns, err = error('TotalSenior', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('TotalSenior', row_number))
+            missing_columns, err = error('TotalSenior', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SeniorForSale']].ctype == XL_CELL_NUMBER:
                 record["srsale"] = str(row[d['SeniorForSale']].value)
+            else:
+                missing_columns, err = error('SeniorForSale', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SeniorForSale', row_number))
+            missing_columns, err = error('SeniorForSale', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SeniorRental']].ctype == XL_CELL_NUMBER:
                 record["srrent"] = str(row[d['SeniorRental']].value)
-        except:
-            errors.append(error('SeniorRental', row_number))
+            else:
+                missing_columns, err = error('SeniorRental', row_number, missing_columns)
+                errors.append(err)
 
+
+        except:
+            missing_columns, err = error('SeniorRental', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
                 record["ssn"] = str(row[d['SSNTotal']].value)
+            else:
+                missing_columns, err = error('SSNTotal', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNTotal', row_number))
+            missing_columns, err = error('SSNTotal', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
                 record["ssnsale"] = str(row[d['SSNForSale']].value)
+            else:
+                missing_columns, err = error('SSNForSale', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNForSale', row_number))
+            missing_columns, err = error('SSNForSale', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNRental']].ctype == XL_CELL_NUMBER:
                 record["ssnrent"] = str(row[d['SSNRental']].value)
+            else:
+                missing_columns, err = error('SSNRental', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNRental', row_number))
+            missing_columns, err = error('SSNRental', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br1"] = str(row[d['OneBRTotal']].value)
+            else:
+                missing_columns, err = error('OneBRTotal', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('OneBRTotal', row_number))
+            missing_columns, err = error('OneBRTotal', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['OneBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v1"] = str(row[d['OneBRVLI']].value)
+            else:
+                missing_columns, err = error('OneBRVLI', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('OneBRVLI', row_number))
+            missing_columns, err = error('OneBRVLI', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['OneBRLow']].ctype == XL_CELL_NUMBER:
                 record["l1"] = str(row[d['OneBRLow']].value)
+            else:
+                missing_columns, err = error('OneBRLow', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('OneBRLow', row_number))
+            missing_columns, err = error('OneBRLow', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['OneBRMod']].ctype == XL_CELL_NUMBER:
                 record["m1"] = str(row[d['OneBRMod']].value)
+            else:
+                missing_columns, err = error('OneBRMod', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-           errors.append(error('OneBRMod', row_number))
+            missing_columns, err = error('OneBRMod', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br2"] = str(row[d['TwoBRTotal']].value)
+            else:
+                missing_columns, err = error('TwoBRTotal', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('TwoBRTotal', row_number))
+            missing_columns, err = error('TwoBRTotal', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TwoBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v2"] = str(row[d['TwoBRVLI']].value)
+            else:
+                missing_columns, err = error('TwoBRVLI', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('TwoBRVLI', row_number))
+            missing_columns, err = error('TwoBRVLI', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TwoBRLow']].ctype == XL_CELL_NUMBER:
                 record["l2"] = str(row[d['TwoBRLow']].value)
+            else:
+                missing_columns, err = error('TwoBRLow', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('TwoBRLow', row_number))
+            missing_columns, err = error('TwoBRLow', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['TwoBRMod']].ctype == XL_CELL_NUMBER:
                 record["m2"] = str(row[d['TwoBRMod']].value)
+            else:
+                missing_columns, err = error('TwoBRMod', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('TwoBRMod', row_number))
+            missing_columns, err = error('TwoBRMod', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br3"] = str(row[d['ThreeBRTotal']].value)
+            else:
+                emissing_columns, err = error('ThreeBRTotal', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('ThreeBRTotal', row_number))
+            missing_columns, err = error('ThreeBRTotal', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ThreeBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v3"] = str(row[d['ThreeBRVLI']].value)
+            else:
+                missing_columns, err = error('ThreeBRVLI', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('ThreeBRVLI', row_number))
+            missing_columns, err = error('ThreeBRVLI', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ThreeBRLow']].ctype == XL_CELL_NUMBER:
                 record["l3"] = str(row[d['ThreeBRLow']].value)
+            else:
+                missing_columns, err = error('ThreeBRLow', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('ThreeBRLow', row_number))
+            missing_columns, err = error('ThreeBRLow', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['ThreeBRMod']].ctype == XL_CELL_NUMBER:
                 record["m3"] = str(row[d['ThreeBRMod']].value)
+            else:
+                missing_columns, err = error('ThreeBRMod', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('ThreeBRMod', row_number))
+            missing_columns, err = error('ThreeBRMod', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
                 record["vssn"] = str(row[d['SSNBRVLI']].value)
+            else:
+                missing_columns, err = error('SSNBRVLI', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNBRVLI', row_number))
+            missing_columns, err = error('SSNBRVLI', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNBRLow']].ctype == XL_CELL_NUMBER:
                 record["lssn"] = str(row[d['SSNBRLow']].value)
+            else:
+                missing_columns, err = error('SSNBRLow', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNBRLow', row_number))
+            missing_columns, err = error('SSNBRLow', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         try:
             if row[d['SSNBRMod']].ctype == XL_CELL_NUMBER:
                 record["mssn"] = str(row[d['SSNBRMod']].value)
+            else:
+                missing_columns, err = error('SSNBRMod', row_number, missing_columns)
+                errors.append(err)
+
+
         except:
-            errors.append(error('SSNBRMod', row_number))
+            missing_columns, err = error('SSNBRMod', row_number, missing_columns, missing_column=True)
+            if err != "":
+                missing_columns_errors.append(err)
 
         if len(record) > 0:
             record["listingid"] = str(listing_id)
@@ -274,8 +516,7 @@ def get_listings(sheet, database):
 
         listings[listing_id] = record
 
-    print(errors)
-    return errors, listings
+    return (missing_columns_errors + errors), listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------
