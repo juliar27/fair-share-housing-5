@@ -34,8 +34,10 @@
     background: #d5deed;
   }
 .\34 u {
-      width: 33.3%;
+      width: 25%;
+      margin-right: auto;
       margin-left: auto;
+      align-items: center;
   }
 
 .fa-lg {
@@ -105,19 +107,18 @@
         					<section class="4u">
         						<span class="description"><span class="fas fa-map-pin" style="color: #21243d"></span></span>
         						<h2>Address</h2>
-        						<p>{{adr + ', ' + row['muni'] + ', ' + row['county']}}</p>
-                                <p> County, NJ</p>
+        						<p>{{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </p>
         					</section>
         					<section class="4u">
         						<span class="description"><span class="far fa-address-book" style="color: #21243d"></span></span>
         						<h2>Contact</h2>
         						<p>Program Name: {{row['name']}}</p>
-                                <p>Developer: </p>
+                                <p>Developer:
                                 {% if row['developer'] %}
-                                    <p>{{row['developer']}}</p>
+                                    {{row['developer']}}
                                 {% else: %}
-                                    <p>Unavailable at this time</p>
-                                {% endif %}
+                                    Unavailable at this time
+                                {% endif %} </p>
         					</section>
         					<section class="4u">
         						<span class="description"><span class="fas fa-list" style="color: #21243d"></span></span>
@@ -135,8 +136,7 @@
                     <div class="row">
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Address</a>
-                          <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Details</a>
+                          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Explore Area</a>
                           <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Units Available</a>
                           <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Unit Types</a>
                         </div>
@@ -169,24 +169,6 @@
                               <script defer
                               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
                               </script>
-                          </div>
-                          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"><h2> Information </h2>
-                            <table>
-                              <tr> <td><b>Address:</b></td> </tr>
-                              <tr> <td> {{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </td> </td>
-                              <tr> <td><b>Program Name:</b></td> </tr>
-                              <tr> <td> {{row['name']}}</td> </tr>
-                              <tr> <td><b>Developer:</b></td> </tr>
-                              {% if row['developer'] %}
-                              <tr> <td> {{row['developer']}} </td> </tr>
-                              {% else: %}
-                              <tr> <td> Unavailable at this time </td> </tr>
-                              {% endif %}
-                              <tr> <td><b>Status:</b></td> </tr>
-                              <tr> <td> {{row['status']}}</td> </tr>
-                              <tr> <td><b>Compliance Mechanism:</b></td> </tr>
-                              <tr> <td> {{row['compliance']}}</td> </tr>
-                            </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                             <table class="table table-bordered">
