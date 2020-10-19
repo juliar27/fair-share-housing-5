@@ -67,10 +67,13 @@ def get_listings(sheet, database):
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
                 record['municode'] = str(row[d['Municode']].value)
+
+            elif row[d['Municode']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('Municode', row_number, missing_columns)
                 errors.append(err)
-
         except:
             missing_columns, err = error('Municode', row_number, missing_columns, missing_column=True)
             if err != "":
@@ -79,6 +82,10 @@ def get_listings(sheet, database):
         try:
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
                 record['municipality'] = row[d['Municipality']].value
+
+            elif row[d['Municipality']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('Municipality', row_number, missing_columns)
                 errors.append(err)
@@ -91,6 +98,10 @@ def get_listings(sheet, database):
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
                 record['county'] = row[d['County']].value
+
+            elif row[d['County']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('County', row_number, missing_columns)
                 errors.append(err)
@@ -103,6 +114,10 @@ def get_listings(sheet, database):
         try:
             if row[d['Region']].ctype == XL_CELL_NUMBER:
                 record['region'] = str(row[d['Region']].value)
+
+            elif row[d['Region']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('Region', row_number, missing_columns)
                 errors.append(err)
@@ -115,11 +130,13 @@ def get_listings(sheet, database):
         try:
             if row[d['SiteProgramName']].ctype == XL_CELL_TEXT:
                 record['name'] = row[d['SiteProgramName']].value
+
+            elif row[d['SiteProgramName']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SiteProgramName', row_number, missing_columns)
                 errors.append(err)
-
-
         except:
             missing_columns, err = error('SiteProgramName', row_number, missing_columns, missing_column=True)
             if err != "":
@@ -128,6 +145,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ProjectDeveloper']].ctype == XL_CELL_TEXT:
                 record['developer'] = row[d['ProjectDeveloper']].value
+
+            elif row[d['ProjectDeveloper']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('ProjectDeveloper', row_number, missing_columns)
                 errors.append(err)
@@ -141,6 +162,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ComplianceMechanism']].ctype == XL_CELL_TEXT:
                 record['compliance'] = row[d['ComplianceMechanism']].value
+
+            elif row[d['ComplianceMechanism']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('ComplianceMechanism', row_number, missing_columns)
                 errors.append(err)
@@ -160,6 +185,9 @@ def get_listings(sheet, database):
                     missing_columns, err = error('Address', row_number, missing_columns)
                     errors.append(err)
 
+            elif row[d['Address']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('Address', row_number, missing_columns)
                 errors.append(err)
@@ -172,6 +200,10 @@ def get_listings(sheet, database):
         try:
             if row[d['Status']].ctype == XL_CELL_TEXT:
                 record['status'] = row[d['Status']].value
+
+            elif row[d['Status']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('Status', row_number, missing_columns)
                 errors.append(err)
@@ -185,6 +217,10 @@ def get_listings(sheet, database):
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
                 record['total'] = str(row[d['OverallTotalUnits']].value)
+
+            elif row[d['OverallTotalUnits']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('OverallTotalUnits', row_number, missing_columns)
                 errors.append(err)
@@ -198,6 +234,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
                 record['family'] = str(row[d['TotalFamily']].value)
+
+            elif row[d['TotalFamily']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TotalFamily', row_number, missing_columns)
                 errors.append(err)
@@ -212,6 +252,10 @@ def get_listings(sheet, database):
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
                 record['famsale'] = str(row[d['FamilyForSale']].value)
+
+            elif row[d['FamilyForSale']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('FamilyForSale', row_number, missing_columns)
                 errors.append(err)
@@ -225,6 +269,10 @@ def get_listings(sheet, database):
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
                 record['famrent'] = str(row[d['FamilyRental']].value)
+
+            elif row[d['FamilyRental']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('FamilyRental', row_number, missing_columns)
                 errors.append(err)
@@ -238,6 +286,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
                 record["sr"] = str(row[d['TotalSenior']].value)
+
+            elif row[d['TotalSenior']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TotalSenior', row_number, missing_columns)
                 errors.append(err)
@@ -251,6 +303,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SeniorForSale']].ctype == XL_CELL_NUMBER:
                 record["srsale"] = str(row[d['SeniorForSale']].value)
+
+            elif row[d['SeniorForSale']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SeniorForSale', row_number, missing_columns)
                 errors.append(err)
@@ -264,6 +320,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SeniorRental']].ctype == XL_CELL_NUMBER:
                 record["srrent"] = str(row[d['SeniorRental']].value)
+
+            elif row[d['SeniorRental']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SeniorRental', row_number, missing_columns)
                 errors.append(err)
@@ -277,6 +337,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
                 record["ssn"] = str(row[d['SSNTotal']].value)
+
+            elif row[d['SSNTotal']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNTotal', row_number, missing_columns)
                 errors.append(err)
@@ -290,6 +354,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
                 record["ssnsale"] = str(row[d['SSNForSale']].value)
+
+            elif row[d['SSNForSale']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNForSale', row_number, missing_columns)
                 errors.append(err)
@@ -303,6 +371,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNRental']].ctype == XL_CELL_NUMBER:
                 record["ssnrent"] = str(row[d['SSNRental']].value)
+
+            elif row[d['SSNRental']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNRental', row_number, missing_columns)
                 errors.append(err)
@@ -316,6 +388,10 @@ def get_listings(sheet, database):
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br1"] = str(row[d['OneBRTotal']].value)
+
+            elif row[d['OneBRTotal']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('OneBRTotal', row_number, missing_columns)
                 errors.append(err)
@@ -329,6 +405,10 @@ def get_listings(sheet, database):
         try:
             if row[d['OneBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v1"] = str(row[d['OneBRVLI']].value)
+
+            elif row[d['OneBRVLI']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('OneBRVLI', row_number, missing_columns)
                 errors.append(err)
@@ -342,6 +422,10 @@ def get_listings(sheet, database):
         try:
             if row[d['OneBRLow']].ctype == XL_CELL_NUMBER:
                 record["l1"] = str(row[d['OneBRLow']].value)
+
+            elif row[d['OneBRLow']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('OneBRLow', row_number, missing_columns)
                 errors.append(err)
@@ -355,6 +439,10 @@ def get_listings(sheet, database):
         try:
             if row[d['OneBRMod']].ctype == XL_CELL_NUMBER:
                 record["m1"] = str(row[d['OneBRMod']].value)
+
+            elif row[d['OneBRMod']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('OneBRMod', row_number, missing_columns)
                 errors.append(err)
@@ -368,6 +456,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br2"] = str(row[d['TwoBRTotal']].value)
+
+            elif row[d['TwoBRTotal']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TwoBRTotal', row_number, missing_columns)
                 errors.append(err)
@@ -381,6 +473,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TwoBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v2"] = str(row[d['TwoBRVLI']].value)
+
+            elif row[d['TwoBRVLI']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TwoBRVLI', row_number, missing_columns)
                 errors.append(err)
@@ -394,6 +490,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TwoBRLow']].ctype == XL_CELL_NUMBER:
                 record["l2"] = str(row[d['TwoBRLow']].value)
+
+            elif row[d['TwoBRLow']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TwoBRLow', row_number, missing_columns)
                 errors.append(err)
@@ -407,6 +507,10 @@ def get_listings(sheet, database):
         try:
             if row[d['TwoBRMod']].ctype == XL_CELL_NUMBER:
                 record["m2"] = str(row[d['TwoBRMod']].value)
+
+            elif row[d['TwoBRMod']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('TwoBRMod', row_number, missing_columns)
                 errors.append(err)
@@ -420,6 +524,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
                 record["br3"] = str(row[d['ThreeBRTotal']].value)
+
+            elif row[d['ThreeBRTotal']].value == "":
+                pass
+
             else:
                 emissing_columns, err = error('ThreeBRTotal', row_number, missing_columns)
                 errors.append(err)
@@ -433,6 +541,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ThreeBRVLI']].ctype == XL_CELL_NUMBER:
                 record["v3"] = str(row[d['ThreeBRVLI']].value)
+
+            elif row[d['ThreeBRVLI']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('ThreeBRVLI', row_number, missing_columns)
                 errors.append(err)
@@ -446,6 +558,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ThreeBRLow']].ctype == XL_CELL_NUMBER:
                 record["l3"] = str(row[d['ThreeBRLow']].value)
+
+            elif row[d['ThreeBRLow']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('ThreeBRLow', row_number, missing_columns)
                 errors.append(err)
@@ -459,6 +575,10 @@ def get_listings(sheet, database):
         try:
             if row[d['ThreeBRMod']].ctype == XL_CELL_NUMBER:
                 record["m3"] = str(row[d['ThreeBRMod']].value)
+
+            elif row[d['ThreeBRMod']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('ThreeBRMod', row_number, missing_columns)
                 errors.append(err)
@@ -472,6 +592,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
                 record["vssn"] = str(row[d['SSNBRVLI']].value)
+
+            elif row[d['SSNBRVLI']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNBRVLI', row_number, missing_columns)
                 errors.append(err)
@@ -485,6 +609,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNBRLow']].ctype == XL_CELL_NUMBER:
                 record["lssn"] = str(row[d['SSNBRLow']].value)
+
+            elif row[d['SSNBRLow']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNBRLow', row_number, missing_columns)
                 errors.append(err)
@@ -498,6 +626,10 @@ def get_listings(sheet, database):
         try:
             if row[d['SSNBRMod']].ctype == XL_CELL_NUMBER:
                 record["mssn"] = str(row[d['SSNBRMod']].value)
+
+            elif row[d['SSNBRMod']].value == "":
+                pass
+
             else:
                 missing_columns, err = error('SSNBRMod', row_number, missing_columns)
                 errors.append(err)
