@@ -10,45 +10,51 @@
 #data-display th {
   padding-top: 12px;
   padding-bottom: 12px;
-  text-align: left;
+  text-align: center;
 }
-    .fa-home {
-        padding-right: 10px;
-        stroke: black;
-        stroke-width: 10;
+.fa-home {
+    padding-right: 5px;
+    stroke: black;
+    stroke-width: 5;
   }
-    #information
+
+#information
 	{
 		padding: 3em 0em;
 	}
-	
-        .container {
+
+.container {
 		width: 100%;
 		margin-left: auto;
 		margin-right: auto;
 	}
-        .details-container {
-            width: 100%;
-            background: #d5deed;
-/*            background: #ccd7eb;*/
-        }
-        .\34 u {
-    width: 33.3%;
-            margin-left: auto;
-}
-        .fa-lg{font-size:1.3333333333333333em;line-height:.75em;vertical-align:-15%}
-        
-        #information .description
+
+.details-container {
+    width: 100%;
+    background: #d5deed;
+  }
+.\34 u {
+      width: 33.3%;
+      margin-left: auto;
+  }
+
+.fa-lg {
+    font-size:1.3333333333333333em;
+    line-height:.75em;
+    vertical-align:-15%
+  }
+
+  #information .description
 	{
-		font-size: 4em;
+		font-size: 2em;
 	}
-    
-        .description
+
+  .description
 	{
 		color: #bbb;
         text-align: center;
 	}
-        
+
     </style>
     <head>
         <title>mapFSH</title>
@@ -93,161 +99,190 @@
 <!-- "ftco-section ftco-no-pb ftco-no-pt" -->
         <section class="details-container">
             <div id="information">
-			<div class="container">
-				<div class="row">
-					<section class="4u">
-						<span class="description"><span class="fas fa-map-pin" style="color: #21243d"></span></span>
-						<h2>Address</h2>
-						<p>{{adr + ', ' + row['muni'] + ', ' + row['county']}}</p>
-                        <p> County, NJ</p>
-					</section>
-					<section class="4u">
-						<span class="description"><span class="far fa-address-book" style="color: #21243d"></span></span>
-						<h2>Contact</h2>
-						<p>Program Name: {{row['name']}}</p>
-                        <p>Developer: </p>
-                        {% if row['developer'] %}
-                            <p>{{row['developer']}}</p>
-                        {% else: %}
-                            <p>Unavailable at this time</p>
-                        {% endif %}
-					</section>
-					<section class="4u">
-						<span class="description"><span class="fas fa-list" style="color: #21243d"></span></span>
-						<h2>More Details</h2>
-                        <p>Status: {{row['status']}}</p>
-                        <p>Compliance Mechanism: {{row['compliance']}} </p>
-					</section>                                                                                  
-				</div>
-			</div>
-		</div>
+        			<div class="container">
+        				<div class="row">
+        					<section class="4u">
+        						<span class="description"><span class="fas fa-map-pin" style="color: #21243d"></span></span>
+        						<h2>Address</h2>
+        						<p>{{adr + ', ' + row['muni'] + ', ' + row['county']}}</p>
+                                <p> County, NJ</p>
+        					</section>
+        					<section class="4u">
+        						<span class="description"><span class="far fa-address-book" style="color: #21243d"></span></span>
+        						<h2>Contact</h2>
+        						<p>Program Name: {{row['name']}}</p>
+                                <p>Developer: </p>
+                                {% if row['developer'] %}
+                                    <p>{{row['developer']}}</p>
+                                {% else: %}
+                                    <p>Unavailable at this time</p>
+                                {% endif %}
+        					</section>
+        					<section class="4u">
+        						<span class="description"><span class="fas fa-list" style="color: #21243d"></span></span>
+        						<h2>More Details</h2>
+                                <p>Status: {{row['status']}}</p>
+                                <p>Compliance Mechanism: {{row['compliance']}} </p>
+        					</section>
+        				</div>
+        			</div>
+        		</div>
         </section>
-   
-        
 
-               
-                                                                                                  
-    <section class="container">
-				<div class="row">
-<!--
-          <div class="col">
-            <div class="col-md-5 wrap-about py-md-5 ftco-animate">
-              <h2> Information </h2>
-    					<table>
-                <tr> <td><b>Address:</b></td> </tr>
-                <tr> <td> {{adr + ' ' + row['muni'] + ' ' + row['county']}} County, NJ </td> </td>
-                <tr> <td><b>Program Name:</b></td> </tr>
-                <tr> <td> {{row['name']}}</td> </tr>
-                <tr> <td><b>Developer:</b></td> </tr>
-                {% if row['developer'] %}
-                <tr> <td> {{row['developer']}} </td> </tr>
-                {% else: %}
-                <tr> <td> Unavailable at this time </td> </tr>
-                {% endif %}
-                <tr> <td><b>Status:</b></td> </tr>
-                <tr> <td> {{row['status']}}</td> </tr>
-                <tr> <td><b>Compliance Mechanism:</b></td> </tr>
-                <tr> <td> {{row['compliance']}}</td> </tr>
-            </table>
-          </div>
-        </div>
--->
-        <div class="col">
-          <div class="col-md-5 wrap-about py-md-5 ftco-animate">
-            <h2> Units </h2>
-              <table id="data-display" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>1 Bedroom</th>
-                        <th>2 Bedrooms</th>
-                        <th>3+ Bedrooms</th>
-                        <th>SSN</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Very Low Income</th>
-                        <td>{{row['vli1']}}</td>
-                        <td>{{row['vli2']}}</td>
-                        <td>{{row['vli3']}}</td>
-                        <td>{{row['vssn']}}</td>
-                        <th>{{row['vli1'] + row['vli2'] + row['vli3'] + row['vssn']}}</th>
-                    </tr>
-                    <tr>
-                        <th>Low Income</th>
-                        <td>{{row['li1']}}</td>
-                        <td>{{row['li2']}}</td>
-                        <td>{{row['li3']}}</td>
-                        <td>{{row['lssn']}}</td>
-                        <th>{{row['li1'] + row['li2'] + row['li3'] + row['lssn']}}</th>
-                    </tr>
-                    <tr>
-                        <th>Moderate Income</th>
-                        <td>{{row['m1']}}</td>
-                        <td>{{row['m2']}}</td>
-                        <td>{{row['m3']}}</td>
-                        <td>{{row['mssn']}}</td>
-                        <th>{{row['m1'] + row['m2'] + row['m3'] + row['mssn']}}</th>
-                    </tr>
-                    <tr>
-                        <th>Total</th>
-                        <th>{{row['vli1'] + row['li1'] + row['m1']}}</th>
-                        <th>{{row['vli2'] + row['li2'] + row['m2']}}</th>
-                        <th>{{row['vli3'] + row['li3'] + row['m3']}}</th>
-                        <th>{{row['vssn'] + row['lssn'] + row['mssn']}}</th>
-                        <th>{{row['vli1'] + row['li1'] + row['m1'] +
-                            row['vli2'] + row['li2'] + row['m2'] +
-                            row['vli3'] + row['li3'] + row['m3'] +
-                            row['vssn'] + row['lssn'] + row['mssn']}}</th>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
+        <section class="container ftco-section ftco-no-pb ftco-no-pt">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-5 wrap-about py-md-5 ftco-animate">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Address</a>
+                          <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Details</a>
+                          <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Units Available</a>
+                          <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Unit Types</a>
+                        </div>
+                      </div>
+                      <div class="col-md-5 wrap-about py-md-5 ftco-animate">
+                        <div class="tab-content" id="v-pills-tabContent">
+                          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            <h2> {{ adr + ' ' + row['county']}} County, NJ </h2>
+                              <style>
+                                /* Set the size of the div element that contains the map */
+                                #map {
+                                  height: 400px;
+                                  width: 120%;
+                                 }
+                              </style>
+                              <!--The div element for the map -->
+                              <div id="map"></div>
+                              <script>
+                                // Initialize and add the map
+                                function initMap() {
+                                  // The location of princeton
+                                  var princeton = {lat: 40.3431, lng: -74.6551};
+                                  // The map, centered at princeton
+                                  var map = new google.maps.Map(
+                                      document.getElementById('map'), {zoom: 12, center: princeton});
+                                  // The marker, positioned at princeton
+                                  var marker = new google.maps.Marker({position: princeton, map: map});
+                                }
+                              </script>
+                              <script defer
+                              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
+                              </script>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"><h2> Information </h2>
+                            <table>
+                              <tr> <td><b>Address:</b></td> </tr>
+                              <tr> <td> {{adr[1] + ' ' + row['muni'] + ' ' + row['county']}} County, NJ </td> </td>
+                              <tr> <td><b>Program Name:</b></td> </tr>
+                              <tr> <td> {{row['name']}}</td> </tr>
+                              <tr> <td><b>Developer:</b></td> </tr>
+                              {% if row['developer'] %}
+                              <tr> <td> {{row['developer']}} </td> </tr>
+                              {% else: %}
+                              <tr> <td> Unavailable at this time </td> </tr>
+                              {% endif %}
+                              <tr> <td><b>Status:</b></td> </tr>
+                              <tr> <td> {{row['status']}}</td> </tr>
+                              <tr> <td><b>Compliance Mechanism:</b></td> </tr>
+                              <tr> <td> {{row['compliance']}}</td> </tr>
+                            </table>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <table class="table table-bordered">
+                              <h2> Units Available </h2>
+                              <thead>
+                                  <tr>
+                                      <th></th>
+                                      <th>1 Bedroom</th>
+                                      <th>2 Bedrooms</th>
+                                      <th>3+ Bedrooms</th>
+                                      <th>SSN</th>
+                                      <th>Total</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <th>Very Low Income</th>
+                                      <td>{{row['vli1']}}</td>
+                                      <td>{{row['vli2']}}</td>
+                                      <td>{{row['vli3']}}</td>
+                                      <td>{{row['vssn']}}</td>
+                                      <th>{{row['vli1'] + row['vli2'] + row['vli3'] + row['vssn']}}</th>
+                                  </tr>
+                                  <tr>
+                                      <th>Low Income</th>
+                                      <td>{{row['li1']}}</td>
+                                      <td>{{row['li2']}}</td>
+                                      <td>{{row['li3']}}</td>
+                                      <td>{{row['lssn']}}</td>
+                                      <th>{{row['li1'] + row['li2'] + row['li3'] + row['lssn']}}</th>
+                                  </tr>
+                                  <tr>
+                                      <th>Moderate Income</th>
+                                      <td>{{row['m1']}}</td>
+                                      <td>{{row['m2']}}</td>
+                                      <td>{{row['m3']}}</td>
+                                      <td>{{row['mssn']}}</td>
+                                      <th>{{row['m1'] + row['m2'] + row['m3'] + row['mssn']}}</th>
+                                  </tr>
+                                  <tr>
+                                      <th>Total</th>
+                                      <th>{{row['vli1'] + row['li1'] + row['m1']}}</th>
+                                      <th>{{row['vli2'] + row['li2'] + row['m2']}}</th>
+                                      <th>{{row['vli3'] + row['li3'] + row['m3']}}</th>
+                                      <th>{{row['vssn'] + row['lssn'] + row['mssn']}}</th>
+                                      <th>{{row['vli1'] + row['li1'] + row['m1'] +
+                                          row['vli2'] + row['li2'] + row['m2'] +
+                                          row['vli3'] + row['li3'] + row['m3'] +
+                                          row['vssn'] + row['lssn'] + row['mssn']}}</th>
+                                  </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                            <table class="table table-bordered">
+                              <h2> Unit Types </h2>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Family</th>
+                                        <th>Senior</th>
+                                        <th>SSN</th>
+                                        <th>Total</th>
+                                    </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>For Rent</th>
+                                        <td>{{row['famrent']}}</td>
+                                        <td>{{row['srrent']}}</td>
+                                        <td>{{row['ssnrent']}}</td>
+                                        <th>{{row['famrent'] + row['srrent'] + row['ssnrent']}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>For Sale</th>
+                                        <td>{{row['famsale']}}</td>
+                                        <td>{{row['srsale']}}</td>
+                                        <td>{{row['ssnsale']}}</td>
+                                        <th>{{row['famsale'] + row['srsale'] + row['ssnsale']}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>{{row['famsale'] + row['famrent']}}</th>
+                                        <th>{{row['srsale'] + row['srrent']}}</th>
+                                        <th>{{row['ssnsale'] + row['ssnrent']}}</th>
+                                        <th>{{row['famsale'] + row['famrent'] +
+                                            row['srsale'] + row['srrent'] +
+                                            row['ssnsale'] + row['ssnrent']}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-              <div class="col">
-          <div class="col-md-5 wrap-about py-md-5 ftco-animate">  
-              <table class="table table-bordered">
-                <h2> Unit Type </h2>
-                  <thead>
-                      <tr>
-                          <th></th>
-                          <th>Family</th>
-                          <th>Senior</th>
-                          <th>SSN</th>
-                          <th>Total</th>
-                      </tr>
-                  <tbody>
-                      <tr>
-                          <th>For Rent</th>
-                          <td>{{row['famrent']}}</td>
-                          <td>{{row['srrent']}}</td>
-                          <td>{{row['ssnrent']}}</td>
-                          <th>{{row['famrent'] + row['srrent'] + row['ssnrent']}}</th>
-                      </tr>
-                      <tr>
-                          <th>For Sale</th>
-                          <td>{{row['famsale']}}</td>
-                          <td>{{row['srsale']}}</td>
-                          <td>{{row['ssnsale']}}</td>
-                          <th>{{row['famsale'] + row['srsale'] + row['ssnsale']}}</th>
-                      </tr>
-                      <tr>
-                          <th>Total</th>
-                          <th>{{row['famsale'] + row['famrent']}}</th>
-                          <th>{{row['srsale'] + row['srrent']}}</th>
-                          <th>{{row['ssnsale'] + row['ssnrent']}}</th>
-                          <th>{{row['famsale'] + row['famrent'] +
-                              row['srsale'] + row['srrent'] +
-                              row['ssnsale'] + row['ssnrent']}}</th>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
-			</div>
-		</section>
+                  </div>
+                </section>
+
 
         {% include 'site/footer.html' %}
     </body>
