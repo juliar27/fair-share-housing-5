@@ -118,10 +118,11 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     def insert(self, record):
+        self.add_record(record)
         # cursor = self._connection.cursor()
         # cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
         # row = cursor.fetchone()
-        self.add_record(record)
+
         # if row is None:
         #     self.add_record(record)
         # else:

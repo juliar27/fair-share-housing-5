@@ -81,7 +81,10 @@
                             <li class="breadcrumb-item"><a href="admin">Dashboard</a></li>
                             <li class="breadcrumb-item active">Upload Data</li>
                         </ol>
-                        <p>{{errorMsg}}</p>
+                        {% for error in errorMsg %}
+                            {{error}}<br>
+                        {% endfor %}
+
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">

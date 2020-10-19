@@ -53,73 +53,37 @@
       </div>
     </section>
 
-    <!-- <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-        </div>
-    </div> -->
-    <!-- <div id="layoutSidenav_content"> -->
         <main>
             <div class="container-fluid">
                 <h1 class="mt-4"></h1>
-                <!-- <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="admin">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Tables</li>
-                </ol> -->
-
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <!-- <th>Listing ID</th>
-                                        <th>Program Name</th>
-                                        <th>Developer</th> -->
                                         <th>Address</th>
                                         <th>Municipality</th>
                                         <th>County</th>
                                         <th>Status</th>
-                                        <!-- <th># Units for Rent</th>
-                                        <th># Units for Sale</th> -->
-                                        <!-- <th>Compliance</th> -->
-                                        <!-- <th>Municipality Code</th> -->
-                                        <!-- <th># Proposed Units</th>
-                                        <th># Completed Units</th> -->
-                                        <th># 1Bdr Units</th>
-                                        <th># 2Bdr Units</th>
-                                        <th># 3Bdr Units</th>
-                                        <th># Units Total</th>
-                                        <th># Family Units</th>
-                                        <th># Senior Units</th>
-                                        <th># SSN Units</th>
-                                        <!-- <th>Very Low Income 1Bdr</th>
-                                        <th>Very Low Income 2Bdr</th>
-                                        <th>Very Low Income 3Bdr</th>
-                                        <th># Low Income 1Bdr</th>
-                                        <th># Low Income 2Bdr</th>
-                                        <th># Low Income 3Bdr</th>
-                                        <th># Moderate Income 1Bdr</th>
-                                        <th># Moderate Income 2Bdr</th>
-                                        <th># Moderate Income 3Bdr</th>
-                                        <th># Very Low Income SSN</th> -->
-                                        <!-- <th># Low Income SSN</th> -->
-                                        <!-- <th># Moderate Income SSN</th>
-                                        <th># Family Units for Sale</th>
-                                        <th># Family Units for Rent</th>
-                                        <th># Senior Units for Sale</th>
-                                        <th># Senior Units for Rent</th>
-                                        <th># SSN Units for Sale</th>
-                                        <th># SSN Units for Rent</th> -->
-                                        <!-- <th>Region</th> -->
+                                        <th>1Bdr Units</th>
+                                        <th>2Bdr Units</th>
+                                        <th>3Bdr Units</th>
+                                        <th>Units Total</th>
+                                        <th>Family Units</th>
+                                        <th>Senior Units</th>
+                                        <th>SSN Units</th>
                                     </tr>
                                 <tbody>
                                   {% for i in range(rows|length): %}
                                   <tr>
                                     <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}'>{{rows[i][0]}}</a></td>
                                     {% for j in range(1, rows[i]|length): %}
-                                    <td> {{ rows[i][j] }} </td>
+                                    {% if 'None' in rows[i][j]|string: %}
+                                    <td> 0 </td>
+                                    {% else: %}
+                                    <td>  {{ rows[i][j] }} </td>
+                                    {% endif %}
                                     {% endfor %}
                                  </tr>
                                  {% endfor %}
@@ -130,64 +94,6 @@
                   </div>
                 </div>
               </main>
-            <!-- </div> -->
-
-
-    <!-- <div class="card-body">
-      <table class="table table-responsive">
-        <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th scope="col">Address</th>
-              <th scope="col">Municipality</th>
-              <th scope="col">County</th>
-              <th scope="col">No. Units</th>
-              <th scope="col">No. 1Br Units</th>
-              <th scope="col">No. 2Br Units</th>
-              <th scope="col">No. 3Br Units</th>
-              <th scope="col">Senior Housing</th>
-              <th scope="col">Very Low-income Housing</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Sample</th>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-            </tr>
-            <tr>
-              <th>Sample</th>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-            </tr>
-            <tr>
-              <th>Sample</th>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-              <td>Sample</td>
-            </tr>
-          </tbody>
-        </table>
-      </table>
-    </div> -->
-
 
           {% include 'site/footer.html' %}
 
