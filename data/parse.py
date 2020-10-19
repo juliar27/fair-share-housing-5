@@ -297,7 +297,6 @@ def insert(database, records):
         try:
             database.insert(records[listings])
         except Exception as e:
-            print(e)
             errors(error('Inserting', listings))
 
     return errors, records
