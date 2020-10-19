@@ -1,5 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        
+ #main
+	{
+		position: relative;
+		background: #fff;
+	}
+	
+	.homepage #content
+	{
+		text-align: center;
+	}
+	
+	.homepage #content header h2
+	{
+	}
+
+	#filterbar h2
+	{
+		display: block;
+		padding-bottom: 0.50em;
+	}
+
+	.container {
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+		.row:after {
+			content: '';
+			display: block;
+			clear: both;
+			height: 0;
+		}
+
+		.row:first-child > * {
+			padding-top: 0;
+		}
+
+		.row > * {
+			padding-top: 0;
+		}
+
+        
+        .\38 u { width: 66.6666666667% }
+		.\36 u { width: 50% }
+		.\34 u { width: 33.3333333333% }
+		.\-11u { margin-left: 91.6666666667% }
+		.\-8u { margin-left: 66.6666666667% }
+		.\-6u { margin-left: 50% }
+        
+        
+        
+    </style>
+    
 <head>
       {% include 'site/header.html' %}
 </head>
@@ -36,22 +92,42 @@
         </div>
       </div>
     </section>
+    
+    <!-- Main -->
+		<div id="main">
+			<div class="container">
+				<div class="row" style="width: 100%">
 
-        <section class="ftco-section ftco-no-pb ftco-no-pt">
-          <!-- <div class="col-md-9 ftco-animate pb-0 text-center"> -->
-          <div class="col-md-12"></div>
-            <head>
+					<!-- filter bar on the side -->
+					<div id="filterbar" class="4u" >
+						<section>
+							<header>
+								<h2>Filter Options</h2>
+                                <p>[Will put a form here once we decide on filtering options] </p>
+							</header>
+						</section>
+						<section>
+							<header>
+								<h2>Any questions? Please contact ______</h2>
+							</header>
+						</section>
+					</div>
+					
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<head>
               <style>
                 /* Set the size of the div element that contains the map */
                 #map {
-                  height: 600px;
-                  width: 100%;  
+                  height: 1000px;
+                  width: 100%;
                  }
               </style>
             </head>
             <body>
               <!--The div element for the map -->
-              <div id="map"></div>
+              <div id="map">
               <script>
           // Initialize and add the map
           function initMap() {
@@ -67,11 +143,17 @@
               <script defer
               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
               </script>
+            </div>
             </body>
-          </div>
-        </div>
-      </div>
-    </section>
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+    
+
 
           {% include 'site/footer.html' %}
 
