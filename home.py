@@ -162,7 +162,7 @@ def show_uploaded_post():
         else:
             return redirect(url_for('show_upload_error'))
 
-    t = render_template('site/cleaned.html')
+    t = render_template('site/uploaded.html')
     return make_response(t)
 
 
