@@ -118,7 +118,7 @@
                     <div class="container-fluid">
                         <h1 class="mt-4">Tables</h1>
 
-                        <form action="/clear" method="POST">
+                        <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
                             <input type="submit" value="Delete All Listings" style="color: red; outline-color: red;">
                         </form><br>
 
