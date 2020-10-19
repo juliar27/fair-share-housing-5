@@ -162,20 +162,25 @@ def show_uploaded_post():
         else:
             return redirect(url_for('show_upload_error'))
 
-    t = render_template('site/uploaded.html')
+    t = render_template('site/cleaned.html')
     return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
 @app.route('/clear', methods=['GET', 'POST'])
 def show_clear():
     database = Database()
     database.connect()
     database.clear()
     database.disconnect()
-    t = render_template('site/uploaded.html')
+    t = render_template('site/cleaned.html')
     return make_response(t)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/add', methods=['GET', 'POST'])
 def show_add():
