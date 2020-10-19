@@ -291,14 +291,16 @@ def get_listings(sheet, database):
 # ----------------------------------------------------------------------------------------------------------------------
 def insert(database, records):
 
+    errors = []
+
     for listings in records:
         try:
             database.insert(records[listings])
         except Exception as e:
             print(e)
-            return False, error('Inserting', listings)
+            errors(error('Inserting', listings))
 
-    return True, records
+    return errors, records
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -316,17 +318,17 @@ def parse_file(filename):
 
     if errors is []:
         database.clear()
-        insert_status, possible_redirect = insert(database, listings)
+        errors2, possible_redirect = insert(database, listings)
 
     else:
         database.disconnect()
         return False, url_for('show_parse_error', errorMsg=errors)
 
     database.disconnect()
-    if not insert_status:
-        return insert_status, possible_redirect
+    if errors2 is []:
+        return True, possible_redirect
     else:
-        return insert_status, listings
+        return False, url_for('show_parse_error', errorMsg=errors2)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
