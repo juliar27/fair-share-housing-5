@@ -159,7 +159,7 @@ class Database:
                 "listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent, " + \
                 "listings.total, listings.family, listings.sr, listings.ssn, listings.br1, listings.br2, listings.br3 FROM " + \
                "listings, cities, counties WHERE " + \
-               "listings.municode = cities.municode AND cities.county = counties.county"
+               "listings.municode = cities.municode AND cities.county = counties.county ORDER BY listings.listingid"
         cursor.execute(stmt)
         rows = []
         row = cursor.fetchone()
@@ -183,7 +183,7 @@ class Database:
                 "listings.m3, listings.ssn, listings.vssn, listings.lssn, listings.mssn " + \
                 "FROM " + \
                "listings, cities, counties WHERE " + \
-               "listings.municode = cities.municode AND cities.county = counties.county"
+               "listings.municode = cities.municode AND cities.county = counties.county ORDER BY listings.listingid"
         cursor.execute(stmt)
         rows = []
         row = cursor.fetchone()

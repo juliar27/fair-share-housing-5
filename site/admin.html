@@ -181,11 +181,11 @@
                                         <tbody>
                                             {% for row in rows %}
                                                 <tr>
-                                                    {% for cell in row %}
-                                                    {% if 'None' in cell|string: %}
+                                                    {% for i in range(row|length) %}
+                                                    {% if i > 9 and 'None' in cell|string: %}
                                                     <td> 0 </td>
                                                     {% else: %}
-                                                    <td> {{ cell }} </td>
+                                                    <td> {{ row[i] }} </td>
                                                     {% endif %}
                                                     {% endfor %}
                                                 </tr>
