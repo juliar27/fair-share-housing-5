@@ -118,13 +118,11 @@ def show_upload():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
     errorMsg = request.args.getlist('errorMsg')
-    del errorMsg[15::]
-    print(len(errorMsg))
+    del errorMsg[5::]
     t = render_template('site/parse-error.html', errorMsg=errorMsg)
     return make_response(t)
 
