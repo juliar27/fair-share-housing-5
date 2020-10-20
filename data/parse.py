@@ -656,7 +656,7 @@ def get_listings(sheet, database):
 
         row_number += 1
 
-        listings[record['listingid']] = record
+        listings[row_number] = record
 
     return (missing_columns_errors + errors), listings
 
