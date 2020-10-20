@@ -135,7 +135,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td></td>
-                                                <th>Listing ID</th>
+                                                <th class="sorting_asc">Listing ID</th>
                                                 <th>Program Name</th>
                                                 <th>Developer</th>
                                                 <th>Status</th>
@@ -175,13 +175,13 @@
                                             {% for row in rows %}
                                                 <tr>
                                                     <td style="vertical-align:middle">
-                                                        <form align="center" action="/edit?id={{row[0]}}"method="POST">
-                                                            <input type="submit"  class="btn btn-primary" value="Edit">
-                                                        </form>
+                                                        <a href='/edit?id={{row[0]}}'>
+                                                            <div class="btn btn-primary">Edit</div>
+                                                        </a>
                                                     </td>
                                                     <td style="vertical-align:middle">
-                                                        <form align="center" action="/deleted?id={{row[0]}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this listing? This cannot be undone.');">
-                                                            <input type="submit" class="btn btn-primary" value="Delete">
+                                                        <form action='/deleted?id={{row[0]}}' method="POST"  onsubmit="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');">
+                                                            <input type='submit' value='Delete' class="btn btn-primary">
                                                         </form>
                                                     </td>
                                                     {% for i in range(row|length) %}

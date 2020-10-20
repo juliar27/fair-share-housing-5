@@ -194,6 +194,7 @@ def show_add():
 @app.route('/edit', methods=['GET', 'POST'])
 def show_edit():
     if request.method == 'GET':
+        print(request.args.get('id'))
         record = get_row(request.args.get('id'))
         form = AddForm(formdata=MultiDict(record))
     else:
@@ -241,8 +242,6 @@ def show_deleted():
         t = render_template('site/deleted.html')
         return make_response(t)
     else:
-        if request.args.get('id'):
-            return redirect('/edit?id=' + request.args.get('id'))
         return redirect('/tables')
 
 
