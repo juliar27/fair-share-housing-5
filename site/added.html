@@ -6,11 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>mapFSH: Tables</title>
+        <title>mapFSH: Upload Data</title>
         <link rel='icon' href='static/images/favicon.ico' type='image/x-icon' >
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
         <link href="static/css/styles-admin.css" rel="stylesheet" />
-        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -116,84 +115,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Edit Data</h1>
+                        <h1 class="mt-4">Add Data</h1>
 
-                        <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
-                            <input type="submit" class="btn btn-primary" value="Delete All Listings" >
-                        </form><br>
-
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table mr-1"></i>
-                                Current Listings
-                            </div>
-                            <div class="card-body">
-                                <div class="large-table-container"></div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <th>Listing ID</th>
-                                                <th>Program Name</th>
-                                                <th>Developer</th>
-                                                <th>Status</th>
-                                                <th>Compliance</th>
-                                                <th>Address</th>
-                                                <th>Municipality</th>
-                                                <th>County</th>
-                                                <th>Municipality Code</th>
-                                                <th>Region</th>
-                                                <th># Very Low Income 1Bdr</th>
-                                                <th># Very Low Income 2Bdr</th>
-                                                <th># Very Low Income 3Bdr</th>
-                                                <th># Low Income 1Bdr</th>
-                                                <th># Low Income 2Bdr</th>
-                                                <th># Low Income 3Bdr</th>
-                                                <th># Moderate Income 1Bdr</th>
-                                                <th># Moderate Income 2Bdr</th>
-                                                <th># Moderate Income 3Bdr</th>
-                                                <th># Very Low Income SSN</th>
-                                                <th># Low Income SSN</th>
-                                                <th># Moderate Income SSN</th>
-                                                <th># Family Units for Sale</th>
-                                                <th># Family Units for Rent</th>
-                                                <th># Senior Units for Sale</th>
-                                                <th># Senior Units for Rent</th>
-                                                <th># SSN Units for Sale</th>
-                                                <th># SSN Units for Rent</th>
-                                                <th># Units Total</th>
-                                                <th># Family Units</th>
-                                                <th># Senior Units</th>
-                                                <th># SSN Units</th>
-                                                <th># 1Bdr Units</th>
-                                                <th># 2Bdr Units</th>
-                                                <th># 3Bdr Units</th>
-                                            </tr>
-                                        <tbody>
-                                            {% for row in rows %}
-                                                <tr>
-                                                    <td style="vertical-align:middle">
-                                                        <form align="center" action="/edit?id={{row[0]}}"method="POST">
-                                                            <input type="submit"  class="btn btn-primary" value="Edit">
-                                                        </form>
-                                                    </td>
-                                                    <td style="vertical-align:middle">
-                                                        <form align="center" action="/deleted?id={{row[0]}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this listing? This cannot be undone.');">
-                                                            <input type="submit" class="btn btn-primary" value="Delete">
-                                                        </form>
-                                                    </td>
-                                                    {% for i in range(row|length) %}
-                                                        <td style="vertical-align:middle" align="center">{{ row[i] }}</td>
-                                                    {% endfor %}
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <p>You successfully added this listing!</p>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -213,8 +137,9 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="static/js/scripts-admin.js"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="static/assets/demo/datatables-demo.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="static/assets/demo/chart-area-demo.js"></script>
+        <script src="static/assets/demo/chart-bar-demo.js"></script>
+        <script src="static/assets/demo/chart-pie-demo.js"></script>
     </body>
 </html>

@@ -5,14 +5,14 @@ from wtforms.validators import DataRequired
 
 # ----------------------------------------------------------------------------------------------------------------------
 class AddForm(FlaskForm):
-    municode = StringField('Municode')
+    municode = StringField('Municode', validators=[DataRequired()])
     muni = StringField('Municipality')
     county = StringField('County')
     region = StringField('Region')
     name = StringField('Site Program Name')
     developer = StringField('Project Developer')
     compliance = StringField('Compliance Mechanism')
-    address = TextAreaField('Address')
+    address = TextAreaField('Address', validators=[DataRequired()])
     status = StringField('Status')
     total = StringField('Total # Overall Units')
     family = StringField('Total # Family Units')

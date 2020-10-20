@@ -90,6 +90,7 @@ def add_to_table(form):
     record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
               'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
               'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
+              'addresses': form.get('address'),
               'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
               'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
               'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),

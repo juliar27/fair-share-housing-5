@@ -80,7 +80,7 @@ class Database:
                        + double_up(record['county']) + "')"
                 cursor.execute(stmt)
 
-        if "county" in record:
+        if "county" in record and "region" in record:
             stmt = "SELECT * FROM counties WHERE county = '" + double_up(record['county']) + "'"
             cursor.execute(stmt)
 
