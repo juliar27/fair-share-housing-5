@@ -81,9 +81,26 @@
                             <li class="breadcrumb-item"><a href="admin">Dashboard</a></li>
                             <li class="breadcrumb-item active">Upload Data</li>
                         </ol>
-                        {% for error in errorMsg %}
-                            {{error}}<br>
-                        {% endfor %}
+
+                        {% if insert: %}
+                            {% for error in insert %}
+                                Error inserting {{error}}. Please contact the system adminstrator.<br>
+                            {% endfor %}
+                        {% endif %}
+                        <br>
+
+                        {% if col: %}
+                            {% for error in col %}
+                                Your database needs to include a {{error}} Column. Please add and populate a {{error}} column and upload again.<br>
+                            {% endfor %}
+                        {% endif %}
+                        <br>
+
+                        {% if rand: %}
+                            {% for error in rand %}
+                                Incorrect Formatting at Column: {{error[0]}} and Row Number:  {{error[1]}}.<br>
+                            {% endfor %}
+                        {% endif %}
 
                     </div>
                 </main>

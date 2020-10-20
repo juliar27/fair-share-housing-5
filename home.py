@@ -121,9 +121,11 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
-    errorMsg = request.args.getlist('errorMsg')
-    del errorMsg[5::]
-    t = render_template('site/parse-error.html', errorMsg=errorMsg)
+    
+    insert = request.args.getlist('insert')
+    col = request.args.getlist('col')
+    rand = request.args.getlist('rand')
+    t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand)
     return make_response(t)
 
 
@@ -187,7 +189,6 @@ def show_downloaded():
         return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
     else:
         return redirect(url_for('download'))
-
 
 
 # ----------------------------------------------------------------------------------------------------------------------
