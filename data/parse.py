@@ -18,28 +18,6 @@ XL_CELL_DATE = 3
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def error(col_name, row_number, missing_columns, missing_column=False):
-    if col_name == 'Inserting':
-        return missing_columns, \
-               "Error Inserting Row Number: " + str(row_number) + ". Please contact system administrator."
-
-    if missing_column == True and col_name not in missing_columns:
-        missing_columns.append(col_name)
-        return missing_columns, "Your database needs to include a " + col_name + " Column. Please add and populate a "\
-               + col_name +  " column and upload again."
-
-    elif missing_column == True and col_name in missing_columns:
-        return missing_columns, ""
-
-    else:
-        return missing_columns, \
-               "Incorrect Formatting at Column: " + col_name + " and Row Number: " + str(row_number) + ". "
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
 def get_listings(sheet, database):
     d = {}
     row = sheet.row(0)
@@ -52,8 +30,8 @@ def get_listings(sheet, database):
 
     listings = {}
 
-    errors = []
-    missing_columns_errors = []
+    col = []
+    rand = []
     missing_columns = []
 
     for row in sheet.get_rows():
@@ -69,12 +47,11 @@ def get_listings(sheet, database):
             elif row[d['UNIQUEID']].value.strip() == "":
                 pass
             else:
-                missing_columns, err = error('UNIQUEID', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['UNIQUEID', row_number])
         except:
-            missing_columns, err = error('UNIQUEID', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'UNIQUEID' not in missing_columns:
+                col.append('UNIQUEID')
+                missing_columns.append('UNIQUEID')
 
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
@@ -84,12 +61,12 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('Municode', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['Municode', row_number])
+
         except:
-            missing_columns, err = error('Municode', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'Municode' not in missing_columns:
+                col.append('Municode')
+                missing_columns.append('Municode')
 
         try:
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
@@ -99,13 +76,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('Municipality', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['Municipality', row_number])
+
 
         except:
-            missing_columns, err = error('Municipality', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'Municipality' not in missing_columns:
+                col.append('Municipality')
+                missing_columns.append('Municipality')
 
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
@@ -115,13 +92,12 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('County', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['County', row_number])
 
         except:
-            missing_columns, err = error('County', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'County' not in missing_columns:
+                col.append('County')
+                missing_columns.append('County')
 
         try:
             if row[d['Region']].ctype == XL_CELL_NUMBER:
@@ -131,13 +107,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('Region', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['Region', row_number])
+
 
         except:
-            missing_columns, err = error('Region', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'Region' not in missing_columns:
+                col.append('Region')
+                missing_columns.append('Region')
 
         try:
             if row[d['SiteProgramName']].ctype == XL_CELL_TEXT:
@@ -147,12 +123,12 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SiteProgramName', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SiteProgramName', row_number])
+
         except:
-            missing_columns, err = error('SiteProgramName', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SiteProgramName' not in missing_columns:
+                col.append('SiteProgramName')
+                missing_columns.append('SiteProgramName')
 
         try:
             if row[d['ProjectDeveloper']].ctype == XL_CELL_TEXT:
@@ -162,14 +138,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('ProjectDeveloper', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ProjectDeveloper', row_number])
 
 
         except:
-            missing_columns, err = error('ProjectDeveloper', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ProjectDeveloper' not in missing_columns:
+                col.append('ProjectDeveloper')
+                missing_columns.append('ProjectDeveloper')
 
         try:
             if row[d['ComplianceMechanism']].ctype == XL_CELL_TEXT:
@@ -179,14 +154,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('ComplianceMechanism', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ComplianceMechanism', row_number])
 
 
         except:
-            missing_columns, err = error('ComplianceMechanism', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ComplianceMechanism' not in missing_columns:
+                col.append('ComplianceMechanism')
+                missing_columns.append('ComplianceMechanism')
 
         try:
             if row[d['Address']].ctype == XL_CELL_TEXT:
@@ -196,20 +170,19 @@ def get_listings(sheet, database):
                     record['addresses'] = row[d['Address']].value
 
                 else:
-                    missing_columns, err = error('Address', row_number, missing_columns)
-                    errors.append(err)
+                    rand.append(['Address', row_number])
+
 
             elif row[d['Address']].value.strip() == "":
                 pass
 
             else:
-                missing_columns, err = error('Address', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['Address', row_number])
 
         except:
-            missing_columns, err = error('Address', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'Address' not in missing_columns:
+                col.append('Address')
+                missing_columns.append('Address')
 
         try:
             if row[d['Status']].ctype == XL_CELL_TEXT:
@@ -219,14 +192,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('Status', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['Status', row_number])
 
 
         except:
-            missing_columns, err = error('Status', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'Status' not in missing_columns:
+                col.append('Status')
+                missing_columns.append('Status')
 
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
@@ -236,14 +208,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('OverallTotalUnits', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['OverallTotalUnits', row_number])
 
 
         except:
-            missing_columns, err = error('OverallTotalUnits', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'OverallTotalUnits' not in missing_columns:
+                col.append('OverallTotalUnits')
+                missing_columns.append('OverallTotalUnits')
 
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
@@ -253,15 +224,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TotalFamily', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TotalFamily', row_number])
 
 
 
         except:
-            missing_columns, err = error('TotalFamily', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TotalFamily' not in missing_columns:
+                col.append('TotalFamily')
+                missing_columns.append('TotalFamily')
 
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
@@ -271,14 +241,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('FamilyForSale', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['FamilyForSale', row_number])
 
 
         except:
-            missing_columns, err = error('FamilyForSale', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'FamilyForSale' not in missing_columns:
+                col.append('FamilyForSale')
+                missing_columns.append('FamilyForSale')
 
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
@@ -288,14 +257,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('FamilyRental', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['FamilyRental', row_number])
 
 
         except:
-            missing_columns, err = error('FamilyRental', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'FamilyRental' not in missing_columns:
+                col.append('FamilyRental')
+                missing_columns.append('FamilyRental')
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
@@ -305,14 +273,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TotalSenior', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TotalSenior', row_number])
 
 
         except:
-            missing_columns, err = error('TotalSenior', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TotalSenior' not in missing_columns:
+                col.append('TotalSenior')
+                missing_columns.append('TotalSenior')
 
         try:
             if row[d['SeniorForSale']].ctype == XL_CELL_NUMBER:
@@ -322,14 +289,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SeniorForSale', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SeniorForSale', row_number])
 
 
         except:
-            missing_columns, err = error('SeniorForSale', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SeniorForSale' not in missing_columns:
+                col.append('SeniorForSale')
+                missing_columns.append('SeniorForSale')
 
         try:
             if row[d['SeniorRental']].ctype == XL_CELL_NUMBER:
@@ -339,14 +305,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SeniorRental', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SeniorRental', row_number])
 
 
         except:
-            missing_columns, err = error('SeniorRental', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SeniorRental' not in missing_columns:
+                col.append('SeniorRental')
+                missing_columns.append('SeniorRental')
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
@@ -356,14 +321,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNTotal', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SSNTotal', row_number])
 
 
         except:
-            missing_columns, err = error('SSNTotal', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNTotal' not in missing_columns:
+                col.append('SSNTotal')
+                missing_columns.append('SSNTotal')
 
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
@@ -373,14 +337,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNForSale', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SSNForSale', row_number])
 
 
         except:
-            missing_columns, err = error('SSNForSale', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNForSale' not in missing_columns:
+                col.append('SSNForSale')
+                missing_columns.append('SSNForSale')
 
         try:
             if row[d['SSNRental']].ctype == XL_CELL_NUMBER:
@@ -390,14 +353,12 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNRental', row_number, missing_columns)
-                errors.append(err)
-
+                rand.append(['SSNRental', row_number])
 
         except:
-            missing_columns, err = error('SSNRental', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNRental' not in missing_columns:
+                col.append('SSNRental')
+                missing_columns.append('SSNRental')
 
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
@@ -407,14 +368,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('OneBRTotal', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['OneBRTotal', row_number])
 
 
         except:
-            missing_columns, err = error('OneBRTotal', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'OneBRTotal' not in missing_columns:
+                col.append('OneBRTotal')
+                missing_columns.append('OneBRTotal')
 
         try:
             if row[d['OneBRVLI']].ctype == XL_CELL_NUMBER:
@@ -424,14 +384,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('OneBRVLI', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['OneBRVLI', row_number])
 
 
         except:
-            missing_columns, err = error('OneBRVLI', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'OneBRVLI' not in missing_columns:
+                col.append('OneBRVLI')
+                missing_columns.append('OneBRVLI')
 
         try:
             if row[d['OneBRLow']].ctype == XL_CELL_NUMBER:
@@ -441,14 +400,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('OneBRLow', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['OneBRLow', row_number])
 
 
         except:
-            missing_columns, err = error('OneBRLow', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'OneBRLow' not in missing_columns:
+                col.append('OneBRLow')
+                missing_columns.append('OneBRLow')
 
         try:
             if row[d['OneBRMod']].ctype == XL_CELL_NUMBER:
@@ -458,14 +416,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('OneBRMod', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['OneBRMod', row_number])
 
 
         except:
-            missing_columns, err = error('OneBRMod', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'OneBRMod' not in missing_columns:
+                col.append('OneBRMod')
+                missing_columns.append('OneBRMod')
 
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
@@ -475,14 +432,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TwoBRTotal', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TwoBRTotal', row_number])
 
 
         except:
-            missing_columns, err = error('TwoBRTotal', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TwoBRTotal' not in missing_columns:
+                col.append('TwoBRTotal')
+                missing_columns.append('TwoBRTotal')
 
         try:
             if row[d['TwoBRVLI']].ctype == XL_CELL_NUMBER:
@@ -492,14 +448,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TwoBRVLI', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TwoBRVLI', row_number])
 
 
         except:
-            missing_columns, err = error('TwoBRVLI', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TwoBRVLI' not in missing_columns:
+                col.append('TwoBRVLI')
+                missing_columns.append('TwoBRVLI')
 
         try:
             if row[d['TwoBRLow']].ctype == XL_CELL_NUMBER:
@@ -509,14 +464,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TwoBRLow', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TwoBRLow', row_number])
 
 
         except:
-            missing_columns, err = error('TwoBRLow', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TwoBRLow' not in missing_columns:
+                col.append('TwoBRLow')
+                missing_columns.append('TwoBRLow')
 
         try:
             if row[d['TwoBRMod']].ctype == XL_CELL_NUMBER:
@@ -526,14 +480,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('TwoBRMod', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['TwoBRMod', row_number])
 
 
         except:
-            missing_columns, err = error('TwoBRMod', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'TwoBRMod' not in missing_columns:
+                col.append('TwoBRMod')
+                missing_columns.append('TwoBRMod')
 
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
@@ -543,14 +496,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                emissing_columns, err = error('ThreeBRTotal', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ThreeBRTotal', row_number])
 
 
         except:
-            missing_columns, err = error('ThreeBRTotal', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ThreeBRTotal' not in missing_columns:
+                col.append('ThreeBRTotal')
+                missing_columns.append('ThreeBRTotal')
 
         try:
             if row[d['ThreeBRVLI']].ctype == XL_CELL_NUMBER:
@@ -560,14 +512,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('ThreeBRVLI', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ThreeBRVLI', row_number])
 
 
         except:
-            missing_columns, err = error('ThreeBRVLI', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ThreeBRVLI' not in missing_columns:
+                col.append('ThreeBRVLI')
+                missing_columns.append('ThreeBRVLI')
 
         try:
             if row[d['ThreeBRLow']].ctype == XL_CELL_NUMBER:
@@ -577,14 +528,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('ThreeBRLow', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ThreeBRLow', row_number])
+
 
 
         except:
-            missing_columns, err = error('ThreeBRLow', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ThreeBRLow' not in missing_columns:
+                col.append('ThreeBRLow')
+                missing_columns.append('ThreeBRLow')
 
         try:
             if row[d['ThreeBRMod']].ctype == XL_CELL_NUMBER:
@@ -594,14 +545,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('ThreeBRMod', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['ThreeBRMod', row_number])
 
 
         except:
-            missing_columns, err = error('ThreeBRMod', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'ThreeBRMod' not in missing_columns:
+                col.append('ThreeBRMod')
+                missing_columns.append('ThreeBRMod')
 
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
@@ -611,14 +561,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNBRVLI', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SSNBRVLI', row_number])
 
 
         except:
-            missing_columns, err = error('SSNBRVLI', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNBRVLI' not in missing_columns:
+                col.append('SSNBRVLI')
+                missing_columns.append('SSNBRVLI')
 
         try:
             if row[d['SSNBRLow']].ctype == XL_CELL_NUMBER:
@@ -628,14 +577,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNBRLow', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SSNBRLow', row_number])
 
 
         except:
-            missing_columns, err = error('SSNBRLow', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNBRLow' not in missing_columns:
+                col.append('SSNBRLow')
+                missing_columns.append('SSNBRLow')
 
         try:
             if row[d['SSNBRMod']].ctype == XL_CELL_NUMBER:
@@ -645,30 +593,36 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                missing_columns, err = error('SSNBRMod', row_number, missing_columns)
-                errors.append(err)
+                rand.append(['SSNBRMod', row_number])
 
 
         except:
-            missing_columns, err = error('SSNBRMod', row_number, missing_columns, missing_column=True)
-            if err != "":
-                missing_columns_errors.append(err)
+            if 'SSNBRMod' not in missing_columns:
+                col.append('SSNBRMod')
+                missing_columns.append('SSNBRMod')
 
         row_number += 1
 
-        listings[record['listingid']] = record
+        listings[row_number] = record
 
-    return (missing_columns_errors + errors), listings
+
+    return col, rand, listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def insert(database, records, errors):
+def insert(database, records):
+
+    errors_for_insert = []
+
     for listings in records:
+        try:
             database.insert(records[listings])
+        except:
+            insert.append(listings)
 
-    return errors, records
+    return errors_for_insert, records
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -682,21 +636,21 @@ def parse_file(filename):
     database = Database()
     database.connect()
 
-    errors, listings = get_listings(sheet, database)
+    col, rand, listings = get_listings(sheet, database)
 
-    if errors == []:
+    if col == [] and rand == []:
         #database.clear()
-        errors2, possible_redirect = insert(database, listings, errors)
+        errors_for_insert, possible_redirect = insert(database, listings)
 
     else:
         database.disconnect()
-        return False, url_for('show_parse_error', errorMsg=errors)
+        return False, url_for('show_parse_error', col=col, rand=rand, insert=[])
 
     database.disconnect()
-    if errors2 == []:
+    if errors_for_insert == []:
         return True, possible_redirect
     else:
-        return False, url_for('show_parse_error', errorMsg=errors2)
+        return False, url_for('show_parse_error', col=[], rand=[], insert=errors_for_insert)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
