@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
 from data.parse import parse_file, parse_address
 from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table
 from data.account import make_account, check_account
 from data.database import Database
+from data.download import download
 from form import AddForm
 from werkzeug.datastructures import MultiDict
 # ----------------------------------------------------------------------------------------------------------------------
@@ -164,6 +165,29 @@ def show_uploaded_post():
 
     t = render_template('site/uploaded.html')
     return make_response(t)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/download')
+def show_download():
+    t = render_template('site/download.html')
+    return make_response(t)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/downloaded', methods=['GET','POST'])
+def show_downloaded():
+    if request.method == "POST":
+        download('out.xls')
+        return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
+    else:
+        return redirect(url_for('download'))
+
 
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -170,5 +170,37 @@ class Database:
         return rows
     # ------------------------------------------------------------------------------------------------------------------
 
+    # ------------------------------------------------------------------------------------------------------------------
+    def get_excel(self):
+        cursor = self._connection.cursor()
+        stmt = "SELECT listings.listingid, cities.municode, cities.municipality, counties.county, counties.region, " + \
+                "listings.name, listings.developer, listings.compliance, " + \
+                "listings.addresses, listings.status, listings.total, listings.family, " + \
+                "listings.famsale, listings.famrent, listings.sr, listings.srsale, listings.srrent, " + \
+                "listings.ssnsale, listings.ssnrent, listings.br1, "  + \
+                "listings.v1, listings.l1,  listings.m1, listings.br2, listings.v2, " + \
+                "listings.l2, listings.m2, listings.br3, listings.v3, listings.l3," + \
+                "listings.m3, listings.ssn, listings.vssn, listings.lssn, listings.mssn " + \
+                "FROM " + \
+               "listings, cities, counties WHERE " + \
+               "listings.municode = cities.municode AND cities.county = counties.county"
+        cursor.execute(stmt)
+        rows = []
+        row = cursor.fetchone()
+        while row is not None:
+            row = list(row)
+            for i in range(10, len(row)):
+                if row[i] is None:
+                    row[i] = 0
+            row.append(row[20] + row[24] + row[28])
+            row.append(row[21] + row[25] + row[29])
+            row.append(row[22] + row[26] + row[30])
+            row.append(row[18] + row[16] + row[13])
+            row.append(row[17] + row[15] + row[12])
+            rows.append(row)
+            row = cursor.fetchone()
+        cursor.close()
+        return rows
+    # ------------------------------------------------------------------------------------------------------------------
    
 # ----------------------------------------------------------------------------------------------------------------------

@@ -118,14 +118,12 @@
          </div>       <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Upload Data</h1>
+                        <h1 class="mt-4">Download Data</h1>
 <!--                        <form action="/clear" method="POST">-->
 <!--                            <input type="submit" value="Delete All Listings">-->
 <!--                        </form><br>-->
-                        <form action = "/uploaded" method = "POST" 
-                        enctype = "multipart/form-data">
-                        <input type = "file" name = "file" accept=".xlsx,.xls"/>
-                        <input type = "submit"/>
+                        <form action = "/downloaded" method = "POST">
+                        <input type = "submit" class="btn btn-primary" value="Download Excel Sheet">
                      </form>   
                     </div>
                 </main>
