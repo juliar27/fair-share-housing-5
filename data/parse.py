@@ -66,13 +66,16 @@ def get_listings(sheet, database):
         try:
             if row[d['UNIQUEID']].ctype == XL_CELL_NUMBER:
                 record['listingid'] = str(int(row[d['UNIQUEID']].value))
+            elif row[d['UNIQUEID']].value.strip() == "":
+                pass
             else:
                 missing_columns, err = error('UNIQUEID', row_number, missing_columns)
                 errors.append(err)
         except:
-            missing_columns, err = error('UNIQUEID', row_number, missing_columns)
+            missing_columns, err = error('UNIQUEID', row_number, missing_columns, missing_column=True)
             if err != "":
                 missing_columns_errors.append(err)
+
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
                 record['municode'] = str(row[d['Municode']].value)
