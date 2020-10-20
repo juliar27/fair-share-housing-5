@@ -180,7 +180,7 @@ def get_listings(sheet, database):
                 rand.append(['Address', row_number])
 
         except:
-            if 'Municode' not in missing_columns:
+            if 'Address' not in missing_columns:
                 col.append('Address')
                 missing_columns.append('Address')
 
