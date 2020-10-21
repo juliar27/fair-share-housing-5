@@ -165,8 +165,8 @@ def show_uploaded_post():
         else:
             return redirect(url_for('show_upload_error'))
 
-    t = render_template('site/uploaded.html')
-    return make_response(t)
+   # t = render_template('site/uploaded.html')
+    return redirect('/admin')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ def show_downloaded():
         download('out.xls')
         return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
     else:
-        return redirect(url_for('download'))
+        return redirect('/download')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -200,8 +200,8 @@ def show_clear():
     database.connect()
     database.clear()
     database.disconnect()
-    t = render_template('site/cleaned.html')
-    return make_response(t)
+   # t = render_template('site/cleaned.html')
+    return redirect('/admin')# make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -236,8 +236,8 @@ def show_added():
     if request.method == "POST":
         form = request.form
         add_to_table(form)
-        t = render_template('site/added.html')
-        return make_response(t)
+        #t = render_template('site/added.html')
+        return redirect('/admin')#make_response(t)
     else:
         return redirect('/add')
 
@@ -248,8 +248,8 @@ def show_edited():
     if request.method == "POST":
         form = request.form
         edit_table(form, request.args.get('id'))
-        t = render_template('site/edited.html')
-        return make_response(t)
+        #t = render_template('site/edited.html')
+        return redirect('/tables')#make_response(t)
     else:
         if request.args.get('id'):
             return redirect('/edit?id=' + request.args.get('id'))
@@ -264,8 +264,8 @@ def show_deleted():
         database.connect()
         database.delete_record(request.args.get('id'))
         database.disconnect()
-        t = render_template('site/deleted.html')
-        return make_response(t)
+        #t = render_template('site/deleted.html')
+        return redirect('/tables')#make_response(t)
     else:
         return redirect('/tables')
 
@@ -315,5 +315,5 @@ def show_admin():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(port=44404, debug=True)
+    app.run(port=44414, debug=True)
 # ----------------------------------------------------------------------------------------------------------------------
