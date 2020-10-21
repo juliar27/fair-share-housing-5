@@ -69,9 +69,9 @@ def get_row(listingid):
     result['total2'] = row[29]
     result['total3'] = row[30]
     result['address'] = row[31]
-    result['muni'] = row[32]
-    result['county'] = row[33]
-    result['region'] = row[34]
+    result['muni'] = row[33]
+    result['county'] = row[34]
+    result['region'] = row[35]
     cursor.close()
     database.disconnect()
     return result
