@@ -1,6 +1,6 @@
 import os
 from psycopg2 import connect
-
+# from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
 def double_up(s):
@@ -8,6 +8,19 @@ def double_up(s):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+def get_coords(address, county):
+    # mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+    # fullAddress = address + ", " + county + ", " + "NJ, USA"
+    # coordinates = "error"
+    # try:
+    #     geocode_result = mapsObj.geocode(fullAddress)
+    #     latitude = geocode_result[0]['geometry']['location'] ['lat']
+    #     longitude = geocode_result[0]['geometry']['location'] ['lng']
+    #     coordinates = str(latitude) + "," + str(longitude)
+    # except:
+    #     print("Address was wrong...")
+    # return(coordinates)
+    return "temp"
 
 # ----------------------------------------------------------------------------------------------------------------------
 class Database:
