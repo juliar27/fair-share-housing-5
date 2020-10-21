@@ -1,59 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-        
- #main
-	{
-		position: relative;
-		background: #fff;
-	}
-	
-	.homepage #content
-	{
-		text-align: center;
-	}
-	
-	.homepage #content header h2
-	{
-	}
+  <style>
+        .sidenav {
+  height: 1000px;
+  width: 25%;
+  position: absolute;
+  z-index: 1;
+/*  top: 0;*/
+  left: 0;
+  background-color: #21243d;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
 
-	#filterbar h2
-	{
-		display: block;
-		padding-bottom: 0.50em;
-	}
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
 
-	.container {
-		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-		.row:after {
-			content: '';
-			display: block;
-			clear: both;
-			height: 0;
-		}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
 
-		.row:first-child > * {
-			padding-top: 0;
-		}
+        .sidenav h2 {
+            color: white;
+        }
 
-		.row > * {
-			padding-top: 0;
-		}
+        .next .form-group {
+  position: relative;
+  margin-bottom: 0;
+/*        padding-bottom: 10%;*/
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 10%;}
+  .next .form-group label {
+    font-weight: 400;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8); }
+  .next .form-group .form-field {
+    position: relative;
+    display: block; }
+  .next .form-group .form-control {
+    padding: 0;
+    padding-left: 20px;
+    display: block;
+    width: 100%;
+    height: inherit !important;
+    font-size: 18px;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    background: transparent !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0; }
+    .next .form-group .form-control::-webkit-input-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important; }
+    .next .form-group .form-control::-moz-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important; }
+    .next .form-group .form-control:-ms-input-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important; }
+    .next .form-group .form-control:-moz-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important; }
+    .next .form-group .form-control.btn {
+      padding: 22px 10px !important;
+      font-size: 16px;
+      background: #24A148 !important;
+      border: none !important;
+      color: #fff !important;
+      border-radius: 4px; }
+  .next .form-group .select-wrap {
+    position: relative; }
+    .next .form-group .select-wrap select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none; }
+  .next .form-group .icon {
+    position: absolute;
+    top: 51%;
+    left: 0;
+    font-size: 16px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4); }
+    @media (max-width: 767.98px) {
+      .next .form-group .icon {
+        right: 10px; } }
 
-        
-        .\38 u { width: 66.6666666667% }
-		.\36 u { width: 50% }
-		.\34 u { width: 33.3333333333% }
-		.\-11u { margin-left: 91.6666666667% }
-		.\-8u { margin-left: 66.6666666667% }
-		.\-6u { margin-left: 50% }
-        
-        
-        
+
+    
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 0px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
     </style>
     
 <head>
@@ -93,65 +142,132 @@
       </div>
     </section>
     
-    <!-- Main -->
-		<div id="main">
-			<div class="container">
-				<div class="row" style="width: 100%">
-
-					<!-- filter bar on the side -->
-					<div id="filterbar" class="4u" >
-						<section>
-							<header>
-								<h2>Filter Options</h2>
-                                <p>[Will put a form here once we decide on filtering options] </p>
-							</header>
-						</section>
-						<section>
-							<header>
-								<h2>Any questions? Please contact ______</h2>
-							</header>
-						</section>
-					</div>
-					
-					<!-- Content -->
-					<div id="content" class="8u skel-cell-important">
-						<section>
-							<head>
-              <style>
-                /* Set the size of the div element that contains the map */
-                #map {
-                  height: 1000px;
-                  width: 100%;
-                 }
-              </style>
+<section class="next">
+    <div class="sidenav">
+<!--        <h2>Filter Options</h2>-->
+        
+        <!-- first filter option -->
+        <div class="form-group">
+            <label for="#">Ownership Type</label>
+            <div class="form-field">
+                <div class="select-wrap">
+                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <select name="" id="" class="form-control">
+                        <option value="" style="background-color: #21243d;">No Preference</option>
+                        <option value="" style="background-color: #21243d;">Rent</option>
+                        <option value="" style="background-color: #21243d;">Buy</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        	<div class="form-group">
+		        					<label for="#">Property Type</label>
+		        					<div class="form-field">
+		          					<div class="select-wrap">
+		                      <div class="icon"><span class="fa fa-chevron-down"></span></div>
+		                      <select name="" id="" class="form-control">
+		                        <option value="" style="background-color: #21243d;">No Preference</option>
+		                        <option value="" style="background-color: #21243d;">Family</option>
+		                        <option value="" style="background-color: #21243d;">Senior</option>
+		                      </select>
+		                    </div>
+				              </div>
+			              </div>
+    
+        <div class="form-group">
+		        					<label for="#"># Bedrooms</label>
+		        					<div class="form-field">
+		          					<div class="select-wrap">
+		                      <div class="icon"><span class="fa fa-chevron-down"></span></div>
+		                      <select name="" id="" class="form-control">
+		                        <option value="" style="background-color: #21243d;">No Preference</option>
+		                        <option value="" style="background-color: #21243d;">1</option>
+		                        <option value="" style="background-color: #21243d;">2</option>
+		                        <option value="" style="background-color: #21243d;">3+</option>
+		                      </select>
+		                    </div>
+				              </div>
+			              </div>
+        
+        <div class="form-group">
+		        					<label for="#">Income Level</label>
+		        					<div class="form-field">
+		          					<div class="select-wrap">
+		                      <div class="icon"><span class="fa fa-chevron-down"></span></div>
+		                      <select name="" id="" class="form-control">
+		                        <option value="" style="background-color: #21243d;">No Preference</option>
+		                        <option value="" style="background-color: #21243d;">Very Low Income</option>
+		                        <option value="" style="background-color: #21243d;">Low Income</option>
+		                        <option value="" style="background-color: #21243d;">Moderate Income</option>
+		                      </select>
+		                    </div>
+				              </div>
+			              </div>
+        
+        <div class="form-group">
+		        					<label for="#">County</label>
+		          				<div class="form-field">
+		          					<div class="icon"><span class="fa fa-search"></span></div>
+				                <input type="text" class="form-control" placeholder="County">
+				              </div>
+			              </div>
+        
+        <div class="form-group">
+		        					<label for="#">County</label>
+		          				<div class="form-field">
+		          					<div class="icon"><span class="fa fa-search"></span></div>
+				                <input type="text" class="form-control" placeholder="County">
+				              </div>
+			              </div>
+        
+        
+        
+        <div class="form-group">
+		        					<div class="form-field">
+				                <input type="submit" value="Search" class="form-control btn btn-primary">
+				              </div>
+			              </div>
+        </div>
+        
+        
+    
+        
+    
+    <div class="main">
+        <section>
+            <head>
+                <style>
+                    /* Set the size of the div element that contains the map */
+                    #map {
+                        height: 1000px;
+                        width: 100%;
+                    }
+                </style>
             </head>
             <body>
-              <!--The div element for the map -->
-              <div id="map">
-              <script>
-          // Initialize and add the map
-          function initMap() {
-            // The location of princeton
-            var princeton = {lat: 40.3431, lng: -74.6551};
-            // The map, centered at princeton
-            var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 4, center: princeton});
-            // The marker, positioned at princeton
-            var marker = new google.maps.Marker({position: princeton, map: map});
-          }
-              </script>
-              <script defer
-              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
-              </script>
-            </div>
+                <!--The div element for the map -->
+                <div id="map">
+                    <script>
+                    // Initialize and add the map
+                    function initMap() {
+                    // The location of princeton
+                    var princeton = {lat: 40.3431, lng: -74.6551};
+                    // The map, centered at princeton
+                    var map = new google.maps.Map(
+                    document.getElementById('map'), {zoom: 4, center: princeton});
+                    // The marker, positioned at princeton
+                    var marker = new google.maps.Marker({position: princeton, map: map});
+                    }
+                    </script>
+                    <script defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
+                    </script>
+                </div>
             </body>
-						</section>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	<!-- /Main -->
+        </section>
+    </div>
+    </section>
     
 
 
