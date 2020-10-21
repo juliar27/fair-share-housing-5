@@ -11,7 +11,7 @@ XL_CELL_TEXT = 1
 # float
 XL_CELL_NUMBER = 2
 
-# date 
+# date
 XL_CELL_DATE = 3
 
 
@@ -162,6 +162,21 @@ def get_listings(sheet, database):
             if 'ComplianceMechanism' not in missing_columns:
                 col.append('ComplianceMechanism')
                 missing_columns.append('ComplianceMechanism')
+
+        try:
+            if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
+                record['agent'] = row[d['AdminAgent']].value
+
+            elif row[d['AdminAgent']].value.strip() == "":
+                pass
+
+            else:
+                rand.append(['AdmingAgent', row_number])
+
+        except:
+            if 'AdminAgent' not in missing_columns:
+                col.append('AdminAgent')
+                missing_columns.append('AdminAgent')
 
         try:
             if row[d['Address']].ctype == XL_CELL_TEXT:
