@@ -1,5 +1,6 @@
 from data.database import Database
 from data.parse import parse_address
+from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
 def get_listings():
@@ -87,6 +88,8 @@ def get_tables():
 
 # ----------------------------------------------------------------------------------------------------------------------
 def add_to_table(form):
+    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+
     record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
               'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
               'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
@@ -118,7 +121,7 @@ def add_to_table(form):
             new_id = int(row[0]) + 1
         row = cursor.fetchone()
     record['listingid'] = str(new_id)
-    database.add_record(record)
+    database.add_record(record, mapsObj)
     cursor.close()
     database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
@@ -126,6 +129,8 @@ def add_to_table(form):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def edit_table(form, listingid):
+    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+
     record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
               'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
               'compliance': form.get('compliance'), 'address': parse_address(form.get('address')),
@@ -148,6 +153,6 @@ def edit_table(form, listingid):
     database = Database()
     database.connect()
     record['listingid'] = listingid
-    database.edit_record(record)
+    database.edit_record(record, mapsObj)
     database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------

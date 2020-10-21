@@ -9,12 +9,11 @@ def double_up(s):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def get_coords(address, county):
-    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+def get_coords(address, county, map):
     fullAddress = address + ", " + county + ", " + "NJ, USA"
     coordinates = "error"
     try:
-        geocode_result = mapsObj.geocode(fullAddress)
+        geocode_result = map.geocode(fullAddress)
         latitude = geocode_result[0]['geometry']['location'] ['lat']
         longitude = geocode_result[0]['geometry']['location'] ['lng']
         coordinates = str(latitude) + "," + str(longitude)
@@ -63,7 +62,7 @@ class Database:
     # ------------------------------------------------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------------------------------------------------
-    def add_record(self, record):
+    def add_record(self, record, mapsObj):
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
 
@@ -84,7 +83,7 @@ class Database:
         if "address" in record:
             coordinates = "error"
             if "county" in record:
-                coordinates = get_coords(record["address"][0],record['county'])
+                coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
@@ -121,7 +120,7 @@ class Database:
 
     # ------------------------------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    def edit_record(self, record):
+    def edit_record(self, record, mapsObj):
         cursor = self._connection.cursor()
         if "addresses" in record:
             stmt = "SELECT addresses FROM listings WHERE listingid = " + record["listingid"]
@@ -148,7 +147,7 @@ class Database:
             cursor.execute(stmt)
             coordinates = "error"
             if "county" in record:
-                coordinates = get_coords(record["address"][0],record['county'])
+                coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
@@ -158,15 +157,15 @@ class Database:
     # ------------------------------------------------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------------------------------------------------
-    def insert(self, record):
+    def insert(self, record, mapsObj):
         cursor = self._connection.cursor()
         cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
         row = cursor.fetchone()
 
         if row is None:
-            self.add_record(record)
+            self.add_record(record, mapsObj)
         else:
-            self.edit_record(record)
+            self.edit_record(record, mapsObj)
         cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------

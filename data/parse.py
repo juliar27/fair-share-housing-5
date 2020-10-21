@@ -613,12 +613,13 @@ def get_listings(sheet, database):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def insert(database, records):
+    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
 
     errors_for_insert = []
 
     for listings in records:
         try:
-            database.insert(records[listings])
+            database.insert(records[listings], mapsObj)
         except:
             errors_for_insert.append(listings)
 
