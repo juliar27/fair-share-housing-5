@@ -19,7 +19,8 @@ def get_coords(address, county):
         longitude = geocode_result[0]['geometry']['location'] ['lng']
         coordinates = str(latitude) + "," + str(longitude)
     except:
-        print("Address was wrong...")
+        print(fullAddress)
+        return(coordinates)
     return(coordinates)
 # ----------------------------------------------------------------------------------------------------------------------
 
