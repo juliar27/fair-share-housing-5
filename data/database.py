@@ -149,7 +149,7 @@ class Database:
             # if "county" in record:
             #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
-                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
+                stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s','%s')" % (record["listingid"], double_up(address),"40.0,40.0")
                 cursor.execute(stmt)
         cursor.close()
