@@ -620,7 +620,7 @@ def insert(database, records):
         try:
             database.insert(records[listings])
         except:
-            insert.append(listings)
+            errors_for_insert.append(listings)
 
     return errors_for_insert, records
 
