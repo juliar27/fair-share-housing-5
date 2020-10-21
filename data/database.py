@@ -85,8 +85,8 @@ class Database:
             # if "county" in record:
             #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
-                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], double_up(address))
+                stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
+                       + "('%s', '%s', '%s')" % (record["listingid"], double_up(address),"40.0,40.0")
                 cursor.execute(stmt)
         if "municode" in record:
             stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
@@ -150,7 +150,7 @@ class Database:
             #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], double_up(address))
+                       + "('%s', '%s','%s')" % (record["listingid"], double_up(address),"40.0,40.0")
                 cursor.execute(stmt)
         cursor.close()
 
