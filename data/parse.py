@@ -2,6 +2,7 @@ import xlrd
 from data.database import Database
 from sys import argv
 from flask import redirect, url_for
+from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
 # a Unicode string
