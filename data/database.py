@@ -81,9 +81,9 @@ class Database:
         cursor = self._connection.cursor()
         cursor.execute(stmt + values)
         if "address" in record:
-            coordinates = "error"
-            if "county" in record:
-                coordinates = get_coords(record["address"][0],record['county'], mapsObj)
+            # coordinates = "error"
+            # if "county" in record:
+            #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
@@ -146,8 +146,8 @@ class Database:
             stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
             cursor.execute(stmt)
             coordinates = "error"
-            if "county" in record:
-                coordinates = get_coords(record["address"][0],record['county'], mapsObj)
+            # if "county" in record:
+            #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
