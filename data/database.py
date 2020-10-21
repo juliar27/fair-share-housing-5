@@ -1,6 +1,6 @@
 import os
 from psycopg2 import connect
-# from googlemaps import Client as GoogleMaps
+from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
 def double_up(s):
