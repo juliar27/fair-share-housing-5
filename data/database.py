@@ -10,21 +10,18 @@ def double_up(s):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def get_coords(address, county):
-    # mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-    # fullAddress = address + ", " + county + ", " + "NJ, USA"
-    # coordinates = "error"
-    # try:
-    #     geocode_result = mapsObj.geocode(fullAddress)
-    #     latitude = geocode_result[0]['geometry']['location'] ['lat']
-    #     longitude = geocode_result[0]['geometry']['location'] ['lng']
-    #     coordinates = str(latitude) + "," + str(longitude)
-    # except:
-    #     print("Address was wrong...")
-    # return(coordinates)
-    
-    return "temp"
+    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+    fullAddress = address + ", " + county + ", " + "NJ, USA"
+    coordinates = "error"
+    try:
+        geocode_result = mapsObj.geocode(fullAddress)
+        latitude = geocode_result[0]['geometry']['location'] ['lat']
+        longitude = geocode_result[0]['geometry']['location'] ['lng']
+        coordinates = str(latitude) + "," + str(longitude)
+    except:
+        print("Address was wrong...")
+    return(coordinates)
 # ----------------------------------------------------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 class Database:
@@ -84,8 +81,11 @@ class Database:
         cursor.execute(stmt + values)
         if "address" in record:
             for address in record["address"]:
-                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], double_up(address))
+                coordinates = "error"
+                if "county" in record:
+                    coordinates = get_coords(double_up(address),record['county'])
+                stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
+                       + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
                 cursor.execute(stmt)
         if "municode" in record:
             stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
@@ -145,8 +145,11 @@ class Database:
             stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
             cursor.execute(stmt)
             for address in record["address"]:
-                stmt = "INSERT INTO addresses (listingid, address) VALUES " \
-                       + "('%s', '%s')" % (record["listingid"], double_up(address))
+                coordinates = "error"
+                if "county" in record:
+                    coordinates = get_coords(double_up(address),record['county'])
+                stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
+                       + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
                 cursor.execute(stmt)
         cursor.close()
 
