@@ -8371,6 +8371,15 @@ h1, h2, h3, h4, h5,
       height: 500px; }
     .hero-wrap.hero-wrap-2 .slider-text {
       height: 500px !important; }
+  .hero-wrap.hero-wrap-3 {
+    height: 100px !important;
+    position: relative; }
+    .hero-wrap.hero-wrap-3 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 100px; }
+    .hero-wrap.hero-wrap-3 .slider-text {
+      height: 100px !important; }
 
 .slider-text {
   height: 850px; }
