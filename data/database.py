@@ -81,10 +81,10 @@ class Database:
         cursor = self._connection.cursor()
         cursor.execute(stmt + values)
         if "address" in record:
+            coordinates = "error"
+            if "county" in record:
+                coordinates = get_coords(record["address"][0],record['county'])
             for address in record["address"]:
-                coordinates = "error"
-                if "county" in record:
-                    coordinates = get_coords(double_up(address),record['county'])
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
                 cursor.execute(stmt)
@@ -145,10 +145,10 @@ class Database:
         if "address" in record:
             stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
             cursor.execute(stmt)
+            coordinates = "error"
+            if "county" in record:
+                coordinates = get_coords(record["address"][0],record['county'])
             for address in record["address"]:
-                coordinates = "error"
-                if "county" in record:
-                    coordinates = get_coords(double_up(address),record['county'])
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address), coordinates)
                 cursor.execute(stmt)
