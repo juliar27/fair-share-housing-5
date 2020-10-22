@@ -632,14 +632,16 @@ def insert(database, records):
     mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
 
     errors_for_insert = []
-
+    changed_addresses = []
     for listings in records:
         try:
-            database.insert(records[listings], mapsObj)
+            changed_addr = database.insert(records[listings], mapsObj)
+            if changed_addr:
+                changed_addresses.append(records[listings]['listingid'])
         except:
             errors_for_insert.append(listings)
 
-    return errors_for_insert, records
+    return errors_for_insert, records, changed_addresses
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -657,7 +659,7 @@ def parse_file(filename):
 
     if col == [] and rand == []:
         #database.clear()
-        errors_for_insert, possible_redirect = insert(database, listings)
+        errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
 
     else:
         database.disconnect()
@@ -665,7 +667,7 @@ def parse_file(filename):
 
     database.disconnect()
     if errors_for_insert == []:
-        return True, possible_redirect
+        return True, possible_redirect, changed_addresses
     else:
         return False, url_for('show_parse_error', col=[], rand=[], insert=errors_for_insert)
 # ----------------------------------------------------------------------------------------------------------------------

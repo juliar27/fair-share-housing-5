@@ -156,3 +156,11 @@ def edit_table(form, listingid):
     database.edit_record(record, mapsObj)
     database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
+
+def get_coords(changed_addresses):
+    database = Database()
+    database.connect()
+    print("we doing")
+    database.get_coords(changed_addresses)
+    print("WE DIDDDDDDDDD")
+    database.disconnect()

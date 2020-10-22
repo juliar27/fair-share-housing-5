@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
 from data.parse import parse_file, parse_address
-from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table
+from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table, get_coords
 from data.account import make_account, check_account
 from data.database import Database
 from data.download import download
 from form import AddForm
 from werkzeug.datastructures import MultiDict
+from threading import Thread
+
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
@@ -158,13 +160,16 @@ def show_uploaded_post():
         if request.files['file'].filename != '':
             filename = request.files['file']
 
-            flag, possible_redirect = parse_file(filename)
+            flag, possible_redirect, changed_addresses = parse_file(filename)
 
             if not flag:
                 return redirect(possible_redirect)
         else:
             return redirect(url_for('show_upload_error'))
-
+    thread = Thread(target=get_coords, args=(changed_addresses,))
+    thread.daemon = True
+    thread.start()
+   # t = render_template('site/uploaded.html')
     return redirect('/admin')
 
 
