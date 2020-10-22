@@ -145,17 +145,37 @@ class Database:
         if "address" in record:
             stmt = "DELETE FROM addresses WHERE listingid = " + record["listingid"]
             cursor.execute(stmt)
-            # coordinates = "error"
-            # if "county" in record:
-            #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
+
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s','%s')" % (record["listingid"], double_up(address),"40.0,40.0")
                 cursor.execute(stmt)
         cursor.close()
 
+        return "address" in record
     # ------------------------------------------------------------------------------------------------------------------
 
+    def get_coords(self, changed_addresses):
+        print(changed_addresses)
+        mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+        cursor = self._connection.cursor()
+        stmt = "SELECT listings.listingid, cities.municipality, cities.county, addresses.address FROM listings, " + \
+        "cities, addresses WHERE listings.municode = cities.municode AND listings.listingid = addresses.listingid"
+        cursor.execute(stmt)
+        row = cursor.fetchone()
+        new_cursor = self._connection.cursor()
+        i = 0
+        while row is not None:
+            print(row[0])
+            if str(row[0]) in changed_addresses:
+                print('getting')
+                coordinates = get_coords(row[3], row[2], mapsObj)
+                stmt = "UPDATE addresses SET coordinates = '" + coordinates + "' WHERE listingid = " + str(row[0])
+                new_cursor.execute(stmt)
+
+            row = cursor.fetchone()
+        new_cursor.close()
+        cursor.close()
     # ------------------------------------------------------------------------------------------------------------------
     def insert(self, record, mapsObj):
         cursor = self._connection.cursor()
@@ -164,10 +184,11 @@ class Database:
 
         if row is None:
             self.add_record(record, mapsObj)
+            addressed = True
         else:
-            self.edit_record(record, mapsObj)
+            addressed = self.edit_record(record, mapsObj)
         cursor.close()
-
+        return addressed
     # ------------------------------------------------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------------------------------------------------
