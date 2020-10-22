@@ -74,7 +74,7 @@ def show_details():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def show_login():
     t = render_template('site/login.html')
     return make_response(t)
@@ -256,7 +256,8 @@ def show_edited():
         form = request.form
         edit_table(form, request.args.get('id'))
         #t = render_template('site/edited.html')
-        return redirect('/tables')#make_response(t)
+        return redirect('/tables')
+        #make_response(t)
     else:
         if request.args.get('id'):
             return redirect('/edit?id=' + request.args.get('id'))
@@ -272,7 +273,8 @@ def show_deleted():
         database.delete_record(request.args.get('id'))
         database.disconnect()
         #t = render_template('site/deleted.html')
-        return redirect('/tables')#make_response(t)
+        return redirect('/tables')
+        #make_response(t)
     else:
         return redirect('/tables')
 
@@ -303,7 +305,7 @@ def show_check():
         return make_response(t)
 
     else:
-        return show_admin()
+        return redirect(url_for('show_admin'))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
