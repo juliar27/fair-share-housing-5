@@ -63,8 +63,11 @@ def show_listings():
 def show_details():
     lid = request.args.get('id')
     adr = request.args.get('adr')
+    coords = request.args.get('coords').split(',')
+    lat = coords[0]
+    long = coords[1]
     row = get_row(lid)
-    t = render_template('site/details.html', row=row, adr=adr)
+    t = render_template('site/details.html', row=row, adr=adr, lat=lat, long=long)
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -123,7 +126,7 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
-    
+
     insert = request.args.getlist('insert')
     col = request.args.getlist('col')
     rand = request.args.getlist('rand')

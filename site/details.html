@@ -145,6 +145,7 @@
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                             <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
+                            <!-- for testings: <h2> {{lat}} {{long}} </h2> -->
                               <style>
                                 /* Set the size of the div element that contains the map */
                                 #map {
@@ -158,12 +159,12 @@
                                 // Initialize and add the map
                                 function initMap() {
                                   // The location of princeton
-                                  var princeton = {lat: 40.3431, lng: -74.6551};
+                                  var loc = {lat: {{lat}}, lng: {{long}}};
                                   // The map, centered at princeton
                                   var map = new google.maps.Map(
-                                      document.getElementById('map'), {zoom: 12, center: princeton});
+                                      document.getElementById('map'), {zoom: 16, center: loc});
                                   // The marker, positioned at princeton
-                                  var marker = new google.maps.Marker({position: princeton, map: map});
+                                  var marker = new google.maps.Marker({position: loc, map: map});
                                 }
                               </script>
                               <script defer
