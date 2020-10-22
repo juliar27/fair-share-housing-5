@@ -173,10 +173,10 @@ def get_listings(sheet, database):
         #     else:
         #         rand.append(['AdmingAgent', row_number])
 
-        except:
-            if 'AdminAgent' not in missing_columns:
-                col.append('AdminAgent')
-                missing_columns.append('AdminAgent')
+        # except:
+        #     if 'AdminAgent' not in missing_columns:
+        #         col.append('AdminAgent')
+        #         missing_columns.append('AdminAgent')
 
         try:
             if row[d['Address']].ctype == XL_CELL_TEXT:
