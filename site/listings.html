@@ -84,8 +84,8 @@
                                 <tbody>
                                   {% for i in range(rows|length): %}
                                   <tr>
-                                    <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}'>{{rows[i][0]}}</a></td>
-                                    {% for j in range(1, rows[i]|length): %}
+                                    <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}&coords={{rows[i][1]}}'>{{rows[i][0]}}</a></td>
+                                    {% for j in range(2, rows[i]|length): %}
                                     {% if 'None' in rows[i][j]|string: %}
                                     <td> 0 </td>
                                     {% else: %}
