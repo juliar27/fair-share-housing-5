@@ -163,15 +163,15 @@ def get_listings(sheet, database):
                 col.append('ComplianceMechanism')
                 missing_columns.append('ComplianceMechanism')
 
-        try:
-            if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
-                record['agent'] = row[d['AdminAgent']].value
-
-            elif row[d['AdminAgent']].value.strip() == "":
-                pass
-
-            else:
-                rand.append(['AdmingAgent', row_number])
+        # try:
+        #     if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
+        #         record['agent'] = row[d['AdminAgent']].value
+        #
+        #     elif row[d['AdminAgent']].value.strip() == "":
+        #         pass
+        #
+        #     else:
+        #         rand.append(['AdmingAgent', row_number])
 
         except:
             if 'AdminAgent' not in missing_columns:
