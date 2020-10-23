@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
 from data.parse import parse_file, parse_address
-from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table, get_coords
+from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables
 from data.account import make_account, check_account
 from data.database import Database
 from data.download import download
@@ -227,15 +227,45 @@ def show_add():
 # ----------------------------------------------------------------------------------------------------------------------
 
 @app.route('/edit', methods=['GET', 'POST'])
-def show_edit():
+# def show_edit():
+#     if request.method == 'GET':
+#         print(request.args.get('id'))
+#         record = get_row(request.args.get('id'))
+#         form = AddForm(formdata=MultiDict(record))
+#     else:
+#         form = AddForm()
+#     t = render_template('site/edit.html', form=form, id=request.args.get('id'))
+#     return make_response(t)
+
+def edit():
     if request.method == 'GET':
-        print(request.args.get('id'))
-        record = get_row(request.args.get('id'))
-        form = AddForm(formdata=MultiDict(record))
+        return redirect('/tables')
     else:
-        form = AddForm()
-    t = render_template('site/edit.html', form=form, id=request.args.get('id'))
-    return make_response(t)
+        lookup = {0:'listingid', 1:'name', 2:'developer', 3:'status',
+        4:'compliance', 5:'address', 6:'municipality', 7:'county', 8:'municode',
+        9:'region', 10:'v1', 11:'v2', 12:'v3', 13:'l1', 14:'l2',
+        15:'l3', 16:'m1', 17:'m2', 18:'m3', 19:'vssn', 20:'lssn', 21:'mssn',
+        22:'famsale', 23:'famrent', 24:'srsale', 25:'srrent', 26:'ssnsale',
+        27:'ssnrent', 28:'total', 29:'family', 30:'sr', 31: 'ssn',
+        32:'br1', 33:'br2', 34:'br3'}
+        form = request.form.to_dict()
+        records = {}
+        rows = get_tables()
+        for item in form:
+            current = item.split(';')
+            value = form[item]
+            if int(current[1]) > 9 and form[item] == 'None':
+                value = '0'
+            if value == rows[int(current[0]) - 1][int(current[1])]:
+                continue
+            if not current[0] in records:
+                records[current[0]] = {}
+            records[current[0]][lookup[int(current[1])]] = value
+        for record in records:
+            edit_tables(records[record], record)
+        return redirect('/tables')
+         
+
 
 
 
@@ -270,9 +300,9 @@ def show_edited():
 @app.route('/deleted', methods=['GET', 'POST'])
 def show_deleted():
     if request.method == "POST":
-        form = request.form
         database = Database()
         database.connect()
+        print(request.args.get('id'))
         database.delete_record(request.args.get('id'))
         database.disconnect()
         #t = render_template('site/deleted.html')
@@ -327,5 +357,5 @@ def show_admin():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(port=44414, debug=True)
+    app.run(port=44434, debug=True)
 # ----------------------------------------------------------------------------------------------------------------------

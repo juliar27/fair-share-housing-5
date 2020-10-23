@@ -117,85 +117,108 @@
                     </div>
                 </nav>
             </div>
+            {% for row in rows %}
+                <form action='/deleted?id={{row[0]}}' method='POST' id='{{row[0]}}' onsubmit="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');"></form>
+            {% endfor %}
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Edit Data</h1>
-
-                        <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
-                            <input type="submit" class="btn btn-primary" value="Delete All Listings" >
-                        </form><br>
-
+                        <table border=0px>
+                            <tr>
+                                <td>
+                                    <form action="/edit" id='main' method="POST"  onsubmit="return confirm('Are you sure you want to make these changes? This action cannot be undone.');">
+                                        <input type='submit' value='Submit Changes' class='btn btn-primary'>
+                                    </form>
+                                </td>
+                                {% for i in range(393) %}
+                                <td></td>
+                                {% endfor %}
+                                <td>
+                                    <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
+                                        <input type="submit" class="btn btn-primary" value="Delete All Listings" >
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table mr-1"></i>
                                 Current Listings
                             </div>
+                            
                             <div class="card-body">
+                                
                                 <div class="large-table-container"></div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <th class="sorting_asc">Listing ID</th>
-                                                <th>Program Name</th>
-                                                <th>Developer</th>
-                                                <th>Status</th>
-                                                <th>Compliance</th>
-                                                <th>Address</th>
-                                                <th>Municipality</th>
-                                                <th>County</th>
-                                                <th>Municipality Code</th>
-                                                <th>Region</th>
-                                                <th># Very Low Income 1Bdr</th>
-                                                <th># Very Low Income 2Bdr</th>
-                                                <th># Very Low Income 3Bdr</th>
-                                                <th># Low Income 1Bdr</th>
-                                                <th># Low Income 2Bdr</th>
-                                                <th># Low Income 3Bdr</th>
-                                                <th># Moderate Income 1Bdr</th>
-                                                <th># Moderate Income 2Bdr</th>
-                                                <th># Moderate Income 3Bdr</th>
-                                                <th># Very Low Income SSN</th>
-                                                <th># Low Income SSN</th>
-                                                <th># Moderate Income SSN</th>
-                                                <th># Family Units for Sale</th>
-                                                <th># Family Units for Rent</th>
-                                                <th># Senior Units for Sale</th>
-                                                <th># Senior Units for Rent</th>
-                                                <th># SSN Units for Sale</th>
-                                                <th># SSN Units for Rent</th>
-                                                <th># Units Total</th>
-                                                <th># Family Units</th>
-                                                <th># Senior Units</th>
-                                                <th># SSN Units</th>
-                                                <th># 1Bdr Units</th>
-                                                <th># 2Bdr Units</th>
-                                                <th># 3Bdr Units</th>
-                                            </tr>
-                                        <tbody>
-                                            {% for row in rows %}
+                                
+                                                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" scrollY='1000px'cellspacing="0">
+                                            <thead>
                                                 <tr>
-                                                    <td style="vertical-align:middle">
-                                                        <a href='/edit?id={{row[0]}}'>
-                                                            <div class="btn btn-primary">Edit</div>
-                                                        </a>
-                                                    </td>
-                                                    <td style="vertical-align:middle">
-                                                        <form action='/deleted?id={{row[0]}}' method="POST"  onsubmit="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');">
-                                                            <input type='submit' value='Delete' class="btn btn-primary">
-                                                        </form>
-                                                    </td>
-                                                    {% for i in range(row|length) %}
-                                                        <td style="vertical-align:middle" align="center">{{ row[i] }}</td>
-                                                    {% endfor %}
+                                                    <td></td>
+                                                    <th class="sorting_asc">Listing ID</th>
+                                                    <th>Program Name</th>
+                                                    <th>Developer</th>
+                                                    <th>Status</th>
+                                                    <th>Compliance</th>
+                                                    <th>Address</th>
+                                                    <th>Municipality</th>
+                                                    <th>County</th>
+                                                    <th>Municipality Code</th>
+                                                    <th>Region</th>
+                                                    <th># Very Low Income 1Bdr</th>
+                                                    <th># Very Low Income 2Bdr</th>
+                                                    <th># Very Low Income 3Bdr</th>
+                                                    <th># Low Income 1Bdr</th>
+                                                    <th># Low Income 2Bdr</th>
+                                                    <th># Low Income 3Bdr</th>
+                                                    <th># Moderate Income 1Bdr</th>
+                                                    <th># Moderate Income 2Bdr</th>
+                                                    <th># Moderate Income 3Bdr</th>
+                                                    <th># Very Low Income SSN</th>
+                                                    <th># Low Income SSN</th>
+                                                    <th># Moderate Income SSN</th>
+                                                    <th># Family Units for Sale</th>
+                                                    <th># Family Units for Rent</th>
+                                                    <th># Senior Units for Sale</th>
+                                                    <th># Senior Units for Rent</th>
+                                                    <th># SSN Units for Sale</th>
+                                                    <th># SSN Units for Rent</th>
+                                                    <th># Units Total</th>
+                                                    <th># Family Units</th>
+                                                    <th># Senior Units</th>
+                                                    <th># SSN Units</th>
+                                                    <th># 1Bdr Units</th>
+                                                    <th># 2Bdr Units</th>
+                                                    <th># 3Bdr Units</th>
                                                 </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            <tbody>
+                                                {% for row in rows %}
+                                                    <tr>
+                                                        <td style="vertical-align:middle">
+                                                            <button form='{{row[0]}}' class='btn btn-primary'>Delete</button>
+                                                        </td>
+                                                        <!-- {% set row_nums = [4] %}
+                                                        {% for i in range(row|length) %}
+                                                        {% endfor %} -->
+                                                        {% for i in range(row|length) %}
+                                                            <td style="vertical-align:middle" align="center">
+                                                                
+                                                                {% set row_nums = (row[i] | string) | length / 20 + 1 %}
+                                                                <textarea placeholder='{{row[i]}}' form='main' name='{{row[0]}};{{i}}' style="text-align-last:center;resize:none;border:none;overflow:hidden" rows = {{row_nums}} cols={{(col_list | sort)[0]}} name="bob" oninput='this.style.height = this.scrollHeight + "px"'>{{row[i]}}</textarea>
+                                                            </td>
+                                                        {% endfor %}
+                                                        
+                                                    </tr>
+                                                {% endfor %}
+                                                <script>
+                                                    $('textarea').autoResize();
+                                                </script>
+                                            </tbody>
+                                        </table>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -220,5 +243,9 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="static/assets/demo/datatables-demo.js"></script>
+        <script>
+            const row0 = []
+            // for col in row -> add event listener -> onchange -> then update corresponding array element
+        </script>
     </body>
 </html>

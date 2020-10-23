@@ -157,6 +157,27 @@ def edit_table(form, listingid):
     database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
 
+
+def edit_tables(record, listingid):
+    mapsObj = None
+    if 'address' in record:
+        record['addresses'] = record['address']
+        record['address'] = parse_address(record['address'])
+   
+    record['listingid'] = listingid
+    # deletelist = []
+    # for column, value in record.items():
+    #     if value == '':
+    #         deletelist.append(column)
+    # for i in deletelist:
+    #     del record[i]
+
+    database = Database()
+    database.connect()
+    database.edit_record(record, mapsObj)
+    database.disconnect()
+# ----------------------------------------------------------------------------------------------------------------------
+
 def get_coords(changed_addresses):
     database = Database()
     database.connect()
