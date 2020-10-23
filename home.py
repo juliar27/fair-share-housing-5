@@ -7,12 +7,14 @@ from data.download import download
 from form import AddForm
 from werkzeug.datastructures import MultiDict
 from threading import Thread
+from rq import Queue
+from worker import conn
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
 app.config['SECRET_KEY'] = 'ausdhfaiuhvizizuhfsi'
-
+q = Queue(connection=conn)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -166,9 +168,10 @@ def show_uploaded_post():
                 return redirect(possible_redirect)
         else:
             return redirect(url_for('show_upload_error'))
-    thread = Thread(target=get_coords, args=(changed_addresses,))
-    thread.daemon = True
-    thread.start()
+    # thread = Thread(target=get_coords, args=(changed_addresses,))
+    # thread.daemon = True
+    # thread.start()
+    q.enqueue(get_coords, changed_addresses)
    # t = render_template('site/uploaded.html')
     return redirect('/admin')
 
