@@ -56,53 +56,161 @@
           	<p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span> <span>Listings <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">Listings</h1>
           </div>
+
         </div>
       </div>
     </section>
 
-        <main>
-            <div class="container-fluid">
-                <h1 class="mt-4"></h1>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th><i class="fas fa-home"></i>Address</th>
-                                        <th>Municipality</th>
-                                        <th>County</th>
-                                        <th>Status</th>
-                                        <th>1Bdr Units</th>
-                                        <th>2Bdr Units</th>
-                                        <th>3Bdr Units</th>
-                                        <th>Units Total</th>
-                                        <th>Family Units</th>
-                                        <th>Senior Units</th>
-                                        <th>SSN Units</th>
-                                    </tr>
-                                <tbody>
-                                  {% for i in range(rows|length): %}
-                                  <tr>
-                                    <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}'>{{rows[i][0]}}</a></td>
-                                    {% for j in range(1, rows[i]|length): %}
-                                    {% if 'None' in rows[i][j]|string: %}
-                                    <td> 0 </td>
-                                    {% else: %}
-                                    <td>  {{ rows[i][j] }} </td>
-                                    {% endif %}
-                                    {% endfor %}
-                                 </tr>
-                                 {% endfor %}
-                                </tbody>
-                              </table>
-                          </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="search-wrap-1 ftco-animate p-4">
+            <form action="/listings" class="search-property-1">
+              <div class="row">
+
+                <div class="col-lg align-items-end">
+                  <div class="form-group">
+                    <label for="#">Ownership Type</label>
+                    <div class="form-field">
+                      <div class="select-wrap">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="" id="" class="form-control">
+                          <option value="" style="background-color: #21243d;">No Preference</option>
+                          <option value="" style="background-color: #21243d;">Rent</option>
+                          <option value="" style="background-color: #21243d;">Buy</option>
+                        </select>
                       </div>
+                    </div>
                   </div>
                 </div>
-              </main>
 
-          {% include 'site/footer.html' %}
+                <div class="col-lg align-items-end">
+                  <div class="form-group">
+                    <label for="#">Property Type</label>
+                    <div class="form-field">
+                      <div class="select-wrap">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="" id="" class="form-control">
+                          <option value="" style="background-color: #21243d;">No Preference</option>
+                          <option value="" style="background-color: #21243d;">Family</option>
+                          <option value="" style="background-color: #21243d;">Senior</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg align-items-end">
+                  <div class="form-group">
+                    <label for="#"># Bedrooms</label>
+                    <div class="form-field">
+                      <div class="select-wrap">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="" id="" class="form-control">
+                          <option value="" style="background-color: #21243d;">No Preference</option>
+                          <option value="" style="background-color: #21243d;">1</option>
+                          <option value="" style="background-color: #21243d;">2</option>
+                          <option value="" style="background-color: #21243d;">3+</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg align-items-end">
+                  <div class="form-group">
+                    <label for="#">Income Level</label>
+                    <div class="form-field">
+                      <div class="select-wrap">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="" id="" class="form-control">
+                          <option value="" style="background-color: #21243d;">No Preference</option>
+                          <option value="" style="background-color: #21243d;">Very Low Income</option>
+                          <option value="" style="background-color: #21243d;">Low Income</option>
+                          <option value="" style="background-color: #21243d;">Moderate Income</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg align-items-end">
+                      <div class="form-group">
+                        <label for="#">Town</label>
+                        <div class="form-field">
+                          <div class="icon"><span class="fa fa-search"></span></div>
+                          <input type="text" class="form-control" placeholder="Location">
+                        </div>
+                      </div>
+                </div>
+                <div class="col-lg align-items-end">
+                      <div class="form-group">
+                        <label for="#">County</label>
+                        <div class="form-field">
+                          <div class="icon"><span class="fa fa-search"></span></div>
+                          <input type="text" class="form-control" placeholder="County">
+                        </div>
+                      </div>
+                </div>
+
+                <div class="col-lg align-self-end">
+                  <div class="form-group">
+                    <div class="form-field">
+                      <input type="submit" value="Search" class="form-control btn btn-primary">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="container-fluid">
+          <h1 class="mt-4"></h1>
+          <div class="card mb-4">
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                              <tr>
+                                  <th><i class="fas fa-home"></i>Address</th>
+                                  <th>Municipality</th>
+                                  <th>County</th>
+                                  <th>Status</th>
+                                  <th>1Bdr Units</th>
+                                  <th>2Bdr Units</th>
+                                  <th>3Bdr Units</th>
+                                  <th>Units Total</th>
+                                  <th>Family Units</th>
+                                  <th>Senior Units</th>
+                                  <th>SSN Units</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for i in range(rows|length): %}
+                            <tr>
+                              <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}&coords={{rows[i][1]}}'>{{rows[i][0]}}</a></td>
+                              {% for j in range(2, rows[i]|length): %}
+                              {% if 'None' in rows[i][j]|string: %}
+                              <td> 0 </td>
+                              {% else: %}
+                              <td>  {{ rows[i][j] }} </td>
+                              {% endif %}
+                              {% endfor %}
+                           </tr>
+                           {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </main>
+
+      {% include 'site/footer.html' %}
 
   </body>
 </html>

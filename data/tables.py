@@ -7,7 +7,7 @@ def get_listings():
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-    stmt = "SELECT listings.listingid, addresses.address, cities.municipality, counties.county, listings.status, listings.br1," \
+    stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
            " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
            "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
            "listings.municode = cities.municode AND cities.county = counties.county"
@@ -24,7 +24,7 @@ def get_listings():
 
     return rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
- 
+
 def get_row(listingid):
     database = Database()
     database.connect()
@@ -50,7 +50,7 @@ def get_row(listingid):
     result['li2'] = row[10]
     result['li3'] = row[11]
     result['m1'] = row[12]
-    result['m2'] = row[13] 
+    result['m2'] = row[13]
     result['m3'] = row[14]
     result['vssn'] = row[15]
     result['lssn'] = row[16]
