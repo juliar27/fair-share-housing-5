@@ -347,6 +347,30 @@ h1, h2, h3, h4, h5,
 			height: 100px !important;
 		}
 	}
+	&.hero-wrap-4{
+		height: 600px !important;
+		position: relative;
+		.overlay{
+			width: 100%;
+			opacity: .6;
+			height: 600px;
+		}
+		.slider-text{
+			height: 600px !important;
+		}
+	}
+	&.hero-wrap-5{
+		height: 350px !important;
+		position: relative;
+		.overlay{
+			width: 100%;
+			opacity: .8;
+			height: 350px;
+		}
+		.slider-text{
+			height: 350px !important;
+		}
+	}
 }
 .slider-text{
 	height: 850px;
