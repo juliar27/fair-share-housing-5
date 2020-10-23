@@ -8380,6 +8380,24 @@ h1, h2, h3, h4, h5,
       height: 100px; }
     .hero-wrap.hero-wrap-3 .slider-text {
       height: 100px !important; }
+  .hero-wrap.hero-wrap-4 {
+    height: 600px !important;
+    position: relative; }
+    .hero-wrap.hero-wrap-4 .overlay {
+      width: 100%;
+      opacity: .6;
+      height: 600px; }
+    .hero-wrap.hero-wrap-4 .slider-text {
+      height: 600px !important; }
+  .hero-wrap.hero-wrap-5 {
+    height: 350px !important;
+    position: relative; }
+    .hero-wrap.hero-wrap-5 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 350px; }
+    .hero-wrap.hero-wrap-5 .slider-text {
+      height: 350px !important; }
 
 .slider-text {
   height: 850px; }
