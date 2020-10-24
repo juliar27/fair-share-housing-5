@@ -83,16 +83,16 @@
             <div id="layoutSidenav_content">
                 <main>
 
-<?php
+            <?php
 
-session_start();
-if (!isset($_SESSION['count'])) {
-    $_SESSION['count'] = 0;
-}
-$_SESSION['count']++;
+            session_start();
+            if (!isset($_SESSION['count'])) {
+                $_SESSION['count'] = 0;
+            }
+            $_SESSION['count']++;
 
-echo "Hello #" . $_SESSION['count'];
->
+            echo "Hello #" . $_SESSION['count'];
+            
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
