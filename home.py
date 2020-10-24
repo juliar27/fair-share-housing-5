@@ -43,7 +43,17 @@ def show_about():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/map')
 def show_map():
-    t = render_template('site/map.html')
+    rows, ids = get_listings()
+    x = []
+    for i in range(len(rows)):
+        coords = rows[i][1].split(',')
+        x.append([float(coords[0]), float(coords[1])])
+#    x = [[40.0, 40.0], [40.9034902, -74.6402976], [41.0340749, -74.1058578], [40.90802130000001, -74.4261363], [40.895669, -74.16049199999999]]
+#    ans = {}
+#    for x in rows:
+#        coords = x[1].split(',')
+#        ans[coords[0]] = coords[1]
+    t = render_template('site/map.html', ro=x)
     return make_response(t)
 
 
