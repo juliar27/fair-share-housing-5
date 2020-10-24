@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
+{% if LOGGED_IN != "1": %}
+<script>
+    window.location = "/login";
+</script>
+
+  {% else: %}
+
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -130,4 +138,6 @@
         <script src="static/assets/demo/chart-bar-demo.js"></script>
         <script src="static/assets/demo/chart-pie-demo.js"></script>
     </body>
+ {% endif %}
+
 </html>

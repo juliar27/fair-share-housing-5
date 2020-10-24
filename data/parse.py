@@ -663,13 +663,13 @@ def parse_file(filename):
 
     else:
         database.disconnect()
-        return False, url_for('show_parse_error', col=col, rand=rand, insert=[])
+        return False, url_for('show_parse_error', col=col, rand=rand, insert=[]), False
 
     database.disconnect()
     if errors_for_insert == []:
         return True, possible_redirect, changed_addresses
     else:
-        return False, url_for('show_parse_error', col=[], rand=[], insert=errors_for_insert)
+        return False, url_for('show_parse_error', col=[], rand=[], insert=errors_for_insert), False
 # ----------------------------------------------------------------------------------------------------------------------
 
 

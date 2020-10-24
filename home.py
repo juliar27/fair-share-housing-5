@@ -119,7 +119,8 @@ def show_register():
 @app.route('/tables')
 def show_tables():
     rows = get_tables()
-    t = render_template('site/tables.html', rows=rows)
+    LOGGED_IN  = request.cookies.get('LOGGED_IN')
+    t = render_template('site/tables.html', rows=rows, LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 
@@ -129,7 +130,9 @@ def show_tables():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/upload')
 def show_upload():
-    t = render_template('site/upload.html')
+    LOGGED_IN  = request.cookies.get('LOGGED_IN')
+    print(LOGGED_IN)
+    t = render_template('site/upload.html', LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 
@@ -138,11 +141,11 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
-
+    LOGGED_IN  = request.cookies.get('LOGGED_IN')
     insert = request.args.getlist('insert')
     col = request.args.getlist('col')
     rand = request.args.getlist('rand')
-    t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand)
+    t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 
@@ -151,7 +154,8 @@ def show_parse_error():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/upload-error')
 def show_upload_error():
-    t = render_template('site/upload-error.html')
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+    t = render_template('site/upload-error.html', LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 
@@ -161,8 +165,10 @@ def show_upload_error():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/uploaded', methods=['GET'])
 def show_uploaded_get():
-    return show_upload()
-
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+    response = make_response(redirect('/upload'))
+    response.set_cookie('LOGGED_IN', LOGGED_IN)
+    return response
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -170,23 +176,35 @@ def show_uploaded_get():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/uploaded', methods=['POST'])
 def show_uploaded_post():
-    if request.method == "POST":
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
 
+    if request.method == "POST":
         if request.files['file'].filename != '':
             filename = request.files['file']
 
             flag, possible_redirect, changed_addresses = parse_file(filename)
 
             if not flag:
-                return redirect(possible_redirect)
+                response = make_response(redirect(possible_redirect))
+                response.set_cookie('LOGGED_IN', "1")
+                return response
         else:
-            return redirect(url_for('show_upload_error'))
+
+            response = make_response(redirect("/upload-error"))
+            response.set_cookie('LOGGED_IN', LOGGED_IN)
+            return response
+
     # thread = Thread(target=get_coords, args=(changed_addresses,))
     # thread.daemon = True
     # thread.start()
     q.enqueue(get_coords, changed_addresses)
-   # t = render_template('site/uploaded.html')
-    return redirect('/admin')
+
+    response = make_response(redirect("/admin"))
+    response.set_cookie('LOGGED_IN', LOGGED_IN)
+    return response
+
+    # t = render_template('site/uploaded.html')
+    # return redirect('/admin')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -194,8 +212,10 @@ def show_uploaded_post():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/download')
 def show_download():
-    t = render_template('site/download.html')
-    return make_response(t)
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+    t = render_template('site/download.html', LOGGED_IN=LOGGED_IN)
+    response = make_response(t)
+    return response
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -204,11 +224,18 @@ def show_download():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/downloaded', methods=['GET','POST'])
 def show_downloaded():
+
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
     if request.method == "POST":
         download('out.xls')
         return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
     else:
-        return redirect('/download')
+
+        response = make_response(redirect("/download"))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+        # return redirect('/download')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -216,12 +243,19 @@ def show_downloaded():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/clear', methods=['GET', 'POST'])
 def show_clear():
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+
     database = Database()
     database.connect()
     database.clear()
     database.disconnect()
    # t = render_template('site/cleaned.html')
-    return redirect('/admin')# make_response(t)
+
+    response = make_response(redirect('/admin'))
+    response.set_cookie('LOGGED_IN', LOGGED_IN)
+    return response
+
+    # return redirect('/admin')# make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -229,8 +263,10 @@ def show_clear():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/add', methods=['GET', 'POST'])
 def show_add():
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+
     form = AddForm()
-    t = render_template('site/add.html', form=form)
+    t = render_template('site/add.html', form=form, LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 
@@ -248,8 +284,15 @@ def show_add():
 #     return make_response(t)
 
 def edit():
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+
     if request.method == 'GET':
-        return redirect('/tables')
+        response = make_response(redirect('/tables'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+
+        # return redirect('/tables')
     else:
         lookup = {0:'listingid', 1:'name', 2:'developer', 3:'status',
         4:'compliance', 5:'address', 6:'municipality', 7:'county', 8:'municode',
@@ -273,8 +316,13 @@ def edit():
             records[current[0]][lookup[int(current[1])]] = value
         for record in records:
             edit_tables(records[record], record)
-        return redirect('/tables')
-         
+
+        response = make_response(redirect('/tables'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+        # return redirect('/tables')
+
 
 
 
@@ -283,43 +331,82 @@ def edit():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/added', methods=['GET', 'POST'])
 def show_added():
+
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+
+
     if request.method == "POST":
         form = request.form
         add_to_table(form)
         #t = render_template('site/added.html')
-        return redirect('/admin')#make_response(t)
+        # return redirect('/admin')#make_response(t)
+
+        response = make_response(redirect('/admin'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
     else:
-        return redirect('/add')
+
+        response = make_response(redirect('/add'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+        # return redirect('/add')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/edited', methods=['GET', 'POST'])
 def show_edited():
+
+    LOGGED_IN = request.cookies.get('LOGGED_IN')
+
     if request.method == "POST":
         form = request.form
         edit_table(form, request.args.get('id'))
         #t = render_template('site/edited.html')
-        return redirect('/tables')
+        response = make_response(redirect('/tables'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+
+        # return redirect('/tables')
         #make_response(t)
     else:
         if request.args.get('id'):
-            return redirect('/edit?id=' + request.args.get('id'))
-        return redirect('/tables')
+            response = make_response(redirect('/edit?id=' + request.args.get('id')))
+            response.set_cookie('LOGGED_IN', LOGGED_IN)
+            return response
+
+            # return redirect('/edit?id=' + request.args.get('id'))
+
+        # return redirect('/tables')
+        response = make_response(redirect('/tables'))
+        response.set_cookie('LOGGED_IN', LOGGED_IN)
+        return response
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/deleted', methods=['GET', 'POST'])
 def show_deleted():
+    response.set_cookie('LOGGED_IN', LOGGED_IN)
+
     if request.method == "POST":
         database = Database()
         database.connect()
-        print(request.args.get('id'))
+        # print(request.args.get('id'))
         database.delete_record(request.args.get('id'))
         database.disconnect()
         #t = render_template('site/deleted.html')
-        return redirect('/tables')
+
+
+        # return redirect('/tables')
         #make_response(t)
-    else:
-        return redirect('/tables')
+    # else:
+        # return redirect('/tables')
+    response = make_response(redirect('/tables'))
+    response.set_cookie('LOGGED_IN', LOGGED_IN)
+    return response
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -332,7 +419,11 @@ def show_create():
         return make_response(t)
 
     else:
-        return show_admin()
+        response = make_response(redirect('/admin'))
+        response.set_cookie('LOGGED_IN', "1")
+        return response
+
+        # return redirect(url_for('show_admin'))
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -343,13 +434,23 @@ def show_check():
     flag = check_account(request.form.to_dict())
 
     if not flag:
-        # error message needs to put here
-        t = render_template('site/login.html')
-        return make_response(t)
+        t = render_template('site/login.html', LOGGED_IN="0")
+        response = make_response(t)
+        return response
 
     else:
-        return redirect(url_for('show_admin'))
+        response = make_response(redirect('/admin'))
+        response.set_cookie('LOGGED_IN', "1")
+        return response
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/logout', methods = ['POST', 'GET'])
+def show_logout():
+    response = make_response(redirect('/admin'))
+    response.set_cookie('LOGGED_IN', "0")
+    return response
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -358,7 +459,8 @@ def show_check():
 @app.route('/admin')
 def show_admin():
     rows = get_tables()
-    t = render_template('site/admin.html', rows=rows)
+    LOGGED_IN  = request.cookies.get('LOGGED_IN')
+    t = render_template('site/admin.html', rows=rows, LOGGED_IN=LOGGED_IN)
     return make_response(t)
 
 

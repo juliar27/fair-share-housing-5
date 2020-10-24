@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
+{% if LOGGED_IN != "1": %}
+<script>
+    window.location = "/login";
+</script>
+  {% else: %}
+
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -33,7 +40,7 @@
                         <a class="dropdown-item" href="#">Settings</a>
                         <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="login">Logout</a>
+                        <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -149,4 +156,6 @@
         <script src="static/assets/demo/chart-bar-demo.js"></script>
         <script src="static/assets/demo/chart-pie-demo.js"></script>
     </body>
+ {% endif %}
+
 </html>
