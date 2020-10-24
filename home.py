@@ -358,7 +358,7 @@ def show_check():
 @app.route('/admin')
 def show_admin():
     rows = get_tables()
-    t = render_template('site/admin.html', rows=rows)
+    t = render_template('site/admin.php', rows=rows)
     return make_response(t)
 
 
