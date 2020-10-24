@@ -132,76 +132,7 @@ if (isset($_SESSION['foo'])) {
 }
 
 ?>
-//                     <div class="container-fluid">
-//                         <h1 class="mt-4">Dashboard</h1>
-//
-//
-//                         <div class="card mb-4">
-//                             <div class="card-header">
-//                                 <i class="fas fa-table mr-1"></i>
-//                                 Current Listings
-//                             </div>
-//                             <div class="card-body">
-//                                 <div class="table-responsive">
-//                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-//                                         <thead>
-//                                             <tr>
-//                                                 <th>Listing ID</th>
-//                                                 <th>Program Name</th>
-//                                                 <th>Developer</th>
-//                                                 <th>Status</th>
-//                                                 <th>Compliance</th>
-//                                                 <th>Address</th>
-//                                                 <th>Municipality</th>
-//                                                 <th>County</th>
-//                                                 <th>Municipality Code</th>
-//                                                 <th>Region</th>
-//                                                 <th># Very Low Income 1Bdr</th>
-//                                                 <th># Very Low Income 2Bdr</th>
-//                                                 <th># Very Low Income 3Bdr</th>
-//                                                 <th># Low Income 1Bdr</th>
-//                                                 <th># Low Income 2Bdr</th>
-//                                                 <th># Low Income 3Bdr</th>
-//                                                 <th># Moderate Income 1Bdr</th>
-//                                                 <th># Moderate Income 2Bdr</th>
-//                                                 <th># Moderate Income 3Bdr</th>
-//                                                 <th># Very Low Income SSN</th>
-//                                                 <th># Low Income SSN</th>
-//                                                 <th># Moderate Income SSN</th>
-//                                                 <th># Family Units for Sale</th>
-//                                                 <th># Family Units for Rent</th>
-//                                                 <th># Senior Units for Sale</th>
-//                                                 <th># Senior Units for Rent</th>
-//                                                 <th># SSN Units for Sale</th>
-//                                                 <th># SSN Units for Rent</th>
-//                                                 <th># Units Total</th>
-//                                                 <th># Family Units</th>
-//                                                 <th># Senior Units</th>
-//                                                 <th># SSN Units</th>
-//                                                 <th># 1Bdr Units</th>
-//                                                 <th># 2Bdr Units</th>
-//                                                 <th># 3Bdr Units</th>
-//                                             </tr>
-//                                         </thead>
-//
-//                                         <tbody>
-//                                             {% for row in rows %}
-//                                                 <tr>
-//                                                     {% for i in range(row|length) %}
-//                                                     {% if i > 9 and 'None' in cell|string: %}
-//                                                     <td> 0 </td>
-//                                                     {% else: %}
-//                                                     <td> {{ row[i] }} </td>
-//                                                     {% endif %}
-//                                                     {% endfor %}
-//                                                 </tr>
-//                                             {% endfor %}
-//                                         </tbody>
-//                                     </table>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
+
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
