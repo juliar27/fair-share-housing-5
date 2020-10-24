@@ -85,25 +85,7 @@
 
  <?php
 
-// session_start();
-// if (!isset($_SESSION['count'])) {
-//  $_SESSION['count'] = 0;
-// }
-// $_SESSION['count']++;
-//
-// echo "Hello #" . $_SESSION['count'];
-
 require 'SharedConfigurations.php';
-
-// This example demonstrates how to leverage Predis to save PHP sessions on Redis.
-//
-// The value of `session.gc_maxlifetime` in `php.ini` will be used by default as the
-// the TTL for keys holding session data on Redis, but this value can be overridden
-// when creating the session handler instance with the `gc_maxlifetime` option.
-//
-// Note that this class needs PHP >= 5.4 but can be used on PHP 5.3 if a polyfill for
-// SessionHandlerInterface (see http://www.php.net/class.sessionhandlerinterface.php)
-// is provided either by you or an external package like `symfony/http-foundation`.
 
 if (!interface_exists('SessionHandlerInterface')) {
     die("ATTENTION: the session handler implemented by Predis needs PHP >= 5.4.0 or a polyfill ".
