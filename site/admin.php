@@ -92,7 +92,7 @@
             $_SESSION['count']++;
 
             echo "Hello #" . $_SESSION['count'];
-            
+?>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
