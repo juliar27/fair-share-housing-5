@@ -43,6 +43,7 @@ def check_account(user):
     cursor.execute(query)
 
     possible_password = cursor.fetchone()
+
     if possible_password:
         encrypted_password = possible_password[0]
 
@@ -51,12 +52,16 @@ def check_account(user):
         cursor.execute(query)
 
         if cursor.fetchone() is None:
-            ret = False
+            ret = False, False
         else:
-            ret = True
+            query = "SELECT id from users where email = " + "'" + email + "' ;;"
+            cursor.execute(query)
+            id = cursor.fetchone()
+
+            ret = True, id[0]
 
     else:
-        ret = False
+        ret = False, False
 
     database.disconnect()
     return ret

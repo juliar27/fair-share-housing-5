@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, send_file, session
+from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
+from flask_login import LoginManager, UserMixin, login_user, make_secure_token, logout_user
+
 from data.parse import parse_file, parse_address
 from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables
 from data.account import make_account, check_account
@@ -16,6 +18,52 @@ app._static_folder = 'static'
 app.config['SECRET_KEY'] = 'ausdhfaiuhvizizuhfsi'
 q = Queue(connection=conn)
 
+login = LoginManager(app)
+login.login_view = "\login"
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+class User(UserMixin):
+    def __init__(self, email, id, active=True):
+        self.id = id
+        self.email = email
+        self.active = active
+
+    def is_active(self):
+        return self.active
+
+    def is_authenticated(self):
+        # make_secure_token(self.email, key='secret_key')
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def get(self):
+        database = Database()
+        database.connect()
+        cursor = database._connection.cursor()
+        query = "SELECT email from users where id = " + "'" + str(self) + "';;"
+        cursor.execute(query)
+        email = cursor.fetchone()
+        database.disconnect()
+        return User(email[0], self, True)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@login.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -24,16 +72,6 @@ q = Queue(connection=conn)
 @app.route('/index')
 def show_home():
     t = render_template('site/index.html')
-    return make_response(t)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/about')
-def show_about():
-    t = render_template('site/about.html')
     return make_response(t)
 
 
@@ -119,10 +157,7 @@ def show_register():
 @app.route('/tables')
 def show_tables():
     rows = get_tables()
-    if 'LOGGED_IN' in session:
-        t = render_template('site/tables.html', rows=rows, LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/tables.html', rows=rows, LOGGED_IN="0")
+    t = render_template('site/tables.html', rows=rows, LOGGED_IN="0")
 
     return make_response(t)
 
@@ -133,11 +168,7 @@ def show_tables():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/upload')
 def show_upload():
-    if 'LOGGED_IN' in session:
-        t = render_template('site/upload.html',  LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/upload.html',  LOGGED_IN="0")
-
+    t = render_template('site/upload.html')
     return make_response(t)
 
 
@@ -150,10 +181,7 @@ def show_parse_error():
     col = request.args.getlist('col')
     rand = request.args.getlist('rand')
 
-    if 'LOGGED_IN' in session:
-        t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, LOGGED_IN="0")
+    t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand)
 
     return make_response(t)
 
@@ -164,10 +192,7 @@ def show_parse_error():
 @app.route('/upload-error')
 def show_upload_error():
 
-    if 'LOGGED_IN' in session:
-        t = render_template('site/upload-error.html', LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/upload-error.html', LOGGED_IN="0")
+    t = render_template('site/upload-error.html')
 
     return make_response(t)
 
@@ -213,10 +238,7 @@ def show_uploaded_post():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/download')
 def show_download():
-    if 'LOGGED_IN' in session:
-        t = render_template('site/download.html',  LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/download.html',  LOGGED_IN="0")
+    t = render_template('site/download.html')
 
     response = make_response(t)
     return response
@@ -260,10 +282,7 @@ def show_clear():
 def show_add():
 
     form = AddForm()
-    if 'LOGGED_IN' in session:
-        t = render_template('site/add.html', form=form, LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/add.html', form=form, LOGGED_IN="0")
+    t = render_template('site/add.html', form=form)
     return make_response(t)
 
 
@@ -382,25 +401,22 @@ def show_create():
 
     else:
         return redirect('/admin')
-        # return redirect(url_for('show_admin'))
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/check', methods=['POST'])
 def show_check():
-    flag = check_account(request.form.to_dict())
+    dict = request.form.to_dict()
+    flag, unique_id = check_account(dict)
 
     if not flag:
-        session['LOGGED_IN']  = "0"
-        t = render_template('site/login.html', LOGGED_IN=session['LOGGED_IN'])
+        t = render_template('site/login.html')
         response = make_response(t)
         return response
 
     else:
-        session['LOGGED_IN']  = "1"
-
+        login_user(User(dict['inputEmailAddress'], unique_id))
         return redirect('/admin')
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -408,7 +424,7 @@ def show_check():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/logout', methods = ['POST', 'GET'])
 def show_logout():
-    session.pop('LOGGED_IN', None)
+    logout_user()
     return redirect('/admin')
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -418,12 +434,7 @@ def show_logout():
 @app.route('/admin')
 def show_admin():
     rows = get_tables()
-
-    if 'LOGGED_IN' in session:
-        t = render_template('site/admin.html', rows=rows, LOGGED_IN=session['LOGGED_IN'])
-    else:
-        t = render_template('site/admin.html', rows=rows, LOGGED_IN="0")
-
+    t = render_template('site/admin.html', rows=rows)
     return make_response(t)
 
 

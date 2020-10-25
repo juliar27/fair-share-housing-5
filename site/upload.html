@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% if LOGGED_IN != "1": %}
+{% if not current_user.is_authenticated: %}
 <script>
     window.location = "/login";
 </script>
@@ -79,8 +79,8 @@
                      </div>
                  </div>
                  <div class="sb-sidenav-footer">
-                     <div class="small">Logged in as:</div>
-                     Test User
+                     <div class="small">Logged in as: </div>
+                        {{ current_user.email }}
                  </div>
              </nav>
 
