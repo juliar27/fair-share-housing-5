@@ -413,9 +413,7 @@ def show_check():
     flag, unique_id = check_account(dict)
 
     if not flag:
-        t = render_template('site/login.html')
-        response = make_response(t)
-        return response
+        return redirect('/login')
 
     else:
         login_user(User(dict['inputEmailAddress'], unique_id))
