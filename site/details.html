@@ -145,7 +145,6 @@
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                             <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
-                            <!-- for testings: <h2> {{lat}} {{long}} </h2> -->
                               <style>
                                 /* Set the size of the div element that contains the map */
                                 #map {
@@ -172,9 +171,9 @@
                               </script>
                           </div>
                           <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                            <table class="table table-bordered">
+                            <table class="table table-hover">
                               <h2> Units Available </h2>
-                              <thead>
+                              <thead class="thead-dark">
                                   <tr>
                                       <th></th>
                                       <th>1 Bedroom</th>
@@ -186,7 +185,7 @@
                               </thead>
                               <tbody>
                                   <tr>
-                                      <th>Very Low Income</th>
+                                      <th style="white-space: nowrap;" >Very Low Income</th>
                                       <td>{{row['vli1']}}</td>
                                       <td>{{row['vli2']}}</td>
                                       <td>{{row['vli3']}}</td>
@@ -224,9 +223,9 @@
                             </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                            <table class="table table-bordered">
+                            <table class="table table-hover">
                               <h2> Unit Types </h2>
-                                <thead>
+                                <thead class="thead-dark">
                                     <tr>
                                         <th></th>
                                         <th>Family</th>

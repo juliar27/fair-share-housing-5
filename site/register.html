@@ -26,6 +26,22 @@ button {
         <link href="static/css/styles-admin.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
+
+    <script>
+        function check_pass(input) {
+
+        const password1 = document.getElementById('inputPassword');
+        const password2 = document.getElementById('inputConfirmPassword');
+
+        if (password1.value === password2.value) {
+             password2.setCustomValidity('');
+        } else {
+            password2.setCustomValidity('Passwords must match');
+        }
+
+        }
+    </script>
+
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
@@ -42,53 +58,41 @@ button {
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-<!--                                                                                                                <label class="small mb-1" for="inputFirstName">First Name</label>-->
-<!--                                                        <input class="form-control py-4" id="inputFirstName" name="first_name" type="text" placeholder="Enter first name" />-->
-
                                                         <label class="small mb-1">First Name</label>
-                                                        <input class="form-control py-4" name="inputFirstName" type="text" placeholder="Enter first name" />
+                                                        <input class="form-control py-4" name="inputFirstName" type="text" placeholder="Enter first name" required/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Last Name</label>
-                                                        <input class="form-control py-4" name="inputLastName" type="text" placeholder="Enter last name" />
+                                                        <input class="form-control py-4" name="inputLastName" type="text" placeholder="Enter last name" required/>
 
-<!--                                                        <label class="small mb-1" for="inputLastName">Last Name</label>-->
-<!--                                                        <input class="form-control py-4" id="inputLastName" type="text" placeholder="Enter last name" />-->
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="small mb-1" >Email</label>
-                                                <input class="form-control py-4" name="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Enter email address" />
-
-<!--                                                <label class="small mb-1" for="inputEmailAddress">Email</label>-->
-<!--                                                <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Enter email address" />-->
+                                                <input class="form-control py-4" name="inputEmailAddress" type="email" pattern=".+@fairsharehousing.org" aria-describedby="emailHelp" placeholder="Enter email address"
+                                                oninvalid="this.setCustomValidity('Please enter a @fairsharehousing.org email.')" oninput="this.setCustomValidity('')" required />
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Password</label>
-                                                        <input class="form-control py-4" name="inputPassword" type="password" placeholder="Enter password" />
-
-<!--                                                        <label class="small mb-1" for="inputPassword">Password</label>-->
-<!--                                                        <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" />-->
+                                                        <input class="form-control py-4" name="inputPassword"  id="inputPassword"  type="password" placeholder="Enter password" required/>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Confirm Password</label>
-                                                        <input class="form-control py-4" name="inputConfirmPassword" type="password" placeholder="Confirm password" />
-
-<!--                                                        <label class="small mb-1" for="inputConfirmPassword">Confirm Password</label>-->
-<!--                                                        <input class="form-control py-4" id="inputConfirmPassword" type="password" placeholder="Confirm password" />-->
+                                                        <input class="form-control py-4" name="inputConfirmPassword" id="inputConfirmPassword" type="password" placeholder="Confirm password"   oninput="check_pass(this);" required/>
                                                     </div>
                                                 </div>
                                             </div>
                                                 <div class="form-group mt-4 mb-0">
                                                     <div class="btn btn-primary btn-block">
-                                                        <button type="submit">Create Account!</button>
+                                                        <button id="submit" type="submit">Create Account!</button>
                                                     </div>
                                                 </div>
                                         </form>
