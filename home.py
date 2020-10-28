@@ -189,13 +189,13 @@ def show_uploaded_get():
 def show_uploaded_post():
     if request.files['file'].filename != '':
         flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
+        q.enqueue(get_coords, changed_addresses)
 
         if not flag:
             return redirect(possible_redirect)
     else:
         return redirect('/upload-error')
 
-    q.enqueue(get_coords, changed_addresses)
 
     return redirect('/admin')
 
@@ -305,25 +305,6 @@ def show_autheticate():
     return make_response(t)
 # ----------------------------------------------------------------------------------------------------------------------
 
-
-# # ----------------------------------------------------------------------------------------------------------------------
-# @app.route('/edited', methods=['GET', 'POST'])
-# def show_edited():
-# i am going to send them a specific link, once they click on the link, we have to know it is them
-# and we have to update the database
-
-#     if request.method == "POST":
-#         form = request.form
-#         edit_table(form, request.args.get('id'))
-#         return redirect('/tables')
-#     else:
-#         if request.args.get('id'):
-#             return redirect('/edit?id=' + request.args.get('id'))
-#
-#         return redirect('/tables')
-#
-#
-# # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/create', methods=['POST'])
