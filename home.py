@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
-from py.account import make_account, check_account, account_get
+from py.account import make_account, check_account, account_get, authenticate
 from py.database import Database, get_tables, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables, clear, delete, coords
 from py.download import download
 from py.form import AddForm

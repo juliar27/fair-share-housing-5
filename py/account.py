@@ -103,6 +103,5 @@ def authenticate(id):
     cursor = database._connection.cursor()
     query = "update users set verified = not verified where id = " + "'" + id + "'" +  ";;"
     cursor.execute(query)
-    return ret
-
+    return 
 # ----------------------------------------------------------------------------------------------------------------------
