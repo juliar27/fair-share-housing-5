@@ -249,18 +249,6 @@ def edit():
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/added', methods=['GET', 'POST'])
-def show_added():
-    if request.method == "POST":
-        form = request.form
-        add_to_table(form)
-        return redirect('/admin')
-    else:
-        return redirect('/add')
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/edited', methods=['GET', 'POST'])
 def show_edited():
@@ -277,6 +265,20 @@ def show_edited():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/added', methods=['GET', 'POST'])
+def show_added():
+    if request.method == "POST":
+        form = request.form
+        add_to_table(form)
+        return redirect('/admin')
+    else:
+        return redirect('/add')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/deleted', methods=['GET', 'POST'])
 def show_deleted():
@@ -285,6 +287,43 @@ def show_deleted():
     return redirect('/tables')
 # ----------------------------------------------------------------------------------------------------------------------
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/verify', methods=['GET', 'POST'])
+def show_verify():
+    t = render_template('site/verify.html')
+    return make_response(t)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/authenticate', methods=['GET', 'POST'])
+def show_autheticate():
+    id = request.args.get('id')
+    authenticate(id)
+    t = render_template('site/authenticate.html')
+    return make_response(t)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# # ----------------------------------------------------------------------------------------------------------------------
+# @app.route('/edited', methods=['GET', 'POST'])
+# def show_edited():
+# i am going to send them a specific link, once they click on the link, we have to know it is them
+# and we have to update the database
+
+#     if request.method == "POST":
+#         form = request.form
+#         edit_table(form, request.args.get('id'))
+#         return redirect('/tables')
+#     else:
+#         if request.args.get('id'):
+#             return redirect('/edit?id=' + request.args.get('id'))
+#
+#         return redirect('/tables')
+#
+#
+# # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/create', methods=['POST'])
@@ -296,7 +335,7 @@ def show_create():
         return make_response(t)
 
     else:
-        return redirect('/admin')
+        return redirect('/verify')
 # ----------------------------------------------------------------------------------------------------------------------
 
 
