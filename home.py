@@ -159,7 +159,7 @@ def show_register():
 @app.route('/tables')
 def show_tables():
     rows = get_tables()
-    t = render_template('site/tables.html', rows=rows, LOGGED_IN="0")
+    t = render_template('site/tables.html', rows=rows)
 
     return make_response(t)
 
