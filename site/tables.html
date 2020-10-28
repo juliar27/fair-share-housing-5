@@ -104,12 +104,9 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-upload"></i></div>
                                 Upload Data
                             </a>
-                            <a class="nav-link" href="add">
-                                <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
-                                Add Data
-                            </a>
+
                             <a class="nav-link" href="tables">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
                                 Edit Data
                             </a>
                             <a class="nav-link" href="download">
@@ -138,12 +135,15 @@
                                         <input type='submit' value='Submit Changes' class='btn btn-primary'>
                                     </form>
                                 </td>
-                                {% for i in range(393) %}
+                                {% for i in range(210) %}
                                 <td></td>
                                 {% endfor %}
                                 <td>
                                     <button class='btn btn-primary' id='add-row'>Add Row</button>
                                 </td>
+                                {% for i in range(5) %}
+                                <td></td>
+                                {% endfor %}
                                 <td>
                                     <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
                                         <input type="submit" class="btn btn-primary" value="Delete All Listings" >

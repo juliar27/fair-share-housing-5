@@ -280,12 +280,12 @@ def show_clear():
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/add', methods=['GET', 'POST'])
-def show_add():
+# @app.route('/add', methods=['GET', 'POST'])
+# def show_add():
 
-    form = AddForm()
-    t = render_template('site/add.html', form=form)
-    return make_response(t)
+#     form = AddForm()
+#     t = render_template('site/add.html', form=form)
+#     return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
