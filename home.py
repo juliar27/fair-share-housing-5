@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
-from flask_login import LoginManager, UserMixin, login_user, make_secure_token, logout_user
-
+from flask_login import LoginManager, UserMixin, login_user, logout_user
 from data.parse import parse_file, parse_address
 from data.tables import get_tables, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables
 from data.account import make_account, check_account
@@ -17,7 +16,6 @@ app = Flask(__name__, template_folder='.')
 app._static_folder = 'static'
 app.config['SECRET_KEY'] = 'ausdhfaiuhvizizuhfsi'
 q = Queue(connection=conn)
-
 login = LoginManager(app)
 login.login_view = "\login"
 
@@ -37,7 +35,6 @@ class User(UserMixin):
         return self.active
 
     def is_authenticated(self):
-        # make_secure_token(self.email, key='secret_key')
         return True
 
     def is_anonymous(self):
