@@ -65,22 +65,32 @@ class Database:
     def add_record(self, record, mapsObj):
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
-
+        pruned = record.copy()
         for column, value in record.items():
             if column in ('municipality', 'county', 'region', 'address'):
+                if value == '':
+                    del pruned[column]
                 continue
-            stmt += column + ", "
+            
             if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
+                if value == '':
+                    del pruned[column]
+                    continue
+                stmt += column + ", "
                 values += "'" + double_up(value) + "', "
             else:
-                values += value + ", "
+                stmt += column + ", "
+                if value == '':
+                    values += "0,"
+                else:
+                    values += value + ", "
 
         stmt = stmt[:-2] + ") "
         values = values[:-2] + ")"
 
         cursor = self._connection.cursor()
         cursor.execute(stmt + values)
-        if "address" in record:
+        if "address" in pruned:
             # coordinates = "error"
             # if "county" in record:
             #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
@@ -88,7 +98,7 @@ class Database:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address),"40.0,40.0")
                 cursor.execute(stmt)
-        if "municode" in record:
+        if "municode" in pruned:
             stmt = "SELECT * FROM cities WHERE municode = " + record['municode']
             cursor.execute(stmt)
 
@@ -98,7 +108,7 @@ class Database:
                        + double_up(record['county']) + "')"
                 cursor.execute(stmt)
 
-        if "county" in record and "region" in record:
+        if "county" in pruned and "region" in pruned:
             stmt = "SELECT * FROM counties WHERE county = '" + double_up(record['county']) + "'"
             cursor.execute(stmt)
 

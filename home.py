@@ -256,7 +256,7 @@ def edit():
             value = form[item]
             if int(current[1]) > 9 and form[item] == 'None':
                 value = '0'
-            if value == rows[int(current[0]) - 1][int(current[1])]:
+            if int(current[0]) <= len(rows) and value == rows[int(current[0]) - 1][int(current[1])]:
                 continue
             if not current[0] in records:
                 records[current[0]] = {}

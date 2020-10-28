@@ -174,7 +174,7 @@ def edit_tables(record, listingid):
 
     database = Database()
     database.connect()
-    database.edit_record(record, mapsObj)
+    database.insert(record, mapsObj)
     database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
 

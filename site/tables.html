@@ -135,6 +135,9 @@
                                 <td></td>
                                 {% endfor %}
                                 <td>
+                                    <button class='btn btn-primary' id='add-row'>Add Row</button>
+                                </td>
+                                <td>
                                     <form action="/clear" method="POST" onsubmit="return confirm('Are you sure you want to delete all listings? This cannot be undone.');">
                                         <input type="submit" class="btn btn-primary" value="Delete All Listings" >
                                     </form>
@@ -213,9 +216,6 @@
                                                         
                                                     </tr>
                                                 {% endfor %}
-                                                <script>
-                                                    $('textarea').autoResize();
-                                                </script>
                                             </tbody>
                                         </table>
                                     </div>
