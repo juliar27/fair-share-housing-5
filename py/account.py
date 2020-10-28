@@ -1,5 +1,14 @@
-from data.database import Database
+from py.database import Database
 
+def account_get(userid):
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    query = "SELECT email from users where id = " + "'" + str(userid) + "';;"
+    cursor.execute(query)
+    email = cursor.fetchone()
+    database.disconnect()
+    return email[0]
 
 # ----------------------------------------------------------------------------------------------------------------------
 def make_account(user):

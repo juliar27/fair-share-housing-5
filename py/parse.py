@@ -1,5 +1,5 @@
 import xlrd
-from data.database import Database
+import py.database
 from sys import argv
 from flask import redirect, url_for
 from googlemaps import Client as GoogleMaps
@@ -652,7 +652,7 @@ def parse_file(filename):
     wb = xlrd.open_workbook(file_contents=filename.read())
     sheet = wb.sheet_by_index(0)
 
-    database = Database()
+    database = py.database.Database()
     database.connect()
 
     col, rand, listings = get_listings(sheet, database)
