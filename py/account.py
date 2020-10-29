@@ -75,22 +75,22 @@ def check_account(user):
         cursor.execute(query)
 
         if cursor.fetchone() is None:
-            ret = False, False
+            ret = False, False, False
         else:
             query = "SELECT verified from users where email = " + "'" + email + "' ;;"
             cursor.execute(query)
             result = cursor.fetchone()[0]
             if not result:
-                ret = False, False
+                ret = False, False, True
             else:
                 query = "SELECT id from users where email = " + "'" + email + "' ;;"
                 cursor.execute(query)
                 id = cursor.fetchone()
 
-                ret = True, id[0]
+                ret = True, id[0], False
 
     else:
-        ret = False, False
+        ret = False, False, False
 
     database.disconnect()
     return ret
