@@ -1,6 +1,7 @@
 from py.database import Database
 from py.auth import auth
 
+# ----------------------------------------------------------------------------------------------------------------------
 def account_get(userid):
     database = Database()
     database.connect()
@@ -13,6 +14,7 @@ def account_get(userid):
         return email[0]
     else:
         return None
+# ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 def make_account(user):
@@ -42,11 +44,7 @@ def make_account(user):
     database.disconnect()
 
     link = "fairsharehousing.herokuapp.com/authenticate?id=" + id[0]
-# return redirect('/edit?id=' + request.args.get('id'))
-
     auth(email, link)
-
-
     return ret
 
 
