@@ -47,7 +47,3 @@ def auth(receiver_email, link):
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
-
-# if __name__ == "__main__":
-#
-#      auth("mbeshai@princeton.edu", "google.com")
