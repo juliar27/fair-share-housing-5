@@ -111,7 +111,7 @@
         					</section>
         					<section class="4u">
         						<span class="description"><span class="far fa-address-book" style="color: #21243d"></span></span>
-        						<h2>Contact</h2>
+        						<h2>Program</h2>
         						<p>Program Name: {{row['name']}}</p>
                                 <p>Developer:
                                 {% if row['developer'] %}
@@ -136,14 +136,15 @@
                     <div class="row">
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Explore Area</a>
-                          <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Units Available</a>
-                          <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Unit Types</a>
+                          <a class="nav-link active" id="v-pills-map-tab" data-toggle="pill" href="#v-pills-map" role="tab" aria-controls="v-pills-map" aria-selected="true">Explore Area</a>
+                          <a class="nav-link" id="v-pills-unitsavails-tab" data-toggle="pill" href="#v-pills-unitsavail" role="tab" aria-controls="v-pills-unitsavail" aria-selected="false">Units Available</a>
+                          <a class="nav-link" id="v-pills-types-tab" data-toggle="pill" href="#v-pills-types" role="tab" aria-controls="v-pills-types" aria-selected="false">Unit Types</a>
+                          <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact Information</a>
                         </div>
                       </div>
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="tab-content" id="v-pills-tabContent">
-                          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                          <div class="tab-pane fade show active" id="v-pills-map" role="tabpanel" aria-labelledby="v-pills-map-tab">
                             <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
                               <style>
                                 /* Set the size of the div element that contains the map */
@@ -162,7 +163,7 @@
                                   // The map, centered at princeton
                                   var map = new google.maps.Map(
                                       document.getElementById('map'), {zoom: 16, center: loc});
-                                  // The marker, positioned at princeton
+                                  // The marker, positioned at the location
                                   var marker = new google.maps.Marker({position: loc, map: map});
                                 }
                               </script>
@@ -170,7 +171,7 @@
                               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ&callback=initMap">
                               </script>
                           </div>
-                          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                          <div class="tab-pane fade" id="v-pills-unitsavail" role="tabpanel" aria-labelledby="v-pills-unitsavail-tab">
                             <table class="table table-hover">
                               <h2> Units Available </h2>
                               <thead class="thead-dark">
@@ -222,7 +223,7 @@
                               </tbody>
                             </table>
                           </div>
-                          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                          <div class="tab-pane fade" id="v-pills-types" role="tabpanel" aria-labelledby="v-pills-types-tab">
                             <table class="table table-hover">
                               <h2> Unit Types </h2>
                                 <thead class="thead-dark">
@@ -259,6 +260,9 @@
                                     </tr>
                                 </tbody>
                             </table>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
+                            <h2> Admin Agent Stuff here </h2>
                           </div>
                         </div>
                       </div>
