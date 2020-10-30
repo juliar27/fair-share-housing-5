@@ -638,7 +638,8 @@ def insert(database, records):
             changed_addr = database.insert(records[listings], mapsObj)
             if changed_addr:
                 changed_addresses.append(records[listings]['listingid'])
-        except:
+        except Exception as e:
+            print(str(e))
             errors_for_insert.append(listings)
 
     return errors_for_insert, records, changed_addresses

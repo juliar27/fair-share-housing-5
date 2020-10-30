@@ -8,7 +8,7 @@ listings:
 listingid | name | developer | status | compliance | municode | proposed | 
 completed | v1 | v2 | v3 | l1 | l2 | l3 | m1 | m2 | m3 | vssn | lssn | mssn | 
 famsale | famrent | srsale | srrent | ssnsale | ssnrent | total | family | sr |
-ssn | br1 | br2 | br3
+ssn | br1 | br2 | br3 | addresses | agent
 
 listingscontacts:
 listingid | contactid

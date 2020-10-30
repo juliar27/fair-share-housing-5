@@ -74,7 +74,7 @@ class Database:
                     del pruned[column]
                 continue
 
-            if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
+            if column in ("compliance", 'name', 'developer', 'status', 'addresses', 'agent'):
                 if value == '':
                     del pruned[column]
                     continue
@@ -151,7 +151,7 @@ class Database:
             if column in ('municipality', 'county', 'region', 'address'):
                 continue
             stmt += column + " = "
-            if column in ("compliance", 'name', 'developer', 'status', 'addresses'):
+            if column in ("compliance", 'name', 'developer', 'status', 'addresses', 'agent'):
                 stmt += "'" + double_up(value) + "', "
             else:
                 stmt += value + ", "
