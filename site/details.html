@@ -31,7 +31,7 @@
 
 .details-container {
     width: 100%;
-    background: #d5deed;
+    background: #21243d;
   }
 .\34 u {
       width: 25%;
@@ -105,15 +105,15 @@
         			<div class="container">
         				<div class="row">
         					<section class="4u">
-        						<span class="description"><span class="fas fa-map-pin" style="color: #21243d"></span></span>
-        						<h2>Address</h2>
-        						<p>{{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </p>
+        						<span class="description"><span class="fas fa-map-pin" style="color: #24A148"></span></span>
+        						<h2 style="color: #fff">Address</h2>
+        						<p style="color: #fff">{{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </p>
         					</section>
         					<section class="4u">
-        						<span class="description"><span class="far fa-address-book" style="color: #21243d"></span></span>
-        						<h2>Program</h2>
-        						<p>Program Name: {{row['name']}}</p>
-                                <p>Developer:
+        						<span class="description"><span class="far fa-address-book" style="color: #24A148"></span></span>
+        						<h2 style="color: #fff">Program</h2>
+        						<p style="color: #fff">Program Name: {{row['name']}}</p>
+                                <p style="color: #fff">Developer:
                                 {% if row['developer'] %}
                                     {{row['developer']}}
                                 {% else: %}
@@ -121,10 +121,10 @@
                                 {% endif %} </p>
         					</section>
         					<section class="4u">
-        						<span class="description"><span class="fas fa-list" style="color: #21243d"></span></span>
-        						<h2>More Details</h2>
-                                <p>Status: {{row['status']}}</p>
-                                <p>Compliance Mechanism: {{row['compliance']}} </p>
+        						<span class="description"><span class="fas fa-list" style="color: #24A148"></span></span>
+        						<h2 style="color: #fff">More Details</h2>
+                                <p style="color: #fff">Status: {{row['status']}}</p>
+                                <p style="color: #fff">Compliance Mechanism: {{row['compliance']}} </p>
         					</section>
         				</div>
         			</div>
