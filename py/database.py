@@ -490,10 +490,15 @@ def edit_tables(record, listingid):
 def coords():
     rows, ids = get_listings()
     x = []
+    addressInfo = []
     for i in range(len(rows)):
+        addr = str(rows[i][0])
+        fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
+        print(fullAddr)
         coords = rows[i][1].split(',')
-        x.append([float(coords[0]), float(coords[1])])
-    return x
+        x.append([float(coords[0]), float(coords[1]), ids[i]])
+        addressInfo.append([addr, rows[i][1], fullAddr])
+    return x, addressInfo
 
 # ----------------------------------------------------------------------------------------------------------------------
 

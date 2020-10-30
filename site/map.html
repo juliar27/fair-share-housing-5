@@ -240,6 +240,7 @@
 
 <div id="map" style="width: 100%; height: 615px;"></div>
 <script type="text/javascript">
+var addressesInfo = {{ info|safe }};
 var locations = {{ ro }};
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
@@ -253,13 +254,18 @@ var locations = {{ ro }};
 
     for (i = 0; i < locations.length; i++) {
         marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+            position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
             map: map
         });
-
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
+                window.open(url)
+            }
+        })(marker, i));
         google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
             return function() {
-                infowindow.setContent("hello");
+                infowindow.setContent(String(addressesInfo[i][2]));
                 infowindow.open(map, marker);
             }
         })(marker, i));

@@ -72,8 +72,8 @@ def show_home():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/map')
 def show_map():
-    x = coords()
-    t = render_template('site/map.html', ro=x)
+    x, addressInfo = coords()
+    t = render_template('site/map.html', ro=x, info=addressInfo)
     return make_response(t)
 
 
