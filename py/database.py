@@ -11,7 +11,7 @@ def double_up(s):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def get_coords(address, county, map):
+def get_coordinates(address, county, map):
     fullAddress = address + ", " + county + ", " + "NJ, USA"
     coordinates = "error"
     try:
@@ -181,12 +181,12 @@ class Database:
         cursor.execute(stmt)
         row = cursor.fetchone()
         new_cursor = self._connection.cursor()
-        i = 0
+        
         while row is not None:
             print(row[0])
             if str(row[0]) in changed_addresses:
                 print('getting')
-                coordinates = get_coords(row[3], row[2], mapsObj)
+                coordinates = get_coordinates(row[3], row[2], mapsObj)
                 stmt = "UPDATE addresses SET coordinates = '" + coordinates + "' WHERE listingid = " + str(row[0])
                 new_cursor.execute(stmt)
 
@@ -374,6 +374,7 @@ def get_row(listingid):
    result['total2'] = row[29]
    result['total3'] = row[30]
    result['address'] = row[31]
+   result['agent'] = row[32]
    result['muni'] = row[33]
    result['county'] = row[34]
    result['region'] = row[35]
