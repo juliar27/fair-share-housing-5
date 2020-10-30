@@ -171,7 +171,7 @@ def get_listings(sheet, database):
                 pass
         
             else:
-                rand.append(['AdmingAgent', row_number])
+                rand.append(['AdminAgent', row_number])
 
         except:
             if 'AdminAgent' not in missing_columns:
