@@ -106,6 +106,7 @@
                                                 <th>Developer</th>
                                                 <th>Status</th>
                                                 <th>Compliance</th>
+                                                <th>Admin Agent</th>
                                                 <th>Address</th>
                                                 <th>Municipality</th>
                                                 <th>County</th>
@@ -143,7 +144,7 @@
                                             {% for row in rows %}
                                                 <tr>
                                                     {% for i in range(row|length) %}
-                                                    {% if i > 9 and 'None' in cell|string: %}
+                                                    {% if i > 10 and 'None' in cell|string: %}
                                                     <td> 0 </td>
                                                     {% else: %}
                                                     <td> {{ row[i] }} </td>

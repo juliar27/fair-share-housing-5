@@ -213,7 +213,7 @@ class Database:
 # ----------------------------------------------------------------------------------------------------------------------
     def get_rows(self):
         cursor = self._connection.cursor()
-        stmt = "SELECT listings.listingid, listings.name, listings.developer, listings.status, listings.compliance, " + \
+        stmt = "SELECT listings.listingid, listings.name, listings.developer, listings.status, listings.compliance, listings.agent," + \
                 "listings.addresses, cities.municipality, counties.county, cities.municode, counties.region, " + \
                 "listings.v1, listings.v2, listings.v3, listings.l1, listings.l2, listings.l3, listings.m1, " + \
                 "listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.famsale, " + \
@@ -281,14 +281,14 @@ def delete(row):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def edit(form):
+def edit_listings(form):
     lookup = {0:'listingid', 1:'name', 2:'developer', 3:'status',
-    4:'compliance', 5:'address', 6:'municipality', 7:'county', 8:'municode',
-    9:'region', 10:'v1', 11:'v2', 12:'v3', 13:'l1', 14:'l2',
-    15:'l3', 16:'m1', 17:'m2', 18:'m3', 19:'vssn', 20:'lssn', 21:'mssn',
-    22:'famsale', 23:'famrent', 24:'srsale', 25:'srrent', 26:'ssnsale',
-    27:'ssnrent', 28:'total', 29:'family', 30:'sr', 31: 'ssn',
-    32:'br1', 33:'br2', 34:'br3'}
+    4:'compliance', 5:'agent', 6:'address', 7:'municipality', 8:'county', 9:'municode',
+    10:'region', 11:'v1', 12:'v2', 13:'v3', 14:'l1', 15:'l2',
+    16:'l3', 17:'m1', 18:'m2', 19:'m3', 20:'vssn', 21:'lssn', 22:'mssn',
+    23:'famsale', 24:'famrent', 25:'srsale', 26:'srrent', 27:'ssnsale',
+    28:'ssnrent', 29:'total', 30:'family', 31:'sr', 32: 'ssn',
+    33:'br1', 34:'br2', 35:'br3'}
     records = {}
     rows = get_tables()
     for item in form:
@@ -442,7 +442,7 @@ def edit_table(form, listingid):
    record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
              'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
              'compliance': form.get('compliance'), 'address': py.parse.parse_address(form.get('address')),
-             'addresses': form.get('address'),
+             'addresses': form.get('address'), 'agent': form.get('agent'),
              'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
              'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
              'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),
