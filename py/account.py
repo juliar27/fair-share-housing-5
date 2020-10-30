@@ -1,5 +1,5 @@
 from py.database import Database
-from py.auth import auth
+from py.auth import auth_email, recovery_email
 
 # ----------------------------------------------------------------------------------------------------------------------
 def account_get(userid):
@@ -44,7 +44,7 @@ def make_account(user):
     database.disconnect()
 
     link = "fairsharehousing.herokuapp.com/authenticate?id=" + id[0]
-    auth(email, link)
+    auth_email(email, link)
     return ret
 
 
@@ -67,7 +67,6 @@ def check_account(user):
 
     if possible_password:
         encrypted_password = possible_password[0]
-
         query = "SELECT * from users where email = " + "'" + email + "' " + "and password = crypt('" +\
                 password + "', '" + encrypted_password + "');;"
         cursor.execute(query)
@@ -102,5 +101,41 @@ def authenticate(id):
     query = "update users set verified = not verified where id = " + "'" + id + "'" +  ";;"
     cursor.execute(query)
     database._connection.commit()
+    database.disconnect()
     return
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+def update_password(dict):
+    email = dict['email']
+    password = dict['inputPassword']
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    query = "update users set password = "  + "crypt('" + password + "'," + "gen_salt('md5'))" +    " where email = " + "'" + email + "';"
+    cursor.execute(query)
+    database._connection.commit()
+    database.disconnect()
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+def recovery(dict):
+    email = dict['inputEmailAddress']
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    query = "SELECT id from users where email = " + "'" + email + "' ;;"
+    cursor.execute(query)
+    id = cursor.fetchone()
+    ret = False
+
+    if id is not None:
+        link = "fairsharehousing.herokuapp.com/recovery?id=" + id[0]
+        recovery_email(email, link)
+        ret = True
+
+    database.disconnect()
+    return ret
 # ----------------------------------------------------------------------------------------------------------------------

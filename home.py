@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
-from py.account import make_account, check_account, account_get, authenticate
+from py.account import make_account, check_account, account_get, authenticate, recovery, update_password
 from py.database import Database, get_tables, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables, clear, delete, coords
 from py.download import download
 from py.form import AddForm
@@ -291,6 +291,34 @@ def show_autheticate():
     id = request.args.get('id')
     authenticate(id)
     t = render_template('site/authenticate.html')
+    return make_response(t)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/recovery', methods=['GET'])
+def show_recovery():
+    id = request.args.get('id')
+    t = render_template('site/recovery.html', id=id)
+    return make_response(t)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/newpassword', methods=['POST'])
+def show_newpassword():
+    update_password(request.form.to_dict())
+    return redirect('/login')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/reset', methods=['POST'])
+def show_reset():
+    no_account = recovery(request.form.to_dict())
+    # if no_account:
+
+    t = render_template('site/login.html')
     return make_response(t)
 # ----------------------------------------------------------------------------------------------------------------------
 
