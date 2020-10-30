@@ -317,9 +317,7 @@ def show_newpassword():
 def show_reset():
     no_account = recovery(request.form.to_dict())
     # if no_account:
-
-    t = render_template('site/login.html')
-    return make_response(t)
+    return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
 
 
