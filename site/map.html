@@ -257,10 +257,15 @@ var locations = {{ ro }};
             map: map
         });
 
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
             return function() {
                 infowindow.setContent("hello");
                 infowindow.open(map, marker);
+            }
+        })(marker, i));
+        google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
+            return function() {
+                infowindow.close(map, marker);
             }
         })(marker, i));
     }
