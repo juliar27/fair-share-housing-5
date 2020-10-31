@@ -58,7 +58,7 @@
 	}
 
   thead {
-    background-color:  #21243d;
+    background-color: #21243d;
     color: #fff;
   }
 
@@ -121,7 +121,7 @@
         					<section class="4u">
         						<span class="description"><span class="far fa-address-book" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">Program</h2>
-        						<p style="color: #fff">Program Name: {{row['name']}}
+        						<p style="color: #fff">Program Name: {{row['name']}} <br>
                                 Developer:
                                 {% if row['developer'] %}
                                     {{row['developer']}}
@@ -132,7 +132,7 @@
         					<section class="4u">
         						<span class="description"><span class="fas fa-list" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">More Details</h2>
-                                <p style="color: #fff">Status: {{row['status']}}
+                                <p style="color: #fff">Status: {{row['status']}} <br>
                                   Compliance Mechanism: {{row['compliance']}} </p>
         					</section>
         				</div>
@@ -154,7 +154,10 @@
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-map" role="tabpanel" aria-labelledby="v-pills-map-tab">
-                            <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <hr> <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2> <hr>
                               <style>
                                 /* Set the size of the div element that contains the map */
                                 #map {
@@ -270,8 +273,11 @@
                               </script>
                           </div>
                           <div class="tab-pane fade" id="v-pills-unitsavail" role="tabpanel" aria-labelledby="v-pills-unitsavail-tab">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <table class="table table-hover">
-                              <h2> Units Available </h2>
+                              <hr> <h2> Units Available </h2> <hr>
                               <thead>
                                   <tr>
                                       <th></th>
@@ -322,8 +328,11 @@
                             </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-types" role="tabpanel" aria-labelledby="v-pills-types-tab">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <table class="table table-hover">
-                              <h2> Unit Types </h2>
+                              <hr> <h2> Unit Types </h2> <hr>
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -361,7 +370,10 @@
                             </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
-                            <h2> Contact Information </h2>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <hr> <h2> Contact Information </h2> <hr>
                             <p> {{row['agent']}} </p>
                           </div>
                         </div>
