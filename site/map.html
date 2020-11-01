@@ -148,15 +148,21 @@
         <!--        <h2>Filter Options</h2>-->
 
         <!-- first filter option -->
+        <form action="filtering" method="get">
         <div class="form-group">
             <label for="#">Ownership Type</label>
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="" id="" class="form-control">
-                        <option value="" style="background-color: #21243d;">No Preference</option>
-                        <option value="" style="background-color: #21243d;">Rent</option>
-                        <option value="" style="background-color: #21243d;">Buy</option>
+                    <select name="ownership" id="" class="form-control">
+                        {% if prevOwner != "none" %}
+                        <option value="owner_default" selected disabled hidden>{{ prevOwner.capitalize() }}</option>
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% else %}
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% endif %}
+                        <option value="rent" style="background-color: #21243d;">Rent</option>
+                        <option value="buy" style="background-color: #21243d;">Buy</option>
                     </select>
                 </div>
             </div>
@@ -167,10 +173,15 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="" id="" class="form-control">
-                        <option value="" style="background-color: #21243d;">No Preference</option>
-                        <option value="" style="background-color: #21243d;">Family</option>
-                        <option value="" style="background-color: #21243d;">Senior</option>
+                    <select name="property" id="" class="form-control">
+                        {% if prevProp != "none" %}
+                        <option value="prop_default" selected disabled hidden>{{ prevProp.capitalize() }}</option>
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% else %}
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% endif %}
+                        <option value="family" style="background-color: #21243d;">Family</option>
+                        <option value="senior" style="background-color: #21243d;">Senior</option>
                     </select>
                 </div>
             </div>
@@ -181,11 +192,16 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="" id="" class="form-control">
-                        <option value="" style="background-color: #21243d;">No Preference</option>
-                        <option value="" style="background-color: #21243d;">1</option>
-                        <option value="" style="background-color: #21243d;">2</option>
-                        <option value="" style="background-color: #21243d;">3+</option>
+                    <select name="bedrooms" id="" class="form-control">
+                        {% if prevBed != "none" %}
+                        <option value="prop_default" selected disabled hidden>{{ prevBed }}</option>
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% else %}
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% endif %}
+                        <option value="1" style="background-color: #21243d;">1</option>
+                        <option value="2" style="background-color: #21243d;">2</option>
+                        <option value="3+" style="background-color: #21243d;">3+</option>
                     </select>
                 </div>
             </div>
@@ -196,11 +212,16 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="" id="" class="form-control">
-                        <option value="" style="background-color: #21243d;">No Preference</option>
-                        <option value="" style="background-color: #21243d;">Very Low Income</option>
-                        <option value="" style="background-color: #21243d;">Low Income</option>
-                        <option value="" style="background-color: #21243d;">Moderate Income</option>
+                    <select name="income" id="" class="form-control">
+                        {% if prevIncome != "none" %}
+                        <option value="prop_default" selected disabled hidden>{{ prevIncome.capitalize() }}</option>
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% else %}
+                        <option value="none" style="background-color: #21243d;">No Preference</option>
+                        {% endif %}
+                        <option value="very" style="background-color: #21243d;">Very Low Income</option>
+                        <option value="low" style="background-color: #21243d;">Low Income</option>
+                        <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
                     </select>
                 </div>
             </div>
@@ -210,7 +231,7 @@
             <label for="#">Town</label>
             <div class="form-field">
                 <div class="icon"><span class="fa fa-search"></span></div>
-                <input type="text" class="form-control" placeholder="Town">
+                <input type="text" value="{{ prevTown }}" name="town"class="form-control" placeholder="Town">
             </div>
         </div>
 
@@ -218,16 +239,19 @@
             <label for="#">County</label>
             <div class="form-field">
                 <div class="icon"><span class="fa fa-search"></span></div>
-                <input type="text" class="form-control" placeholder="County">
+                <input type="text" value="{{ prevCounty }}" name="county" class="form-control" placeholder="County">
             </div>
         </div>
 
         <div class="form-group">
             <div class="form-field">
-                <input type="submit" value="Search" class="form-control btn btn-primary">
+                <input type="submit" name="search" value="Search" class="form-control btn btn-primary">
             </div>
         </div>
+    
+        </form>
     </div>
+        
 
 
     <section>

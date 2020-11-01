@@ -131,9 +131,28 @@
                         <table border=0px>
                             <tr>
                                 <td>
-                                    <form action="/edit" id='main' method="POST"  onsubmit="return confirm('Are you sure you want to make these changes? This action cannot be undone.');">
+                                    <form action="/edit" id='main' method="POST">
+                                      <!--   onsubmit="return confirm('Are you sure you want to make these changes? This action cannot be undone.');" -->
                                         <input type='submit' value='Submit Changes' class='btn btn-primary'>
                                     </form>
+
+                                    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+                                		<script>
+
+                                    // var sub = false;
+
+                                		$(window).on("beforeunload", function() {
+                                			return "Are you sure you don't want to save any changes?";
+                                		});
+
+                                		$(document).ready(function() {
+                                			$("#main").on("submit", function(e) {
+                                				$(window).off("beforeunload");
+                                				return true;
+                                			});
+                                		});
+                                		</script>
+
                                 </td>
                                 {% for i in range(347) %}
                                 <td></td>
@@ -157,12 +176,12 @@
                                 <i class="fas fa-table mr-1"></i>
                                 Current Listings
                             </div>
-                            
+
                             <div class="card-body">
-                                
+
                                 <div class="large-table-container"></div>
-                                
-                                                                    
+
+
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
@@ -216,12 +235,12 @@
                                                         {% endfor %} -->
                                                         {% for i in range(row|length) %}
                                                             <td style="vertical-align:middle" align="center">
-                                                                
+
                                                                 {% set row_nums = (row[i] | string) | length / 20 + 1 %}
                                                                 <textarea placeholder='{{row[i]}}' form='main' name='{{row[0]}};{{i}}' style="text-align-last:center;resize:none;border:none;overflow:hidden" rows = {{row_nums}} cols={{(col_list | sort)[0]}} name="bob" oninput='this.style.height = this.scrollHeight + "px"'>{{row[i]}}</textarea>
                                                             </td>
                                                         {% endfor %}
-                                                        
+
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

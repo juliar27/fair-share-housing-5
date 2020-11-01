@@ -57,6 +57,15 @@
         text-align: center;
 	}
 
+  thead {
+    background-color: #21243d;
+    color: #fff;
+  }
+
+  tr, td, th {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  }
+
     </style>
     <head>
         <title>mapFSH</title>
@@ -112,8 +121,8 @@
         					<section class="4u">
         						<span class="description"><span class="far fa-address-book" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">Program</h2>
-        						<p style="color: #fff">Program Name: {{row['name']}}</p>
-                                <p style="color: #fff">Developer:
+        						<p style="color: #fff">Program Name: {{row['name']}} <br>
+                                Developer:
                                 {% if row['developer'] %}
                                     {{row['developer']}}
                                 {% else: %}
@@ -123,8 +132,8 @@
         					<section class="4u">
         						<span class="description"><span class="fas fa-list" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">More Details</h2>
-                                <p style="color: #fff">Status: {{row['status']}}</p>
-                                <p style="color: #fff">Compliance Mechanism: {{row['compliance']}} </p>
+                                <p style="color: #fff">Status: {{row['status']}} <br>
+                                  Compliance Mechanism: {{row['compliance']}} </p>
         					</section>
         				</div>
         			</div>
@@ -145,7 +154,10 @@
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-map" role="tabpanel" aria-labelledby="v-pills-map-tab">
-                            <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <hr> <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2> <hr>
                               <style>
                                 /* Set the size of the div element that contains the map */
                                 #map {
@@ -159,12 +171,101 @@
                                 // Initialize and add the map
                                 function initMap() {
                                   // The location of princeton
-                                  var loc = {lat: {{lat}}, lng: {{long}}};
-                                  // The map, centered at princeton
-                                  var map = new google.maps.Map(
-                                      document.getElementById('map'), {zoom: 16, center: loc});
-                                  // The marker, positioned at the location
-                                  var marker = new google.maps.Marker({position: loc, map: map});
+                                  // var loc = {lat: {{lat}}, lng: {{long}}};
+                                  // // The map, centered at princeton
+                                  // var map = new google.maps.Map(
+                                  //     document.getElementById('map'), {zoom: 16, center: loc});
+                                  // // The marker, positioned at the location
+                                  // var marker = new google.maps.Marker({position: loc, map: map});
+                                  const map = new google.maps.Map(document.getElementById("map"), {
+                                      center: { lat: {{lat}}, lng: {{long}} },
+                                      zoom: 16,
+                                      styles: [
+                                        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                                        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                                        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                                        {
+                                          featureType: "administrative.locality",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#d59563" }],
+                                        },
+                                        {
+                                          featureType: "poi",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#d59563" }],
+                                        },
+                                        {
+                                          featureType: "poi.park",
+                                          elementType: "geometry",
+                                          stylers: [{ color: "#263c3f" }],
+                                        },
+                                        {
+                                          featureType: "poi.park",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#6b9a76" }],
+                                        },
+                                        {
+                                          featureType: "road",
+                                          elementType: "geometry",
+                                          stylers: [{ color: "#38414e" }],
+                                        },
+                                        {
+                                          featureType: "road",
+                                          elementType: "geometry.stroke",
+                                          stylers: [{ color: "#212a37" }],
+                                        },
+                                        {
+                                          featureType: "road",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#9ca5b3" }],
+                                        },
+                                        {
+                                          featureType: "road.highway",
+                                          elementType: "geometry",
+                                          stylers: [{ color: "#746855" }],
+                                        },
+                                        {
+                                          featureType: "road.highway",
+                                          elementType: "geometry.stroke",
+                                          stylers: [{ color: "#1f2835" }],
+                                        },
+                                        {
+                                          featureType: "road.highway",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#f3d19c" }],
+                                        },
+                                        {
+                                          featureType: "transit",
+                                          elementType: "geometry",
+                                          stylers: [{ color: "#2f3948" }],
+                                        },
+                                        {
+                                          featureType: "transit.station",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#d59563" }],
+                                        },
+                                        {
+                                          featureType: "water",
+                                          elementType: "geometry",
+                                          stylers: [{ color: "#17263c" }],
+                                        },
+                                        {
+                                          featureType: "water",
+                                          elementType: "labels.text.fill",
+                                          stylers: [{ color: "#515c6d" }],
+                                        },
+                                        {
+                                          featureType: "water",
+                                          elementType: "labels.text.stroke",
+                                          stylers: [{ color: "#17263c" }],
+                                        },
+                                      ],
+                                    });
+                                    new google.maps.Marker({
+                                    position:  { lat: {{lat}}, lng: {{long}} },
+                                    map,
+                                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                                  });
                                 }
                               </script>
                               <script defer
@@ -172,9 +273,12 @@
                               </script>
                           </div>
                           <div class="tab-pane fade" id="v-pills-unitsavail" role="tabpanel" aria-labelledby="v-pills-unitsavail-tab">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <table class="table table-hover">
-                              <h2> Units Available </h2>
-                              <thead class="thead-dark">
+                              <hr> <h2> Units Available </h2> <hr>
+                              <thead>
                                   <tr>
                                       <th></th>
                                       <th>1 Bedroom</th>
@@ -202,7 +306,7 @@
                                       <th>{{row['li1'] + row['li2'] + row['li3'] + row['lssn']}}</th>
                                   </tr>
                                   <tr>
-                                      <th>Moderate Income</th>
+                                      <th> Moderate Income </th>
                                       <td>{{row['m1']}}</td>
                                       <td>{{row['m2']}}</td>
                                       <td>{{row['m3']}}</td>
@@ -224,9 +328,12 @@
                             </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-types" role="tabpanel" aria-labelledby="v-pills-types-tab">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                             <table class="table table-hover">
-                              <h2> Unit Types </h2>
-                                <thead class="thead-dark">
+                              <hr> <h2> Unit Types </h2> <hr>
+                                <thead>
                                     <tr>
                                         <th></th>
                                         <th>Family</th>
@@ -234,6 +341,7 @@
                                         <th>SSN</th>
                                         <th>Total</th>
                                     </tr>
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <th>For Rent</th>
@@ -262,7 +370,11 @@
                             </table>
                           </div>
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
-                            <h2> Admin Agent: {{row['agent']}} </h2>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <hr> <h2> Contact Information </h2> <hr>
+                            <p> {{row['agent']}} </p>
                           </div>
                         </div>
                       </div>
