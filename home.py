@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, send_file
+from flask import Flask, render_template, request, make_response, redirect, url_for, send_file, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password
@@ -70,12 +70,146 @@ def show_home():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/filtering')
 @app.route('/map')
 def show_map():
-    x, addressInfo = coords()
-    t = render_template('site/map.html', ro=x, info=addressInfo)
-    return make_response(t)
-
+    prevOwner = request.cookies.get('prevOwner')
+    prevProp = request.cookies.get('prevProp')
+    prevBed = request.cookies.get('prevBed')
+    prevIncome = request.cookies.get('prevIncome')
+    prevTown = request.cookies.get('prevTown')
+    prevCounty = request.cookies.get('prevCounty')
+    
+    if prevOwner is None:
+        prevOwner = "none"
+    if prevProp is None:
+        prevProp = 'none'
+    if prevBed is None:
+        prevBed = "none"
+    if prevIncome is None:
+        prevBed = "none"
+    if prevTown is None:
+        prevTown = ''
+    if prevCounty is None:
+        prevCounty = ''
+    
+    owner = request.args.get('ownership')
+    prop = request.args.get('property')
+    bed = request.args.get('bedrooms')
+    income = request.args.get('income')
+    town = request.args.get('town')
+    county = request.args.get('county')
+    
+    if owner is None:
+        owner = "none"
+    if prop is None:
+        prop = "none"
+    if bed is None:
+        bed = "none"
+    if income is None:
+        income = "none"
+    if town is None:
+        town = ''
+    if county is None:
+        county = ''
+    
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    filtering = ""
+    options = "'"
+    
+    if county is not None:
+        county = county.capitalize()
+        filtering += " AND counties.county like \'%" + county + "%\'"
+    
+    if town is not None:
+        town = town.capitalize()
+        filtering += " AND cities.municipality like \'%" + town + "%\'"
+    
+    if filtering == "":
+        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
+                "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
+                "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
+                "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
+                "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+                "listings.municode = cities.municode AND cities.county = counties.county"
+        cursor.execute(stmt)
+    else:
+        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
+                "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
+                "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
+                "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
+                "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+                "listings.municode = cities.municode AND cities.county = counties.county" + filtering
+        cursor.execute(stmt)
+    
+    rows = []
+    ids = []
+    row = cursor.fetchone()
+    while row is not None:
+        ids.append(row[0])
+        rows.append(row[1:])
+        row = cursor.fetchone()
+        
+    
+    x = []
+    flag = True
+    addressInfo = []
+    for i in range(len(rows)):
+        flag = True
+        
+        if bed is not None:
+            if income is not None:
+                if ((bed == "1") & (income == "very") & (rows[i][9] == 0)) or ((bed == "1") & (income == "low") & (rows[i][12] == 0)) or ((bed == "1") & (income == "moderate") & (rows[i][15] == 0)) :
+                    flag = False
+                
+                if ((bed == "2") & (income == "very") & (rows[i][10] == 0)) or ((bed == "2") & (income == "low") & (rows[i][13] == 0)) or ((bed == "2") & (income == "moderate") & (rows[i][16] == 0)) :
+                    flag = False
+                
+                if ((bed == "3+") & (income == "very") & (rows[i][11] == 0)) or ((bed == "3+") & (income == "low") & (rows[i][14] == 0)) or ((bed == "3+") & (income == "moderate") & (rows[i][17] == 0)) :
+                    flag = False
+            elif ((bed == "1") & (rows[i][5] == 0)) or ((bed == "2") & (rows[i][6] == 0)) or ((bed == "3+") & (rows[i][7] == 0)):
+                flag = False
+        
+        if income is not None:
+            if ((income == "very") & ((rows[i][9] + rows[i][10] + rows[i][11]) == 0)) or ((income == "low") & ((rows[i][12] + rows[i][13] + rows[i][14]) == 0)) or ((income == "moderate") & ((rows[i][15] + rows[i][16] + rows[i][17]) == 0)):
+                flag = False
+        
+        if owner is not None:
+            if prop is not None:
+                if ((owner == "rent") & (prop == "family") & (rows[i][25] == 0)) or ((owner == "rent") & (prop == "senior") & (rows[i][27] == 0)):
+                    flag = False
+                
+                if ((owner == "buy") & (prop == "family") & (rows[i][24] == 0)) or ((owner == "buy") & (prop == "senior") & (rows[i][26] == 0)):
+                    flag = False
+            elif ((owner == "rent") & ((rows[i][25] + rows[i][27] + rows[i][29]) == 0)) or ((owner == "buy") & ((rows[i][24] + rows[i][26] + rows[i][28]) == 0)):
+                flag = False
+        
+        if prop is not None:
+            if ((prop == "family") & (rows[i][21] == 0)) or ((prop == "senior") & (rows[i][22] == 0)):
+                flag = False
+                
+        if flag == True:
+            addr = str(rows[i][0])
+            fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
+            coords = rows[i][1].split(',')
+            x.append([float(coords[0]), float(coords[1]), ids[i]])
+            addressInfo.append([addr, rows[i][1], fullAddr])
+    
+    database.disconnect()
+    
+    t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
+    
+    response = make_response(t)
+    response.set_cookie('prevOwner', owner)
+    response.set_cookie('prevProp', prop)
+    response.set_cookie('prevBed', bed)
+    response.set_cookie('prevIncome', income)
+    response.set_cookie('prevTown', town)
+    response.set_cookie('prevCounty', county)
+    
+    return response
 
 # ----------------------------------------------------------------------------------------------------------------------
 
