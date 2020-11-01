@@ -6095,6 +6095,8 @@ a.close.disabled {
 
 .bg-primary {
   background-image: url("../../static/images/bg_1.jpg") !important;
+  background-size: 1500px;
+
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
