@@ -2002,7 +2002,13 @@ pre code {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  -o-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out; }
+
+  /* transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; */
 }
 @media (prefers-reduced-motion: reduce) {
   .form-control {
@@ -6096,6 +6102,7 @@ a.close.disabled {
 .bg-primary {
   background-image: url("../../static/images/bg_1.jpg") !important;
   background-size: 1500px;
+
 
 }
 
