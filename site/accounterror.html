@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,33 +17,32 @@
 
                 </head>
 
-
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
-
-
                 <main>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header bg-dark"><h3 class="text-center my-4" style="color:#fff">Error</h3></div>
-                                    <div class="card-body">
-                                        This email is already in-use. <a href="password"  style="color:#24A148">Did you forget your password?</a>
+                                    <div class="card-header bg-dark"><h3 class="text-center my-4" style="color:#fff">Account Error</h3></div>
+                                    <div class="card-body" style="text-align: center">
+                                      {{errorMsg}} <a href={{ref}}  style="color:#24A148"> {{ref_msg}}</a>
+                                    </div>
+                                    <div class="card-footer text-center bg-dark">
+                                        <div class="small"><a href="login"  style="color:#24A148">Login!</a></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
-
             </div>
             <div id="layoutAuthentication_footer">
                 <footer class="py-2 bg-dark mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-center">
-                            <div class="text" style="color:#fff">mapFSH</div>
+                            <div class="text" style="color:#fff"> <a href="/index">mapFSH</a></div>
 
                         </div>
                     </div>
