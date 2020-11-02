@@ -468,7 +468,7 @@ def show_reset():
         return redirect(url_for('show_account_error', errorMsg="You do not have an account associated with this email.", ref="register", ref_msg="Would you like to create an account?"))
 
     elif account and not verified:
-        return redirect(url_for('show_account_error', errorMsg="You have already verified your account.", ref="password", ref_msg="Did you forget your password?"))
+        return redirect('/verify')
     else:
         return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
