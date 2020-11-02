@@ -66,6 +66,15 @@
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   }
 
+  #heart {
+  color: grey;  
+  font-size: 50px;
+  }
+
+  #heart.red {
+    color: red;
+  }
+
     </style>
     <head>
         <title>mapFSH</title>
@@ -113,6 +122,42 @@
             <div id="information">
         			<div class="container">
         				<div class="row">
+                  <section class="4u">
+                    <meta id='adr' data-adr='{{adr}}'>
+                    <i class="fa fa-heart" onload='setColor(this)' onclick='toggler(this)' ></i>
+                    <script src="static/js/jquery.min.js"></script>
+                    <script>
+
+                      function setColor(x) {
+                        var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                        var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
+                        if (index == -1) {
+                          x.style.color = 'gray';
+                        // item is already favorite
+                        } else {
+                          x.style.color = 'red';
+                        }
+                      }
+
+                      function toggler(x) {
+                        
+                        var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                        var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
+                        if (index == -1) {
+                          favorites.push(adr);
+                          x.style.color = 'red';
+                        // item is already favorite
+                        } else {
+                          favorites.splice(index, 1);
+                          x.style.color = 'gray';
+                        }
+                        // store array in local storage
+                        localStorage.setItem('favorites', JSON.stringify(favorites));
+                        console.log(JSON.stringify(favorites));
+                      }              
+                      
+                    </script>
+                  </section>
         					<section class="4u">
         						<span class="description"><span class="fas fa-map-pin" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">Address</h2>
