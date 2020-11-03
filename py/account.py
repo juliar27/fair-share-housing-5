@@ -179,6 +179,13 @@ def recovery(dict):
         if verified:
             id = id[0]
 
+            query = "SELECT temp_id from users where email = %s ;;"
+            cursor.execute(query, [email])
+
+            dup = cursor.fetchone()
+            print(dup)
+
+
             i = 0
             while i < 10:
                 id += random.choice(string.ascii_letters)
