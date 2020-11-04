@@ -439,7 +439,7 @@ def show_autheticate():
     id = request.args.get('id')
     flag = authenticate(id)
     if not flag:
-        return redirect(url_for('show_account_error', errorMsg="You have already verified your account.", ref="password", ref_msg="Did you forget your password?"))
+        return redirect(url_for('show_account_error', errorMsg="Something went wrong.", ref="login", ref_msg="Would you like to login?"))
 
     t = render_template('site/authenticate.html')
     return make_response(t)
