@@ -9,6 +9,7 @@ from werkzeug.datastructures import MultiDict
 from threading import Thread
 from rq import Queue
 from py.worker import conn
+from datetime import timedelta
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -43,6 +44,14 @@ class User(UserMixin):
         return User(email, self, True)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=20)
+    session.modified = True
 # ----------------------------------------------------------------------------------------------------------------------
 
 
