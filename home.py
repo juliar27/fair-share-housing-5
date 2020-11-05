@@ -273,12 +273,12 @@ def show_map():
     t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
 
     response = make_response(t)
-    response.set_cookie('prevOwner', owner)
-    response.set_cookie('prevProp', prop)
-    response.set_cookie('prevBed', bed)
-    response.set_cookie('prevIncome', income)
-    response.set_cookie('prevTown', town)
-    response.set_cookie('prevCounty', county)
+    response.set_cookie('prevOwner', owner, expires=0)
+    response.set_cookie('prevProp', prop, expires=0)
+    response.set_cookie('prevBed', bed, expires=0)
+    response.set_cookie('prevIncome', income, expires=0)
+    response.set_cookie('prevTown', town, expires=0)
+    response.set_cookie('prevCounty', county, expires=0)
 
     return response
 
@@ -397,12 +397,12 @@ def show_listings():
     t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
 
     response = make_response(t)
-    response.set_cookie('prevOwner', owner)
-    response.set_cookie('prevProp', prop)
-    response.set_cookie('prevBed', bed)
-    response.set_cookie('prevIncome', income)
-    response.set_cookie('prevTown', town)
-    response.set_cookie('prevCounty', county)
+    response.set_cookie('prevOwner', owner, expires=0)
+    response.set_cookie('prevProp', prop, expires=0)
+    response.set_cookie('prevBed', bed, expires=0)
+    response.set_cookie('prevIncome', income, expires=0)
+    response.set_cookie('prevTown', town, expires=0)
+    response.set_cookie('prevCounty', county, expires=0)
     return make_response(t)
 
 
