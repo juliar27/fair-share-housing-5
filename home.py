@@ -90,7 +90,7 @@ def querying_location(description):
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-    
+
     if description == "":
         stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
                 "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
@@ -115,8 +115,8 @@ def querying_location(description):
         ids.append(row[0])
         rows.append(row[1:])
         row = cursor.fetchone()
-        
-    
+
+
     return rows, ids, database
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -171,14 +171,14 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, database)
             addressInfo.append([addr, rows[i][1], fullAddr])
 
     database.disconnect()
-    
+
     return x, addressInfo
-    
 
 
 
 
-    
+
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -225,31 +225,31 @@ def show_map():
             prop = "none"
         else:
             prop = prevProp
-        
+
     if bed is None:
         if prevBed is None:
             bed = "none"
         else:
             bed = prevBed
-        
+
     if income is None:
         if prevIncome is None:
             income = "none"
         else:
             income = prevIncome
-        
+
     if town is None:
         if prevTown is None:
             town = ''
         else:
             town = prevTown
-        
+
     if county is None:
         if prevCounty is None:
             county = ''
         else:
             county = prevCounty
-        
+
 
     database = Database()
     database.connect()
@@ -264,10 +264,11 @@ def show_map():
     if town is not None:
         town = town.capitalize()
         filtering += " AND cities.municipality like \'%" + town + "%\'"
-        
+
     rows, ids, database = querying_location(filtering)
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, database)
-    
+
+    print(len(x))
 
     t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
 
@@ -285,10 +286,123 @@ def show_map():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/list-filtering')
 @app.route('/listings')
 def show_listings():
-    rows, ids = get_listings()
-    t = render_template('site/listings.html', rows=rows, ids=ids)
+    prevOwner = request.cookies.get('prevOwner')
+    prevProp = request.cookies.get('prevProp')
+    prevBed = request.cookies.get('prevBed')
+    prevIncome = request.cookies.get('prevIncome')
+    prevTown = request.cookies.get('prevTown')
+    prevCounty = request.cookies.get('prevCounty')
+
+    if prevOwner is None:
+        prevOwner = "none"
+    if prevProp is None:
+        prevProp = 'none'
+    if prevBed is None:
+        prevBed = "none"
+    if prevIncome is None:
+        prevBed = "none"
+    if prevTown is None:
+        prevTown = ''
+    if prevCounty is None:
+        prevCounty = ''
+
+    owner = request.args.get('ownership')
+    prop = request.args.get('property')
+    bed = request.args.get('bedrooms')
+    income = request.args.get('income')
+    town = request.args.get('town')
+    county = request.args.get('county')
+
+    if owner is None:
+        if prevOwner is None:
+            owner = "none"
+        else:
+            owner = prevOwner
+    if prop is None:
+        if prevProp is None:
+            prop = "none"
+        else:
+            prop = prevProp
+
+    if bed is None:
+        if prevBed is None:
+            bed = "none"
+        else:
+            bed = prevBed
+
+    if income is None:
+        if prevIncome is None:
+            income = "none"
+        else:
+            income = prevIncome
+
+    if town is None:
+        if prevTown is None:
+            town = ''
+        else:
+            town = prevTown
+
+    if county is None:
+        if prevCounty is None:
+            county = ''
+        else:
+            county = prevCounty
+
+
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    filtering = ""
+    options = "'"
+
+    if county is not None:
+        county = county.capitalize()
+        filtering += " AND counties.county like \'%" + county + "%\'"
+
+    if town is not None:
+        town = town.capitalize()
+        filtering += " AND cities.municipality like \'%" + town + "%\'"
+
+    rows, ids, database = querying_location(filtering)
+    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, database)
+
+    ids = []
+
+    for i in range(len(x)):
+        ids.append(x[i][2])
+
+    # for id in ids:
+    #     id = int(id)
+        # print(id)
+    # print(ids)
+    listings_rows, listings_ids = get_listings()
+
+    filtered_rows = []
+    filtered_ids = []
+
+    # i = 0
+    # res = 0
+    for i in range(len(listings_rows)):
+        if listings_ids[i] in ids:
+            filtered_rows.append(listings_rows[i])
+            filtered_ids.append(listings_ids[i])
+            # res += 1
+        # i += 1
+
+    # print(res)
+
+    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
+
+    response = make_response(t)
+    response.set_cookie('prevOwner', owner)
+    response.set_cookie('prevProp', prop)
+    response.set_cookie('prevBed', bed)
+    response.set_cookie('prevIncome', income)
+    response.set_cookie('prevTown', town)
+    response.set_cookie('prevCounty', county)
     return make_response(t)
 
 

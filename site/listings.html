@@ -67,7 +67,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="search-wrap-1 ftco-animate p-4">
-            <form action="/listings" class="search-property-1">
+            <form action="/list-filtering" class="search-property-1">
               <div class="row">
 
                 <div class="col-lg align-items-end">
@@ -76,10 +76,11 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="" id="" class="form-control">
-                          <option value="" style="background-color: #21243d;">No Preference</option>
-                          <option value="" style="background-color: #21243d;">Rent</option>
-                          <option value="" style="background-color: #21243d;">Buy</option>
+                        <select  name="ownership" id="" class="form-control">
+                          <option value="owner_default" selected disabled hidden>{{ prevOwner.capitalize() }}</option>
+                          <option value="none" style="background-color: #21243d;">No Preference</option>
+                          <option value="rent" style="background-color: #21243d;">Rent</option>
+                          <option value="buy" style="background-color: #21243d;">Buy</option>
                         </select>
                       </div>
                     </div>
@@ -92,10 +93,15 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="" id="" class="form-control">
-                          <option value="" style="background-color: #21243d;">No Preference</option>
-                          <option value="" style="background-color: #21243d;">Family</option>
-                          <option value="" style="background-color: #21243d;">Senior</option>
+                        <select name="property" id="" class="form-control">
+                          {% if prevProp != "none" %}
+                          <option value="prop_default" selected disabled hidden>{{ prevProp.capitalize() }}</option>
+                          <option value="none" style="background-color: #21243d;">No Preference</option>
+                          {% else %}
+                          <option value="none" style="background-color: #21243d;">No Preference</option>
+                          {% endif %}
+                          <option value="family" style="background-color: #21243d;">Family</option>
+                          <option value="senior" style="background-color: #21243d;">Senior</option>
                         </select>
                       </div>
                     </div>
@@ -108,11 +114,16 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="" id="" class="form-control">
-                          <option value="" style="background-color: #21243d;">No Preference</option>
-                          <option value="" style="background-color: #21243d;">1</option>
-                          <option value="" style="background-color: #21243d;">2</option>
-                          <option value="" style="background-color: #21243d;">3+</option>
+                        <select name="bedrooms" id="" class="form-control">
+                          {% if prevBed != "none" %}
+                          <option value="prop_default" selected disabled hidden>{{ prevBed }}</option>
+                          <option value="none" style="background-color: #21243d;">No Preference</option>
+                          {% else %}
+                          <option value="none" style="background-color: #21243d;">No Preference</option>
+                          {% endif %}
+                          <option value="1" style="background-color: #21243d;">1</option>
+                          <option value="2" style="background-color: #21243d;">2</option>
+                          <option value="3+" style="background-color: #21243d;">3+</option>
                         </select>
                       </div>
                     </div>
@@ -125,31 +136,38 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="" id="" class="form-control">
-                          <option value="" style="background-color: #21243d;">No Preference</option>
-                          <option value="" style="background-color: #21243d;">Very Low Income</option>
-                          <option value="" style="background-color: #21243d;">Low Income</option>
-                          <option value="" style="background-color: #21243d;">Moderate Income</option>
+                        <select name="income" id="" class="form-control">
+                            {% if prevIncome != "none" %}
+                            <option value="prop_default" selected disabled hidden>{{ prevIncome.capitalize() }}</option>
+                            <option value="none" style="background-color: #21243d;">No Preference</option>
+                            {% else %}
+                            <option value="none" style="background-color: #21243d;">No Preference</option>
+                            {% endif %}
+                            <option value="very" style="background-color: #21243d;">Very Low Income</option>
+                            <option value="low" style="background-color: #21243d;">Low Income</option>
+                            <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
                         </select>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="col-lg align-items-end">
                       <div class="form-group">
                         <label for="#">Town</label>
                         <div class="form-field">
                           <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text" class="form-control" placeholder="Location">
+                          <input type="text" value="{{ prevTown }}" name="town"class="form-control" placeholder="Town">
                         </div>
                       </div>
                 </div>
+
                 <div class="col-lg align-items-end">
                       <div class="form-group">
                         <label for="#">County</label>
                         <div class="form-field">
                           <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text" class="form-control" placeholder="County">
+                          <input type="text" value="{{ prevCounty }}" name="county" class="form-control" placeholder="County">
                         </div>
                       </div>
                 </div>
@@ -193,13 +211,9 @@
                           <tbody>
                             {% for i in range(rows|length): %}
                             <tr>
-                              <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}&coords={{rows[i][1]}}'>{{rows[i][0]}}</a></td>
+                              <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}&coords={{rows[i][1]}}' target="_blank">{{rows[i][0]}}</a></td>
                               {% for j in range(2, rows[i]|length): %}
-                              {% if 'None' in rows[i][j]|string: %}
-                              <td> 0 </td>
-                              {% else: %}
                               <td>  {{ rows[i][j] }} </td>
-                              {% endif %}
                               {% endfor %}
                            </tr>
                            {% endfor %}
