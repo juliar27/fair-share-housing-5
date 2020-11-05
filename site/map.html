@@ -2,7 +2,7 @@
 <html lang="en">
 <style>
     .sidenav {
-        height: 615px;
+        height: 735px;
         width: 25%;
         position: absolute;
         z-index: 1;
@@ -155,12 +155,8 @@
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
                     <select name="ownership" id="" class="form-control">
-                        {% if prevOwner != "none" %}
                         <option value="owner_default" selected disabled hidden>{{ prevOwner.capitalize() }}</option>
                         <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% else %}
-                        <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% endif %}
                         <option value="rent" style="background-color: #21243d;">Rent</option>
                         <option value="buy" style="background-color: #21243d;">Buy</option>
                     </select>
@@ -262,7 +258,7 @@
 </head>
 <body>
 
-<div id="map" style="width: 100%; height: 615px;"></div>
+<div id="map" style="width: 100%; height: 735px;"></div>
 <script type="text/javascript">
 var addressesInfo = {{ info|safe }};
 var locations = {{ ro }};
