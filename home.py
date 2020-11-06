@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
-from py.database import Database, get_tables, edit_listings, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables, clear, delete, coords
+from py.database import Database, get_tables, edit_listings, add_to_table, get_listings, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings
 from py.download import download
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
@@ -292,8 +292,20 @@ def show_map():
     return response
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/favorites')
+def show_favorites():
+    t = render_template('site/favorites.html')
+    return make_response(t)
 
-
+@app.route('/getfavs', methods=['GET', 'POST'])
+def get_favorites():
+    if request.method == 'GET':
+        return redirect('/favorites')
+    else:
+        favorites = request.json
+        rows, ids = get_favorite_listings(favorites)
+        out = [rows, ids]
+        return jsonify(out = out)
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/list-filtering')
 @app.route('/listings')

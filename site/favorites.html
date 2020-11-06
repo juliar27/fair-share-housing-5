@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<style>
+#dataTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+#dataTable tr:nth-child(even){background-color: #f2f2f2;}
+#dataTable tr:hover {background-color: #ddd;}
+#dataTable th {
+  padding-top: 12px;
+  /* padding-bottom: 12px; */
+  text-align: left;
+  background-color: #21243d;
+  color: white;
+}
+.dataTables_filter, .dataTables_info { display: none; }
+.fa-home {
+    padding-right: 5px;
+  }
+</style>
+<head>
+    <script
+      src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"
+      data-auto-a11y="true"
+    ></script>
+      {% include 'site/header.html' %}
+</head>
+<body>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="index">mapFSH</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
+	          <!-- <li class="nav-item"><a href="about" class="nav-link">About</a></li> -->
+	          <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
+              <li class="nav-item"><a href="listings" class="nav-link">Listings</a></li>
+              <li class="nav-item active"><a href="favorites" class="nav-link">Favorites</a></li>
+	          <li class="nav-item"><a href="login" class="nav-link">Admin</a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span> <span>Favorites <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">Favorites</h1>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+   
+
+    <main>
+      <div class='container'>
+          <h2 style="text-align:center" id='resultsParagraph'></h2>
+      </div>
+      <div id = "table" class="container-fluid">
+        <h1 class="mt-4"></h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <th><i class="fas fa-home"></i>Address</th>
+                                <th>Municipality</th>
+                                <th>County</th>
+                                <th>Status</th>
+                                <th>1Bdr Units</th>
+                                <th>2Bdr Units</th>
+                                <th>3Bdr Units</th>
+                                <th>Units Total</th>
+                                <th>Family Units</th>
+                                <th>Senior Units</th>
+                                <th>SSN Units</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+
+                        </tbody>
+                      </table>
+
+                      
+                  </div>
+              </div>
+          </div>
+          
+            <script src="static/js/jquery.min.js"></script>
+                        <script>
+                            function toggler(x, adr) {
+                                console.log(adr);
+                                var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                                var index = favorites.indexOf(adr);
+                                if (index == -1) {
+                                favorites.push(adr);
+                                x.style.color = 'red';
+                                // item is already favorite
+                                } else {
+                                favorites.splice(index, 1);
+                                x.style.color = 'gray';
+                                }
+                                // store array in local storage
+                                localStorage.setItem('favorites', JSON.stringify(favorites));
+                                console.log(JSON.stringify(favorites));
+                            }
+                            
+                            $(document).ready(function() {
+                                var t = $('#dataTable').DataTable({
+                                "scrollY": "500px",
+                                "paging": false,
+                                "sScrollX":"100%",
+                                "scrollCollapse": true});
+
+                            var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                            if (favorites.length === 0) {
+                                $('#resultsParagraph').html('<br>You currently do not have any favorites.<br><br> <a style="font-size:20px" class="btn btn-primary" href="/map">Click here to find some.</a><br><br> ');
+                                $('#table').html('');
+                            }
+                            else {
+                                $.ajax({
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(favorites),
+                                        dataType: 'json',
+                                        url: '/getfavs',
+                                        complete: function (e) {
+                                            var rows = e['responseJSON']['out'][0];
+                                            var ids = e['responseJSON']['out'][1];
+                                            for (let i = 0; i < rows.length; i++) {
+                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + rows[i][0] + "&coords=" + rows[i][1] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                for (let j = 2; j < rows[i].length; j++) {
+                                                    to_add.push("<td>" + rows[i][j] + "</td>");
+                                                }
+                                                t.row.add(to_add).draw();
+                                            }
+
+                                        },
+                                        error: function(error) {
+                                        console.log(error);
+                                    }
+                                    });
+                            }
+                            });
+                            
+                        </script>
+          </div>
+      </main>
+
+      {% include 'site/footer.html' %}
+  </body>
+</html>

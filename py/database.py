@@ -343,6 +343,7 @@ def get_row(listingid):
        if row[i] is None:
            row[i] = 0
    result = {}
+   result['id'] = listingid
    result['name'] = row[1]
    result['developer'] = row[2]
    result['status'] = row[3]
@@ -384,6 +385,23 @@ def get_row(listingid):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
+
+def get_favorite_listings(favorites):
+    database = Database()
+    database.connect()
+    ids = []
+    rows = []
+    for adr in favorites:
+        cursor = database._connection.cursor()
+        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
+          " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
+          "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+          "listings.municode = cities.municode AND cities.county = counties.county AND addresses.address = '" + double_up(adr) + "'"
+        cursor.execute(stmt)
+        row = cursor.fetchone()
+        ids.append(row[0])
+        rows.append(row[1:])
+    return rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 def get_tables():
    database = Database()
