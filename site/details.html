@@ -67,7 +67,7 @@
   }
 
   #heart {
-  color: grey;  
+  color: grey;
   font-size: 50px;
   }
 
@@ -96,7 +96,6 @@
               <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                   <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
-                  <li class="nav-item"><a href="about" class="nav-link">About</a></li>
                   <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
                   <li class="nav-item active"><a href="listings" class="nav-link">Listings</a></li>
                   <li class="nav-item"><a href="admin" class="nav-link">Admin</a></li>
@@ -112,16 +111,6 @@
                     <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
                          <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p>
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
-                </div>
-              </div>
-            </div>
-          </section>
-
-<!-- "ftco-section ftco-no-pb ftco-no-pt" -->
-        <section class="details-container">
-            <div id="information">
-        			<div class="container">
-        				<div class="row">
                   <section class="4u">
                     <meta id='adr' data-adr='{{adr}}'>
                     <i class="fa fa-heart" onload='setColor(this)' onclick='toggler(this)' ></i>
@@ -140,7 +129,7 @@
                       }
 
                       function toggler(x) {
-                        
+
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
                         var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
                         if (index == -1) {
@@ -154,15 +143,26 @@
                         // store array in local storage
                         localStorage.setItem('favorites', JSON.stringify(favorites));
                         console.log(JSON.stringify(favorites));
-                      }              
-                      
+                      }
+
                     </script>
                   </section>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        <section class="details-container">
+            <div id="information">
+        			<div class="container">
+        				<div class="row">
+
         					<section class="4u">
         						<span class="description"><span class="fas fa-map-pin" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">Address</h2>
         						<p style="color: #fff">{{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </p>
         					</section>
+
         					<section class="4u">
         						<span class="description"><span class="far fa-address-book" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">Program</h2>
@@ -174,6 +174,7 @@
                                     Unavailable at this time
                                 {% endif %} </p>
         					</section>
+
         					<section class="4u">
         						<span class="description"><span class="fas fa-list" style="color: #24A148"></span></span>
         						<h2 style="color: #fff">More Details</h2>
@@ -204,24 +205,14 @@
                             </div>
                             <hr> <h2> {{ adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </h2> <hr>
                               <style>
-                                /* Set the size of the div element that contains the map */
                                 #map {
                                   height: 400px;
                                   width: 120%;
                                  }
                               </style>
-                              <!--The div element for the map -->
                               <div id="map"></div>
                               <script>
-                                // Initialize and add the map
                                 function initMap() {
-                                  // The location of princeton
-                                  // var loc = {lat: {{lat}}, lng: {{long}}};
-                                  // // The map, centered at princeton
-                                  // var map = new google.maps.Map(
-                                  //     document.getElementById('map'), {zoom: 16, center: loc});
-                                  // // The marker, positioned at the location
-                                  // var marker = new google.maps.Marker({position: loc, map: map});
                                   const map = new google.maps.Map(document.getElementById("map"), {
                                       center: { lat: {{lat}}, lng: {{long}} },
                                       zoom: 16,
@@ -321,7 +312,7 @@
                             <div class="progress">
                               <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                            <table class="table table-hover">
+                            <table class="table table-hover table-responsive">
                               <hr> <h2> Units Available </h2> <hr>
                               <thead>
                                   <tr>

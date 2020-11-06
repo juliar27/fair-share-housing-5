@@ -6101,10 +6101,20 @@ a.close.disabled {
 
 .bg-primary {
   background-image: url("../../static/images/bg_1.jpg") !important;
-  background-size: 1500px;
-
-
+  width: 100%;
+  height: 670px;
+  background-size: cover;
 }
+  .bg-primary .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .5;
+    background: #21243d;
+    height: 670px; }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
