@@ -121,9 +121,9 @@
                     </div>
                 </nav>
             </div>
-            {% for row in rows %}
+            <!-- {% for row in rows %}
                 <form action='/deleted?id={{row[0]}}' method='POST' id='{{row[0]}}' onsubmit="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');"></form>
-            {% endfor %}
+            {% endfor %} -->
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
@@ -131,27 +131,9 @@
                         <table border=0px>
                             <tr>
                                 <td>
-                                    <form action="/edit" id='main' method="POST">
-                                      <!--   onsubmit="return confirm('Are you sure you want to make these changes? This action cannot be undone.');" -->
-                                        <input type='submit' value='Submit Changes' class='btn btn-primary'>
-                                    </form>
-
+                                    <button class='btn btn-primary' id='submit'>Submit Changes</button>
                                     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-                                		<script>
-
-                                    // var sub = false;
-
-                                		$(window).on("beforeunload", function() {
-                                			return "Are you sure you don't want to save any changes?";
-                                		});
-
-                                		$(document).ready(function() {
-                                			$("#main").on("submit", function(e) {
-                                				$(window).off("beforeunload");
-                                				return true;
-                                			});
-                                		});
-                                		</script>
+                                		
 
                                 </td>
                                 {% for i in range(347) %}
@@ -168,6 +150,9 @@
                                         <input type="submit" class="btn btn-primary" value="Delete All Listings" >
                                     </form>
                                 </td>
+                            </tr>
+                            <tr>
+                                <p id='saved'></p>
                             </tr>
                         </table>
                         <br>
@@ -228,16 +213,20 @@
                                                 {% for row in rows %}
                                                     <tr>
                                                         <td style="vertical-align:middle">
-                                                            <button form='{{row[0]}}' class='btn btn-primary'>Delete</button>
+                                                            <button name='{{row[0]}}' class='btn btn-primary delete-button'>Delete</button>
                                                         </td>
                                                         <!-- {% set row_nums = [4] %}
                                                         {% for i in range(row|length) %}
                                                         {% endfor %} -->
-                                                        {% for i in range(row|length) %}
+                                                        <td style='vertical-align:middle' align='center'>
+                                                            {{row[0]}}
+                                                        </td>
+                                                        {% for i in range(1, row|length) %}
                                                             <td style="vertical-align:middle" align="center">
 
                                                                 {% set row_nums = (row[i] | string) | length / 20 + 1 %}
-                                                                <textarea placeholder='{{row[i]}}' form='main' name='{{row[0]}};{{i}}' style="text-align-last:center;resize:none;border:none;overflow:hidden" rows = {{row_nums}} cols={{(col_list | sort)[0]}} name="bob" oninput='this.style.height = this.scrollHeight + "px"'>{{row[i]}}</textarea>
+                                                                <div class='text-box' id='{{row[0]}};{{i}}' contenteditable='true'>{{row[i]}}</div>
+                                                                <!-- <textarea placeholder='{{row[i]}}' form='main' name='{{row[0]}};{{i}}' style="text-align-last:center;resize:none;border:none;overflow:hidden" rows = {{row_nums}} cols={{(col_list | sort)[0]}} name="bob" oninput='this.style.height = this.scrollHeight + "px"'>{{row[i]}}</textarea> -->
                                                             </td>
                                                         {% endfor %}
 
@@ -249,7 +238,143 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+
+
+
+
+
+
+                            var to_add = {};
+                            var to_delete = [];
+                            
+
+                            $(document).ready(function() {
+                                $("#main").on("submit", function(e) {
+                                    $(window).off("beforeunload");
+                                    return true;
+                                });
+                                $('body').on('DOMSubtreeModified', '.text-box', function(){
+                                    var conattr = $(this).attr('contenteditable'); 
+                                    if (typeof conattr !== typeof undefined && conattr !== false) { 
+                                        var val = $(this).text();
+                                        var id = $(this).attr('id');
+                                        to_add[id] = val;
+                                        $(window).on("beforeunload", function() {
+                                            return "Are you sure you don't want to save any changes?";
+                                        });
+                                    } 
+                                });
+                                $('.delete-button').click(function() {
+                                    var id = $(this).attr('name');
+                                    console.log(id);
+                                    var ids = t.column(1).data();
+                                    for (let i = 0; i < ids.length; i++)
+                                        if (ids[i] === id) {
+                                            console.log('FOUND HER');
+                                            t.row(i).remove().draw();
+                                            break;
+                                        }
+                                    to_delete.push(id)
+                                    $(window).on("beforeunload", function() {
+                                        return "Are you sure you don't want to save any changes?";
+                                    });
+                                });
+
+                                $('#submit').click(function() {
+                                    
+                                    $('#saved').html("");
+                                    $(window).off("beforeunload");
+                                    var output = {'to_add':to_add, 'to_delete':to_delete};
+                                    $.ajax({
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(output),
+                                        dataType: 'json',
+                                        url: '/edit',
+                                        complete: function (e) {
+                                            $('#saved').html("Your changes were saved successfully.");
+                                            to_add = {};
+                                            to_delete = [];
+                                        },
+                                        error: function(error) {
+                                        console.log(error);
+                                    }
+                                    });
+                                });
+
+                                var t = $('#dataTable').DataTable({
+                                    "scrollY": "500px",
+                                    "paging": false,
+                                    "sScrollX":"100%",
+                                    "scrollCollapse": true,
+                                    "columnDefs": [
+                                        {"className": "dt-center", "targets": "_all"}
+                                    ]
+                                    
+                                });
+                                var ids = t.column(1).data();
+                                var counter = 0;
+                                for (let i = 0; i < ids.length; i++) {
+                                    if (parseInt(ids[i]) > counter) counter = parseInt(ids[i]);
+                                  }
+                                counter++;
+                                $("#add-row").click(function () {
+                                    t.row.add([
+                                    "<button name='" + counter + "' class='btn btn-primary delete-button'>Delete</button>",
+                                    counter,
+                                    "<div class='text-box' id='" + counter + ";1' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";2' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";3' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";4' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";5' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";6' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";7' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";8' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";9' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";10' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";11' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";12' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";13' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";14' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";15' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";16' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";17' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";18' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";19' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";20' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";21' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";22' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";23' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";24' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";25' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";26' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";27' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";28' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";29' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";30' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";31' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";32' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";33' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";34' contenteditable='true'></div>",
+                                    "<div class='text-box' id='" + counter + ";35' contenteditable='true'></div>"
+                                    ]
+                                    ).order([1, 'desc']).draw();
+                                    counter++;
+                                    $(window).on("beforeunload", function() {
+                                        return "Are you sure you don't want to save any changes?";
+                                    });
+                                    
+                                });
+                            });
+
+
+
+                        // var sub = false;
+                            
+                            </script>
                 </main>
+                
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">

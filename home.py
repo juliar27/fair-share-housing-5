@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, send_file, session
+from flask import Flask, render_template, request, make_response, redirect, url_for, send_file, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
@@ -372,9 +372,16 @@ def edit():
     if request.method == 'GET':
         return redirect('/tables')
     else:
-        form = request.form.to_dict()
-        edit_listings(form)
-        return redirect('/tables')
+        out = request.json
+        to_add = out['to_add']
+        to_delete = out['to_delete']
+        edit_listings(to_add)
+        for row in to_delete:
+            delete(row)
+
+        print('done')
+        data = {'message': 'Created', 'code': 'SUCCESS'}
+        return make_response(jsonify(data), 201)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
