@@ -112,9 +112,82 @@
                     <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
                          <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p>
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
+                  {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
+                  <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
+                  {% if tot > 0 %}
+                    <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available: </strong>
+                      {% set types = '' %}
+
+                      {% if row['vli1'] + row['vli2'] + row['vli3'] + row['vssn'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'Very Low Income' %}
+                        {% else: %}
+                          {% set types = types + ', Very Low Income' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['li1'] + row['li2'] + row['li3'] + row['lssn'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'Low Income' %}
+                        {% else: %}
+                          {% set types = types + ', Low Income' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['m1'] + row['m2'] + row['m3'] + row['mssn'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'Moderate Income' %}
+                        {% else: %}
+                          {% set types = types + ', Moderate Income' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['famsale'] + row['famrent'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'Family Housing' %}
+                        {% else: %}
+                          {% set types = types + ', Family Housing' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['srsale'] + row['srrent'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'Senior Housing' %}
+                        {% else: %}
+                          {% set types = types + ', Senior Housing' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['ssnsale'] + row['ssnrent'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'SSN Housing' %}
+                        {% else: %}
+                          {% set types = types + ', SSN Housing' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['famrent'] + row['srrent'] + row['ssnrent'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'For Rent' %}
+                        {% else: %}
+                          {% set types = types + ', For Rent' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {% if row['famsale'] + row['srsale'] + row['ssnsale'] > 0 %}
+                        {% if types == '' %}
+                          {% set types = 'For Sale' %}
+                        {% else: %}
+                          {% set types = types + ', For Sale' %}
+                        {% endif %}
+                      {% endif %}
+
+                      {{ types }}
+                    </h6>
+                  {% endif %}
                   <section class="4u">
                     <meta id='adr' data-adr='{{adr}}'>
-                    <i class="fa fa-heart" onload='setColor(this)' onclick='toggler(this)' ></i>
+                    <i class="fa fa-heart fa-2x" onload='setColor(this)' onclick='toggler(this)' ></i>
                     <script src="static/js/jquery.min.js"></script>
                     <script>
 
@@ -122,7 +195,7 @@
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
                         var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
                         if (index == -1) {
-                          x.style.color = 'gray';
+                          x.style.color = 'white';
                         // item is already favorite
                         } else {
                           x.style.color = 'red';
@@ -139,7 +212,7 @@
                         // item is already favorite
                         } else {
                           favorites.splice(index, 1);
-                          x.style.color = 'gray';
+                          x.style.color = 'white';
                         }
                         // store array in local storage
                         localStorage.setItem('favorites', JSON.stringify(favorites));
