@@ -10,6 +10,7 @@ from threading import Thread
 from rq import Queue
 from py.worker import conn
 from datetime import timedelta
+from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -434,8 +435,20 @@ def show_listings():
 def show_details():
     adr = request.args.get('adr')
     coords = request.args.get('coords').split(',')
+    lat = coords[0]
+    long = coords[1]
+    if lat == '40.0' and long == '40.0':
+        adr = adr + ', NJ, USA'
+        map = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+        geocode_result = map.geocode(adr)
+        lat = geocode_result[0]['geometry']['location'] ['lat']
+        long = geocode_result[0]['geometry']['location'] ['lng']
+        # coordinates = str(lat) + "," + str(long)
+        # print(coordinates)
+    # print(lat)
+    # print(long)
     row = get_row(request.args.get('id'))
-    t = render_template('site/details.html', row=row, adr=adr, lat=coords[0], long=coords[1])
+    t = render_template('site/details.html', row=row, adr=adr, lat=lat, long=long)
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------
