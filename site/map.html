@@ -307,12 +307,12 @@
 </head>
 <body>
 
-<div id="map" style="width: 100%; height: 735px;"></div>
+<div id="map" style="width: 85%; height: 735px; float: right;"></div>
 <script type="text/javascript">
 var addressesInfo = {{ info|safe }};
 var locations = {{ ro }};
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
+        zoom: 8,
         center: new google.maps.LatLng(40.3431, -74.6551),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
