@@ -8,7 +8,7 @@ from py.form import AddForm
 from werkzeug.datastructures import MultiDict
 from threading import Thread
 from rq import Queue
-from py.worker import conn
+from worker import conn
 from datetime import timedelta
 from googlemaps import Client as GoogleMaps
 
@@ -438,9 +438,9 @@ def show_details():
     lat = coords[0]
     long = coords[1]
     if lat == '40.0' and long == '40.0':
-        adr = adr + ', NJ, USA'
+        # adr = adr + ', NJ, USA'
         map = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-        geocode_result = map.geocode(adr)
+        geocode_result = map.geocode(adr + ', NJ, USA')
         lat = geocode_result[0]['geometry']['location'] ['lat']
         long = geocode_result[0]['geometry']['location'] ['lng']
         # coordinates = str(lat) + "," + str(long)
