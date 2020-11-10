@@ -123,6 +123,11 @@ def querying_location(description):
     row = cursor.fetchone()
     while row is not None:
         ids.append(row[0])
+        row = list(row)
+        for i in range(6, 32):
+            if row[i] is None:
+                row[i] = 0
+        row = tuple(row)
         rows.append(row[1:])
         row = cursor.fetchone()
 
