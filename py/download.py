@@ -12,7 +12,7 @@ def download(filename):
 
     # Add column headers
     columns = ["UNIQUEID", "Municode", "Municipality", "County", "Region", "SiteProgramName",
-    "ProjectDeveloper", "ComplianceMechanism", "Address", "Status", "OverallTotalUnits", "AdminAgent",
+    "ProjectDeveloper", "ComplianceMechanism", "Address", "Status", "AdminAgent", "OverallTotalUnits",
     "TotalFamily", "FamilyForSale",	"FamilyRental",	"TotalSenior", "SeniorForSale",
     "SeniorRental",	"SSNForSale", "SSNRental", "OneBRTotal", "OneBRVLI",
     "OneBRLow",	"OneBRMod",	"TwoBRTotal", "TwoBRVLI", "TwoBRLow", "TwoBRMod",
