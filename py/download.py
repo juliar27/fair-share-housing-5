@@ -12,7 +12,7 @@ def download(filename):
 
     # Add column headers
     columns = ["UNIQUEID", "Municode", "Municipality", "County", "Region", "SiteProgramName",
-    "ProjectDeveloper", "ComplianceMechanism", "Address", "Status", "OverallTotalUnits", "AdminAgent"
+    "ProjectDeveloper", "ComplianceMechanism", "Address", "Status", "OverallTotalUnits", "AdminAgent",
     "TotalFamily", "FamilyForSale",	"FamilyRental",	"TotalSenior", "SeniorForSale",
     "SeniorRental",	"SSNForSale", "SSNRental", "OneBRTotal", "OneBRVLI",
     "OneBRLow",	"OneBRMod",	"TwoBRTotal", "TwoBRVLI", "TwoBRLow", "TwoBRMod",
@@ -28,6 +28,3 @@ def download(filename):
             ws.write(i + 1, j, rows[i][j])
 
     wb.save(filename)
-
-if __name__ == "__main__":
-    download()

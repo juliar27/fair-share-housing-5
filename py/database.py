@@ -187,6 +187,8 @@ class Database:
             if str(row[0]) in changed_addresses:
                 print('getting')
                 coordinates = get_coordinates(row[3], row[2], mapsObj)
+
+                
                 stmt = "UPDATE addresses SET coordinates = '" + coordinates + "' WHERE listingid = " + str(row[0])
                 new_cursor.execute(stmt)
 
@@ -236,7 +238,7 @@ class Database:
         cursor = self._connection.cursor()
         stmt = "SELECT listings.listingid, cities.municode, cities.municipality, counties.county, counties.region, " + \
                 "listings.name, listings.developer, listings.compliance, " + \
-                "listings.addresses, listings.status, listings.total, listings.family, " + \
+                "listings.addresses, listings.status, listings.agent, listings.total, listings.family, " + \
                 "listings.famsale, listings.famrent, listings.sr, listings.srsale, listings.srrent, " + \
                 "listings.ssnsale, listings.ssnrent, listings.br1, "  + \
                 "listings.v1, listings.l1,  listings.m1, listings.br2, listings.v2, " + \
@@ -250,14 +252,14 @@ class Database:
         row = cursor.fetchone()
         while row is not None:
             row = list(row)
-            for i in range(10, len(row)):
+            for i in range(11, len(row)):
                 if row[i] is None:
                     row[i] = 0
-            row.append(row[20] + row[24] + row[28])
             row.append(row[21] + row[25] + row[29])
             row.append(row[22] + row[26] + row[30])
+            row.append(row[23] + row[27] + row[31])
+            row.append(row[19] + row[17] + row[14])
             row.append(row[18] + row[16] + row[13])
-            row.append(row[17] + row[15] + row[12])
             rows.append(row)
             row = cursor.fetchone()
         cursor.close()
@@ -399,6 +401,7 @@ def get_favorite_listings(favorites):
           "listings.municode = cities.municode AND cities.county = counties.county AND addresses.address = '" + double_up(adr) + "'"
         cursor.execute(stmt)
         row = cursor.fetchone()
+
         ids.append(row[0])
         rows.append(row[1:])
     return rows, ids

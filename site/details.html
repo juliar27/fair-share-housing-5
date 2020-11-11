@@ -193,6 +193,8 @@
                       function setColor(x) {
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
                         var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
+                        console.log(adr);
+                        console.log(favorites);
                         if (index == -1) {
                           x.style.color = 'white';
                         // item is already favorite
