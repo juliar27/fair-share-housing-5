@@ -20,7 +20,7 @@
 
 #information
 	{
-		padding: 3em 0em;
+		padding: 1em 1em;
 	}
 
 .container {
@@ -228,18 +228,18 @@
 
         <section class="details-container">
             <div id="information">
-        			<div class="container">
+        			<div class="container" style="text-align: center;">
         				<div class="row">
 
         					<section class="4u">
-        						<span class="description"><span class="fas fa-map-pin" style="color: #24A148"></span></span>
-        						<h2 style="color: #fff">Address</h2>
+        						<span class="description"><span class="fas fa-map-pin" style="color: #24A148;"></span></span>
+        						<h3 style="color: #fff">Address</h3>
         						<p style="color: #fff">{{adr + ', ' + row['muni'] + ', ' + row['county']}} County, NJ </p>
         					</section>
 
         					<section class="4u">
-        						<span class="description"><span class="far fa-address-book" style="color: #24A148"></span></span>
-        						<h2 style="color: #fff">Program</h2>
+        						<span class="description"><span class="fas fa-address-book" style="color: #24A148"></span></span>
+        						<h3 style="color: #fff">Program</h3>
         						<p style="color: #fff">Program Name: {{row['name']}} <br>
                                 Developer:
                                 {% if row['developer'] %}
@@ -251,7 +251,7 @@
 
         					<section class="4u">
         						<span class="description"><span class="fas fa-list" style="color: #24A148"></span></span>
-        						<h2 style="color: #fff">More Details</h2>
+        						<h3 style="color: #fff">More Details</h3>
                                 <p style="color: #fff">Status: {{row['status']}} <br>
                                   Compliance Mechanism: {{row['compliance']}} </p>
         					</section>
