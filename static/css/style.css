@@ -8398,6 +8398,24 @@ h1, h2, h3, h4, h5,
       height: 350px; }
     .hero-wrap.hero-wrap-5 .slider-text {
       height: 350px !important; }
+  .hero-wrap.hero-wrap-6 {
+    height: 300px !important;
+    position: relative; }
+    .hero-wrap.hero-wrap-6 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 300px; }
+    .hero-wrap.hero-wrap-6 .slider-text {
+      height: 300px !important; }
+  .hero-wrap.hero-wrap-7 {
+    height: 325px !important;
+    position: relative; }
+    .hero-wrap.hero-wrap-7 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 325px; }
+    .hero-wrap.hero-wrap-7 .slider-text {
+      height: 325px !important; }
 
 .slider-text {
   height: 850px; }

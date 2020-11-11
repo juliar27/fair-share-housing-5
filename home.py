@@ -209,6 +209,7 @@ def show_map():
     prevIncome = request.cookies.get('prevIncome')
     prevTown = request.cookies.get('prevTown')
     prevCounty = request.cookies.get('prevCounty')
+    prevZip = request.cookies.get('prevZip')
 
     if prevOwner is None:
         prevOwner = "none"
@@ -222,6 +223,8 @@ def show_map():
         prevTown = ''
     if prevCounty is None:
         prevCounty = ''
+    if prevZip is None:
+        prevZip = ''
 
     owner = request.args.get('ownership')
     prop = request.args.get('property')
@@ -229,6 +232,7 @@ def show_map():
     income = request.args.get('income')
     town = request.args.get('town')
     county = request.args.get('county')
+    zipCode = request.args.get('zip')
 
     if owner is None:
         if prevOwner is None:
@@ -264,6 +268,12 @@ def show_map():
             county = ''
         else:
             county = prevCounty
+
+    if zipCode is None:
+        if prevZip is None:
+            zipCode = ''
+        else:
+            zipCode = prevZip
 
 
     database = Database()
@@ -294,6 +304,7 @@ def show_map():
     response.set_cookie('prevIncome', income, expires=0)
     response.set_cookie('prevTown', town, expires=0)
     response.set_cookie('prevCounty', county, expires=0)
+    response.set_cookie('prevZip', zipCode, expires=0)
 
     return response
 
@@ -322,6 +333,7 @@ def show_listings():
     prevIncome = request.cookies.get('prevIncome')
     prevTown = request.cookies.get('prevTown')
     prevCounty = request.cookies.get('prevCounty')
+    prevZip = request.cookies.get('prevZip')
 
     if prevOwner is None:
         prevOwner = "none"
@@ -335,6 +347,8 @@ def show_listings():
         prevTown = ''
     if prevCounty is None:
         prevCounty = ''
+    if prevZip is None:
+        prevZip = ''
 
     owner = request.args.get('ownership')
     prop = request.args.get('property')
@@ -342,6 +356,7 @@ def show_listings():
     income = request.args.get('income')
     town = request.args.get('town')
     county = request.args.get('county')
+    zipCode = request.args.get('zip')
 
     if owner is None:
         if prevOwner is None:
@@ -377,7 +392,12 @@ def show_listings():
             county = ''
         else:
             county = prevCounty
-
+    
+    if zipCode is None:
+        if prevZip is None:
+            zipCode = ''
+        else:
+            zipCode = prevZip
 
     database = Database()
     database.connect()
@@ -420,6 +440,8 @@ def show_listings():
         # i += 1
 
     # print(res)
+
+    # insert zip code filtering here !!!!
 
     t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
 

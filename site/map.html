@@ -144,7 +144,10 @@
     </div>
 </section>
 
-<section class="next">
+<body>
+    <div id="canvas" style="height:100%;width:100%;">
+    <div id="map" style="width: 75%; height: 735px; float:right;"></div>
+    <section class="next">
     <div class="sidenav">
         <!--        <h2>Filter Options</h2>-->
 
@@ -241,6 +244,14 @@
         </div>
 
         <div class="form-group">
+            <label for="#">Zip Code</label>
+            <div class="form-field">
+                <div class="icon"><span class="fa fa-search"></span></div>
+                <input type="text" value="{{ prevZip }}" name="zip" class="form-control" placeholder="Zip Code">
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="form-field">
                 <input type="submit" name="search" value="Search" class="form-control btn btn-primary">
             </div>
@@ -248,19 +259,62 @@
 
         </form>
     </div>
-
-    <section>
-        <div class="main">
-            <style>
-            #map-canvas {
-	margin: 0;
-	padding: 0;
-	height: 400px;
-	max-width: none;
-}
-#map-canvas img {
-	max-width: none !important;
-}
+</section>
+</div>
+</body>
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ"
+            type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+    var addressesInfo = {{ info|safe }};
+    var locations = {{ ro }};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: new google.maps.LatLng(40.3431, -74.6551),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+    
+        var infowindow = new google.maps.InfoWindow();
+        
+        
+        
+        var marker, i;
+    
+        for (i = 0; i < locations.length; i++) { 
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
+                    window.open(url)
+                }
+            })(marker, i));
+            google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+                return function() {
+                    infowindow.setContent('<div id="iw-container">' +
+                        '<div class="iw-title">' + String(addressesInfo[i][2]) + '</div>' +
+                        '<div class="iw-content">' +
+                 '<img src="/static/images/house_icon.png" height="85" width="83">' +
+                          '<div class="iw-subTitle"><strong>Details:</strong></div>' +
+                          '<p>Total units: ' + locations[i][3] +
+                          '<br>Units with one bedroom: ' + parseInt(locations[i][4]) +
+                          '<br>Units with two bedrooms: ' + parseInt(locations[i][5])  +
+                          '<br>Units with three bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
+                      '</div>');
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
+                return function() {
+                    infowindow.close(map, marker);
+                }
+            })(marker, i));
+        }
+    </script>
+<style>
 .gm-style-iw {
 	width: 350px !important;
 	top: 15px !important;
@@ -297,79 +351,6 @@
 	float: right;
 	margin: 0 5px 5px 10px;	
 }
-            
-            
-            
-            </style>
-<head>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ"
-            type="text/javascript"></script>
-</head>
-<body>
+</style>
 
-<div id="map" style="width: 85%; height: 735px; float: right;"></div>
-<script type="text/javascript">
-var addressesInfo = {{ info|safe }};
-var locations = {{ ro }};
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
-        center: new google.maps.LatLng(40.3431, -74.6551),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-
-    var infowindow = new google.maps.InfoWindow();
-    
-    
-    
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {
-//         var content = '<div id="iw-container">' +
-//                    '<div class="iw-title">' + String(addressesInfo[i][2]) + '</div>' +
-//                    '<div class="iw-content">' +
-//             '<img src="/static/images/house_icon.png" height="85" width="83">' +
-//                      '<div class="iw-subTitle">Details</div>' +
-//                      '<p>Total units: ' + locations[i][3] +
-//                      '<br>Units with one bedroom: ' + parseInt(locations[i][4]) +
-//                      '<br>Two bedrooms: ' + parseInt(locations[i][5])  +
-//                      '<br>Three bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
-//                  '</div>';
-
-        marker = new google.maps.Marker({
-            position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
-            map: map
-        });
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-                var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
-                window.open(url)
-            }
-        })(marker, i));
-        google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
-            return function() {
-                infowindow.setContent('<div id="iw-container">' +
-                    '<div class="iw-title">' + String(addressesInfo[i][2]) + '</div>' +
-                    '<div class="iw-content">' +
-             '<img src="/static/images/house_icon.png" height="85" width="83">' +
-                      '<div class="iw-subTitle"><strong>Details:</strong></div>' +
-                      '<p>Total units: ' + locations[i][3] +
-                      '<br>Units with one bedroom: ' + parseInt(locations[i][4]) +
-                      '<br>Units with two bedrooms: ' + parseInt(locations[i][5])  +
-                      '<br>Units with three bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
-                  '</div>');
-                infowindow.open(map, marker);
-            }
-        })(marker, i));
-        google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
-            return function() {
-                infowindow.close(map, marker);
-            }
-        })(marker, i));
-    }
-</script>
-</body>
-        </div>
-    </section>
-    </section>
-</body>
 </html>
