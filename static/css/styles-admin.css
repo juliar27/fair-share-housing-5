@@ -6114,7 +6114,10 @@ a.close.disabled {
     content: '';
     opacity: .5;
     background: #21243d;
-    height: 670px; }
+    height: 100%;
+    pointer-events: none;
+
+   }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
