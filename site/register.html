@@ -73,14 +73,14 @@ button {
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Password</label>
-                                                        <input class="form-control py-4" name="inputPassword"  id="inputPassword"  type="password" placeholder="Enter password" required/>
+                                                        <input class="form-control py-4" pattern=".{8,}"   required title="8 characters minimum" name="inputPassword"  id="inputPassword"  type="password" placeholder="Enter password" required/>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Confirm Password</label>
-                                                        <input class="form-control py-4" name="inputConfirmPassword" id="inputConfirmPassword" type="password" placeholder="Confirm password"   oninput="check_pass(this);" required/>
+                                                        <input class="form-control py-4" pattern=".{8,}"   required title="8 characters minimum" name="inputConfirmPassword" id="inputConfirmPassword" type="password" placeholder="Confirm password"   oninput="check_pass(this);" required/>
                                                     </div>
                                                 </div>
                                             </div>

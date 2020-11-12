@@ -38,7 +38,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <div class="dropdown-divider"></div>
+                        <!-- <div class="dropdown-divider"></div> -->
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </li>
@@ -131,7 +131,7 @@
                                 <td>
                                     <button class='btn btn-primary' id='submit'>Submit Changes</button>
                                     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-                                		
+
 
                                 </td>
                                 {% for i in range(347) %}
@@ -245,7 +245,7 @@
 
                             var to_add = {};
                             var to_delete = [];
-                            
+
 
                             $(document).ready(function() {
                                 $("#main").on("submit", function(e) {
@@ -253,15 +253,15 @@
                                     return true;
                                 });
                                 $('body').on('DOMSubtreeModified', '.text-box', function(){
-                                    var conattr = $(this).attr('contenteditable'); 
-                                    if (typeof conattr !== typeof undefined && conattr !== false) { 
+                                    var conattr = $(this).attr('contenteditable');
+                                    if (typeof conattr !== typeof undefined && conattr !== false) {
                                         var val = $(this).text();
                                         var id = $(this).attr('id');
                                         to_add[id] = val;
                                         $(window).on("beforeunload", function() {
                                             return "Are you sure you don't want to save any changes?";
                                         });
-                                    } 
+                                    }
                                 });
                                 $('.delete-button').click(function() {
                                     var id = $(this).attr('name');
@@ -280,7 +280,7 @@
                                 });
 
                                 $('#submit').click(function() {
-                                    
+
                                     $('#saved').html("");
                                     $(window).off("beforeunload");
                                     var output = {'to_add':to_add, 'to_delete':to_delete};
@@ -309,7 +309,7 @@
                                     "columnDefs": [
                                         {"className": "dt-center", "targets": "_all"}
                                     ]
-                                    
+
                                 });
                                 var ids = t.column(1).data();
                                 var counter = 0;
@@ -362,17 +362,17 @@
                                     $(window).on("beforeunload", function() {
                                         return "Are you sure you don't want to save any changes?";
                                     });
-                                    
+
                                 });
                             });
 
 
 
                         // var sub = false;
-                            
+
                             </script>
                 </main>
-                
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
