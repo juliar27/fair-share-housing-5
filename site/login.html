@@ -20,7 +20,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header bg-dark"><h3 class="text-center my-4" style="color:#fff">Login</h3></div>
                                     <div class="card-body">
-
+                                        <p style='color:red' id='failed'></p>
                                         <form id='login-form' method="post">
                                             <div class="form-group">
                                                 <label class="small mb-1">Email</label>
@@ -93,7 +93,15 @@
                                     encode          : true
                     })
                         .done(function(data) {
-                            window.location.replace(data);
+                            if (data === '/login') {
+                                $('#failed').html('Your username or password was incorrect. Please try again.');
+                                localStorage.usrname = '';
+                                localStorage.pass = '';
+                                localStorage.chkbx = '';
+                            }
+                            else {
+                                window.location.replace(data);
+                            }
                         });
                     event.preventDefault();
                 });
