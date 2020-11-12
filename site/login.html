@@ -20,20 +20,18 @@
                                     <div class="card-header bg-dark"><h3 class="text-center my-4" style="color:#fff">Login</h3></div>
                                     <div class="card-body">
 
-                                        <form action="/check" method="post">
+                                        <form id='login-form' method="post">
                                             <div class="form-group">
                                                 <label class="small mb-1">Email</label>
-                                                <input class="form-control py-4" autofocus name="inputEmailAddress" type="email" placeholder="Enter email address" required/>
+                                                <input class="form-control py-4" autofocus name="inputEmailAddress" id = "xip_Name" type="email" placeholder="Enter email address" required/>
                                             </div>
                                             <div class="form-group">
                                                 <label class="small mb-1" >Password</label>
-                                                <input class="form-control py-4" name="inputPassword" type="password" placeholder="Enter password" required/>
+                                                <input class="form-control py-4" name="inputPassword" type="password" id = "xip_Password" placeholder="Enter password" required/>
                                             </div>
                                             <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" />
-                                                    <label class="custom-control-label" name="rememberPasswordCheck">Remember password</label>
-                                                </div>
+                                            <input id = "remember_me" value = "remember-me" type="checkbox" /> Remember Me
+
                                             </div>
                                             <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="small" href="password" style="color:#24A148">Forgot Password?</a>
@@ -54,7 +52,51 @@
                 </main>
               </section>
             </div>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+      <script>
+            $(document).ready(function() {
+ 
+                if (localStorage.chkbx && localStorage.chkbx != '') {
+                    $('#remember_me').attr('checked', 'checked');
+                    $('#xip_Name').val(localStorage.usrname);
+                    $('#xip_Password').val(localStorage.pass);
+                } else {
+                    $('#remember_me').removeAttr('checked');
+                    $('#xip_Name').val('');
+                    $('#xip_Password').val('');
+                }
+ 
+                $('#login-form').submit(function(e) {
+                    console.log("HI");
+                    if ($('#remember_me').is(':checked')) {
+                        localStorage.usrname = $('#xip_Name').val();
+                        localStorage.pass = $('#xip_Password').val();
+                        localStorage.chkbx = $('#remember_me').val();
+                    } else {
+                        localStorage.usrname = '';
+                        localStorage.pass = '';
+                        localStorage.chkbx = '';
+                    }
+                    var formData = {
+                        'inputEmailAddress' : $('#xip_Name').val(),
+                        'inputPassword'     : $('#xip_Password').val()
+                    };
 
+                    $.ajax({
+                        type        : 'POST', 
+                        url         : '/check', 
+                        data        : formData, 
+                        dataType    : 'text',
+                                    encode          : true
+                    })
+                        .done(function(data) {
+                            window.location.replace(data);
+                        });
+                    event.preventDefault();
+                });
+            });
+ 
+        </script>
 
             {% include 'site/admin-footer.html' %}
 

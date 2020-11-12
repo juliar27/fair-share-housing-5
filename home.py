@@ -747,12 +747,12 @@ def show_check():
     flag, unique_id, verify = check_account(dict)
 
     if not flag and verify:
-        return redirect('/verify')
+        return '/verify'
     elif not flag:
-        return redirect('/login')
+        return '/login'
     else:
         login_user(User(dict['inputEmailAddress'], unique_id))
-        return redirect('/admin')
+        return '/admin'
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -777,6 +777,6 @@ def show_admin():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(port=44434, debug=True)
+    app.run(port=44334, debug=True)
 
 # ----------------------------------------------------------------------------------------------------------------------
