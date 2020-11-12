@@ -140,10 +140,29 @@ def querying_location(description):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-def filter_function(rows, ids, owner, prop, bed, income, town, county, database):
+def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode, database):
     x = []
     flag = True
     addressInfo = []
+
+    if ((zipCode is not None) and (zipCode != '')):
+        mapVar = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
+        zipLat = 40.0
+        zipLong = 40.0
+
+        try:
+            geocode_result = mapVar.geocode(zipCode)
+            zipLat = geocode_result[0]['geometry']['location'] ['lat']
+            zipLong = geocode_result[0]['geometry']['location'] ['lng']
+
+            print("zip code geocode success")
+        except:
+            print("zip is not a number")
+
+            zipCode = None
+    else:
+        zipCode = None
+
     for i in range(len(rows)):
         flag = True
 
@@ -177,6 +196,13 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, database)
         if prop is not None:
             if ((prop == "family") & (rows[i][21] == 0)) or ((prop == "senior") & (rows[i][22] == 0)):
                 flag = False
+        
+        if (zipCode is not None):
+            houseLat, houseLong = rows[i][1].split(',')
+            houseLat = float(houseLat)
+            houseLong = float(houseLong)
+            if ((houseLat >= (zipLat + 0.05)) or (houseLat <= (zipLat - 0.05)) or (houseLong >= (zipLong + 0.05)) or (houseLong <= (zipLong - 0.05))):
+                flag = False
 
         if flag == True:
             addr = str(rows[i][0])
@@ -188,7 +214,6 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, database)
     database.disconnect()
 
     return x, addressInfo
-
 
 
 
@@ -223,7 +248,7 @@ def show_map():
         prevTown = ''
     if prevCounty is None:
         prevCounty = ''
-    if prevZip is None:
+    if (prevZip is None):
         prevZip = ''
 
     owner = request.args.get('ownership')
@@ -275,7 +300,6 @@ def show_map():
         else:
             zipCode = prevZip
 
-
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
@@ -291,11 +315,11 @@ def show_map():
         filtering += " AND cities.municipality like \'%" + town + "%\'"
 
     rows, ids, database = querying_location(filtering)
-    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, database)
+    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode, database)
 
     print(len(x))
 
-    t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
+    t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
 
     response = make_response(t)
     response.set_cookie('prevOwner', owner, expires=0)
@@ -414,7 +438,7 @@ def show_listings():
         filtering += " AND cities.municipality like \'%" + town + "%\'"
 
     rows, ids, database = querying_location(filtering)
-    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, database)
+    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode, database)
 
     ids = []
 
@@ -443,7 +467,7 @@ def show_listings():
 
     # insert zip code filtering here !!!!
 
-    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county)
+    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
 
     response = make_response(t)
     response.set_cookie('prevOwner', owner, expires=0)
@@ -452,6 +476,7 @@ def show_listings():
     response.set_cookie('prevIncome', income, expires=0)
     response.set_cookie('prevTown', town, expires=0)
     response.set_cookie('prevCounty', county, expires=0)
+    response.set_cookie('prevZip', zipCode, expires=0)
     return make_response(t)
 
 
