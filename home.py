@@ -301,12 +301,36 @@ def show_listings():
 @app.route('/details')
 def show_details():
     id = request.args.get('id')
-    adr, coords = get_details(id)
-    coords = coords.split(',')
+
+    if id == '' or id == None:
+        err = 'missing id'
+        html = render_template(
+            'site/details.html', err=err, row='', adr='', lat='', long='')
+        response = make_response(html)
+        return response
+
+    if not id.isnumeric():
+        err = 'invalid id'
+        html = render_template(
+        'site/details.html', err=err, row='', adr='', lat='', long='')
+        response = make_response(html)
+        return response
+
+    info = get_details(id)
+
+    if type(info) == str:
+        err = info
+        html = render_template(
+        'site/details.html', err=err, row='', adr='', lat='', long='')
+        response = make_response(html)
+        return response
+
+    adr = info[0]
+    coords = info[1].split(',')
     lat = coords[0]
     long = coords[1]
     row = get_row(id)
-    t = render_template('site/details.html', row=row, adr=adr, lat=lat, long=long)
+    t = render_template('site/details.html', err='', row=row, adr=adr, lat=lat, long=long)
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------

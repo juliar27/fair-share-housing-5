@@ -537,7 +537,10 @@ def get_details(id):
     cursor.execute(stmt)
     row = cursor.fetchone()
 
-    return row[0], row[1]
+    if row is None:
+        return 'Listing does not exist'
+
+    return row
 
 # ----------------------------------------------------------------------------------------------------------------------
 
