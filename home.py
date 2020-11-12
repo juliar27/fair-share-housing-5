@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
-from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings
+from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
 from py.map import querying_location, filter_function, query2, query3, query
 from py.form import AddForm
@@ -300,12 +300,12 @@ def show_listings():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/details')
 def show_details():
-    adr = request.args.get('adr')
-    coords = request.args.get('coords').split(',')
-
-    lat, long  = query3(coords)
-
-    row = get_row(request.args.get('id'))
+    id = request.args.get('id')
+    adr, coords = get_details(id)
+    coords = coords.split(',')
+    lat = coords[0]
+    long = coords[1]
+    row = get_row(id)
     t = render_template('site/details.html', row=row, adr=adr, lat=lat, long=long)
     return make_response(t)
 

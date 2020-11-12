@@ -181,14 +181,14 @@ class Database:
         cursor.execute(stmt)
         row = cursor.fetchone()
         new_cursor = self._connection.cursor()
-        
+
         while row is not None:
             print(row[0])
             if str(row[0]) in changed_addresses:
                 print('getting')
                 coordinates = get_coordinates(row[3], row[2], mapsObj)
 
-                
+
                 stmt = "UPDATE addresses SET coordinates = '" + coordinates + "' WHERE listingid = " + str(row[0])
                 new_cursor.execute(stmt)
 
@@ -521,6 +521,25 @@ def coords():
         x.append([float(coords[0]), float(coords[1]), ids[i]])
         addressInfo.append([addr, rows[i][1], fullAddr])
     return x, addressInfo
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def get_details(id):
+    db = Database()
+    db.connect()
+
+    stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
+        "addresses.listingid = " + id
+
+    cursor = db._connection.cursor()
+    cursor.execute(stmt)
+    row = cursor.fetchone()
+
+    return row[0], row[1]
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 
