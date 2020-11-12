@@ -8361,7 +8361,10 @@ h1, h2, h3, h4, h5,
     content: '';
     opacity: .5;
     background: #21243d;
-    height: 850px; }
+    height: 100%;
+    pointer-events: none}
+
+
   .hero-wrap.hero-wrap-2 {
     height: 500px !important;
     position: relative; }

@@ -392,7 +392,7 @@ def show_listings():
             county = ''
         else:
             county = prevCounty
-    
+
     if zipCode is None:
         if prevZip is None:
             zipCode = ''
