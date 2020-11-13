@@ -221,7 +221,16 @@
                       <th>SSN Units</th>
                     </tr>
                   </thead>
-                  <tbody id="automate"></tbody>
+                  <tbody id="automate">
+                    {% for i in range(rows|length): %}
+                      <tr>
+                        <td><a href='details?id={{ids[i]}}' target="_blank">{{rows[i][0]}}</a></td>
+                        {% for j in range(2, rows[i]|length): %}
+                        <td>  {{ rows[i][j] }} </td>
+                        {% endfor %}
+                     </tr>
+                     {% endfor %}
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -297,8 +306,6 @@
           $('#town').on('input', getResults);
           $('#city').on('input', getResults);
           $('#zip').on('input', getResults);
-
-
         }
 
         $('document').ready(setup);

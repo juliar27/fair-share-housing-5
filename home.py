@@ -261,7 +261,8 @@ def show_filtered_listings():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/listings')
 def show_listings():
-    t = render_template('site/listings.html')
+    filtered_rows, filtered_ids, county, town = query2("", "", "", "", "", "", "")
+    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids)
     response = make_response(t)
     return response
 
