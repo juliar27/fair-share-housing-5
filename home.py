@@ -245,6 +245,7 @@ def show_filtered_listings():
         zipCode = ""
 
     filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
+
     html = ''
     for i in range(len(filtered_rows)):
         html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
