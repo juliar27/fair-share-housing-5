@@ -206,8 +206,8 @@ def get_favorites():
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/list-filtering2')
-def show_listings2():
+@app.route('/list-filtering')
+def show_filtered_listings():
 
     if request.args.get('bedrooms') is not None:
         bed = request.args.get('bedrooms')
@@ -245,15 +245,20 @@ def show_listings2():
         zipCode = ""
 
     filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
-    
-    return make_response(render_template('site/append.html', rows=filtered_rows, ids=filtered_ids))
+    html = ''
+    for i in range(len(filtered_rows)):
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        for j in range(2, len(filtered_rows[i])):
+            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
+        html += '</tr>'
+
+    return make_response(html)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/list-filtering')
 @app.route('/listings')
 def show_listings():
     t = render_template('site/listings.html')

@@ -39,7 +39,6 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
-	          <!-- <li class="nav-item"><a href="about" class="nav-link">About</a></li> -->
 	          <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
             <li class="nav-item active"><a href="listings" class="nav-link">Listings</a></li>
             <li class="nav-item"><a href="favorites" class="nav-link">Favorites</a></li>
@@ -71,7 +70,7 @@
 
 
 <!-- here -->
-            <form action="/list-filtering2" class="search-property-1">
+            <form action="/list-filtering" class="search-property-1">
               <div class="row">
 
                 <div class="col-sm-auto align-items-end">
@@ -192,17 +191,6 @@
                     </div>
                   </div>
                 </div>
-
-<!--
-                <div class="col-sm align-self-end">
-                  <div class="form-group">
-                    <div class="form-field">
-                      <input type="submit" value="Search" class="form-control btn btn-primary">
-                    </div>
-                  </div>
-                </div> -->
-
-
               </div>
             </form>
           </div>
@@ -211,9 +199,34 @@
     </div>
 
     <main>
-      
-      <span id="automate">
-      </span>
+
+      <div class="container-fluid">
+          <h1 class="mt-4"></h1>
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th><i class="fas fa-home"></i>Address</th>
+                      <th>Municipality</th>
+                      <th>County</th>
+                      <th>Status</th>
+                      <th>1Bdr Units</th>
+                      <th>2Bdr Units</th>
+                      <th>3Bdr Units</th>
+                      <th>Units Total</th>
+                      <th>Family Units</th>
+                      <th>Senior Units</th>
+                      <th>SSN Units</th>
+                    </tr>
+                  </thead>
+                  <tbody id="automate"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </main>
 
@@ -257,7 +270,7 @@
           let zip = $('#zip').val();
           zip = encodeURIComponent(zip);
 
-          let url = '/list-filtering2?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
+          let url = '/list-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
 
           if (request != null)
             request.abort();
@@ -274,7 +287,7 @@
 
         function setup()
         {
-
+          getResults();
           $('#ownership').focus();
           $('#ownership').on('input', getResults);
           $('#property').on('input', getResults);
