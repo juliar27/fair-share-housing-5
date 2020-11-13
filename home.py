@@ -11,6 +11,7 @@ from threading import Thread
 from rq import Queue
 from worker import conn
 from datetime import timedelta
+import json
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -67,7 +68,7 @@ def load_user(user_id):
 # ----------------------------------------------------------------------------------------------------------------------
 @app.errorhandler(404)
 def not_found(e):
-    t = render_template("site/404.html")
+    t = render_template("site/404.html", where="index", message="mapFSH")
     return make_response(t)
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -95,7 +96,6 @@ def show_home():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-
 @app.route('/filtering')
 @app.route('/map')
 def show_map():
@@ -184,6 +184,7 @@ def show_map():
     response.set_cookie('prevZip', zipCode, expires=0)
 
     return response
+# ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/favorites')
@@ -205,94 +206,59 @@ def get_favorites():
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/list-filtering2')
+def show_listings2():
+
+    if request.args.get('bedrooms') is not None:
+        bed = request.args.get('bedrooms')
+    else:
+        bed = "none"
+
+    if request.args.get('income') is not None:
+        income = request.args.get('income')
+    else:
+        income = "none"
+
+    if request.args.get('property') is not None:
+        prop = request.args.get('property')
+    else:
+        prop = "none"
+
+    if request.args.get('ownership') is not None:
+        owner = request.args.get('ownership')
+    else:
+        owner = "none"
+
+    if request.args.get('town') is not None:
+        town = request.args.get('town')
+    else:
+        town = ""
+
+    if request.args.get('county') is not None:
+        county = request.args.get('county')
+    else:
+        county = ""
+
+    if request.args.get('zip') is not None:
+        zipCode = request.args.get('zip')
+    else:
+        zipCode = ""
+
+    filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
+    
+    return make_response(render_template('site/append.html', rows=filtered_rows, ids=filtered_ids))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 @app.route('/list-filtering')
 @app.route('/listings')
 def show_listings():
-    prevOwner = request.cookies.get('prevOwner')
-    prevProp = request.cookies.get('prevProp')
-    prevBed = request.cookies.get('prevBed')
-    prevIncome = request.cookies.get('prevIncome')
-    prevTown = request.cookies.get('prevTown')
-    prevCounty = request.cookies.get('prevCounty')
-    prevZip = request.cookies.get('prevZip')
-
-    if prevOwner is None:
-        prevOwner = "none"
-    if prevProp is None:
-        prevProp = 'none'
-    if prevBed is None:
-        prevBed = "none"
-    if prevIncome is None:
-        prevBed = "none"
-    if prevTown is None:
-        prevTown = ''
-    if prevCounty is None:
-        prevCounty = ''
-    if prevZip is None:
-        prevZip = ''
-
-    owner = request.args.get('ownership')
-    prop = request.args.get('property')
-    bed = request.args.get('bedrooms')
-    income = request.args.get('income')
-    town = request.args.get('town')
-    county = request.args.get('county')
-    zipCode = request.args.get('zip')
-
-    if owner is None:
-        if prevOwner is None:
-            owner = "none"
-        else:
-            owner = prevOwner
-    if prop is None:
-        if prevProp is None:
-            prop = "none"
-        else:
-            prop = prevProp
-
-    if bed is None:
-        if prevBed is None:
-            bed = "none"
-        else:
-            bed = prevBed
-
-    if income is None:
-        if prevIncome is None:
-            income = "none"
-        else:
-            income = prevIncome
-
-    if town is None:
-        if prevTown is None:
-            town = ''
-        else:
-            town = prevTown
-
-    if county is None:
-        if prevCounty is None:
-            county = ''
-        else:
-            county = prevCounty
-
-    if zipCode is None:
-        if prevZip is None:
-            zipCode = ''
-        else:
-            zipCode = prevZip
-
-    filtered_rows, filtered_ids,  county, town = query2(owner, prop, bed, income, town, county, zipCode)
-
-    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
-
+    t = render_template('site/listings.html')
     response = make_response(t)
-    response.set_cookie('prevOwner', owner, expires=0)
-    response.set_cookie('prevProp', prop, expires=0)
-    response.set_cookie('prevBed', bed, expires=0)
-    response.set_cookie('prevIncome', income, expires=0)
-    response.set_cookie('prevTown', town, expires=0)
-    response.set_cookie('prevCounty', county, expires=0)
-    response.set_cookie('prevZip', zipCode, expires=0)
-    return make_response(t)
+    return response
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -302,35 +268,18 @@ def show_listings():
 def show_details():
     id = request.args.get('id')
 
-    if id == '' or id == None:
-        err = 'missing id'
-        html = render_template(
-            'site/details.html', err=err, row='', adr='', lat='', long='')
-        response = make_response(html)
-        return response
-
-    if not id.isnumeric():
-        err = 'invalid id'
-        html = render_template(
-        'site/details.html', err=err, row='', adr='', lat='', long='')
-        response = make_response(html)
-        return response
+    if id == '' or id == None or not id.isnumeric():
+        t = render_template("site/404.html", where="listings", message="Return to Listings")
+        return make_response(t)
 
     info = get_details(id)
 
     if type(info) == str:
-        err = info
-        html = render_template(
-        'site/details.html', err=err, row='', adr='', lat='', long='')
-        response = make_response(html)
-        return response
+        t = render_template("site/404.html", where="listings", message="Return to Listings")
+        return make_response(t)
 
-    adr = info[0]
     coords = info[1].split(',')
-    lat = coords[0]
-    long = coords[1]
-    row = get_row(id)
-    t = render_template('site/details.html', err='', row=row, adr=adr, lat=lat, long=long)
+    t = render_template('site/details.html', row=get_row(id), adr=info[0], lat=coords[0], long=coords[1])
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------

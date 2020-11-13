@@ -75,6 +75,14 @@
     color: red;
   }
 
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
+
     </style>
     <head>
         <title>mapFSH</title>
@@ -105,18 +113,6 @@
             </div>
           </nav>
 
-          {% if err != '' %}
-          <section class="hero-wrap hero-wrap-2" style="background-image: url('static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-              <div class="overlay"></div>
-                <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-                  <div class="col-md-9 ftco-animate pb-0 text-center" style="height: 30%;">
-                  <h1 class="mb-3 bread">{{ err }}</h1>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {% else %}
 
         <section class="hero-wrap hero-wrap-7" style="background-image: url('static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
             <div class="overlay"></div>
@@ -494,9 +490,8 @@
                   </div>
                 </section>
 
-                {% endif %}
+                {% include 'site/footer.html' %}
 
 
-        {% include 'site/footer.html' %}
     </body>
 </html>

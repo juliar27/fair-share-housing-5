@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <h1 class="mt-4"></h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-home"></i>Address</th>
+                            <th>Municipality</th>
+                            <th>County</th>
+                            <th>Status</th>
+                            <th>1Bdr Units</th>
+                            <th>2Bdr Units</th>
+                            <th>3Bdr Units</th>
+                            <th>Units Total</th>
+                            <th>Family Units</th>
+                            <th>Senior Units</th>
+                            <th>SSN Units</th>
+                        </tr>
+                    </thead>
+
+
+<tbody>
+  {% for i in range(rows|length): %}
+  <tr>
+    <td><a href='details?id={{ids[i]}}' target="_blank">{{rows[i][0]}}</a></td>
+    {% for j in range(2, rows[i]|length): %}
+    <td>  {{ rows[i][j] }} </td>
+    {% endfor %}
+ </tr>
+ {% endfor %}
+</tbody>
+
+</table>
+</div>
+</div>
+</div>
+</div>
