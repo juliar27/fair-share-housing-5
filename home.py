@@ -11,7 +11,6 @@ from threading import Thread
 from rq import Queue
 from worker import conn
 from datetime import timedelta
-import json
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -44,26 +43,24 @@ class User(UserMixin):
     def get(self):
         email = account_get(self)
         return User(email, self, True)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------------------------------------------------
-@app.before_request
-def before_request():
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=60)
-    session.modified = True
-# ----------------------------------------------------------------------------------------------------------------------
+
+# # ----------------------------------------------------------------------------------------------------------------------
+# @app.before_request
+# def before_request():
+#     session.permanent = True
+#     app.permanent_session_lifetime = timedelta(minutes=60)
+#     session.modified = True
+# # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 @login.user_loader
 def load_user(user_id):
     return User.get(user_id)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.errorhandler(404)
@@ -90,8 +87,6 @@ def show_account_error():
 def show_home():
     t = render_template('site/index.html')
     return make_response(t)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -246,16 +241,8 @@ def show_filtered_listings():
 
     filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
 
-    html = ''
-    for i in range(len(filtered_rows)):
-        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
-        for j in range(2, len(filtered_rows[i])):
-            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
-        html += '</tr>'
-
+    html = html_for_listings(filtered_rows)
     return make_response(html)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 

@@ -125,27 +125,26 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def query(owner, prop, bed, income, town, county, zipCode):
+    database = Database()
+    database.connect()
+    cursor = database._connection.cursor()
+    filtering = ""
+    options = "'"
 
-        database = Database()
-        database.connect()
-        cursor = database._connection.cursor()
-        filtering = ""
-        options = "'"
+    if county is not None:
+        county = county.capitalize()
+        filtering += " AND counties.county like \'%" + county + "%\'"
 
-        if county is not None:
-            county = county.capitalize()
-            filtering += " AND counties.county like \'%" + county + "%\'"
+    if town is not None:
+        town = town.capitalize()
+        filtering += " AND cities.municipality like \'%" + town + "%\'"
 
-        if town is not None:
-            town = town.capitalize()
-            filtering += " AND cities.municipality like \'%" + town + "%\'"
+    rows, ids = querying_location(filtering)
+    x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
 
-        rows, ids = querying_location(filtering)
-        x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
+    database.disconnect()
 
-        database.disconnect()
-
-        return rows, x, addressInfo
+    return rows, x, addressInfo
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -208,4 +207,15 @@ def query3(coords):
 
     return lat, long
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+def html_for_listings(filtered_rows):
+
+    html = ''
+    for i in range(len(filtered_rows)):
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        for j in range(2, len(filtered_rows[i])):
+            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
+        html += '</tr>'
 # ----------------------------------------------------------------------------------------------------------------------

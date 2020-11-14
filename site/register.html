@@ -28,7 +28,32 @@ button {
         } else {
             password2.setCustomValidity('Passwords must match');
         }
+        }
+    </script>
 
+    <script>
+        function check_first() {
+        const first_name = document.getElementById('inputFirstName');
+        if (first_name.value.trim() === "") {
+            first_name.setCustomValidity('Enter first name');
+        }
+        else {
+          first_name.setCustomValidity('');
+        }
+        }
+    </script>
+
+
+    <script>
+        function check_last() {
+        const last_name = document.getElementById('inputLastName');
+        if (last_name.value.trim() === "") {
+            last_name.setCustomValidity('Enter last name');
+        }
+
+        else {
+          last_name.setCustomValidity('');
+        }
         }
     </script>
 
@@ -45,20 +70,19 @@ button {
 
                                     <!-- <div class="card-header"><h3 class="text-center font-weight-light my-4"></h3></div> -->
                                     <div class="card-body">
-
-                                            <form action="/create" method="post">
+                                            <form id="form" action="/create" method="post">
 
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1">First Name</label>
-                                                        <input class="form-control py-4" autofocus name="inputFirstName" type="text" placeholder="Enter first name" required/>
+                                                        <input class="form-control py-4" autofocus id="inputFirstName" oninput="check_first();"  name="inputFirstName" type="text" placeholder="Enter first name" required/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Last Name</label>
-                                                        <input class="form-control py-4" name="inputLastName" type="text" placeholder="Enter last name" required/>
+                                                        <input class="form-control py-4" id="inputLastName" name="inputLastName" type="text" oninput="check_last();"  placeholder="Enter last name" required/>
 
                                                     </div>
                                                 </div>
