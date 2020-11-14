@@ -1,9 +1,10 @@
 
 $(document).ready(function() {
   var t = $('#dataTable').DataTable({
-    "scrollY": "500px",
+    "scrollY": "50vh",
     "paging": false,
     "sScrollX":"100%",
+    "bInfo":false,
     "scrollCollapse": true
   });
   var counter = t.column(0).data().length + 1;
