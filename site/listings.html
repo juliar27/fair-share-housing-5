@@ -39,7 +39,6 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
-	          <!-- <li class="nav-item"><a href="about" class="nav-link">About</a></li> -->
 	          <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
             <li class="nav-item active"><a href="listings" class="nav-link">Listings</a></li>
             <li class="nav-item"><a href="favorites" class="nav-link">Favorites</a></li>
@@ -68,6 +67,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="search-wrap-1 ftco-animate p-4">
+
             <form action="/list-filtering" class="search-property-1">
               <div class="row">
 
@@ -77,8 +77,8 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select  name="ownership" id="" class="form-control">
-                          <option value="owner_default" selected disabled hidden>{{ prevOwner.capitalize() }}</option>
+
+                        <select  name="ownership" id="ownership" class="form-control">
                           <option value="none" style="background-color: #21243d;">No Preference</option>
                           <option value="rent" style="background-color: #21243d;">Rent</option>
                           <option value="buy" style="background-color: #21243d;">Buy</option>
@@ -88,19 +88,17 @@
                   </div>
                 </div>
 
+
+
                 <div class="col-sm-auto align-items-end">
                   <div class="form-group">
                     <label for="#">Property Type</label>
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="property" id="" class="form-control">
-                          {% if prevProp != "none" %}
-                          <option value="prop_default" selected disabled hidden>{{ prevProp.capitalize() }}</option>
+
+                        <select name="property" id="property" class="form-control">
                           <option value="none" style="background-color: #21243d;">No Preference</option>
-                          {% else %}
-                          <option value="none" style="background-color: #21243d;">No Preference</option>
-                          {% endif %}
                           <option value="family" style="background-color: #21243d;">Family</option>
                           <option value="senior" style="background-color: #21243d;">Senior</option>
                         </select>
@@ -115,13 +113,9 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="bedrooms" id="" class="form-control">
-                          {% if prevBed != "none" %}
-                          <option value="prop_default" selected disabled hidden>{{ prevBed }}</option>
+
+                        <select name="bedrooms" id="bedrooms" class="form-control">
                           <option value="none" style="background-color: #21243d;">No Preference</option>
-                          {% else %}
-                          <option value="none" style="background-color: #21243d;">No Preference</option>
-                          {% endif %}
                           <option value="1" style="background-color: #21243d;">1</option>
                           <option value="2" style="background-color: #21243d;">2</option>
                           <option value="3+" style="background-color: #21243d;">3+</option>
@@ -137,13 +131,10 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                        <select name="income" id="" class="form-control">
-                            {% if prevIncome != "none" %}
-                            <option value="prop_default" selected disabled hidden>{{ prevIncome.capitalize() }}</option>
+
+
+                        <select name="income" id="income" class="form-control">
                             <option value="none" style="background-color: #21243d;">No Preference</option>
-                            {% else %}
-                            <option value="none" style="background-color: #21243d;">No Preference</option>
-                            {% endif %}
                             <option value="very" style="background-color: #21243d;">Very Low Income</option>
                             <option value="low" style="background-color: #21243d;">Low Income</option>
                             <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
@@ -158,7 +149,7 @@
                         <label for="#">Town</label>
                         <div class="form-field">
                           <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text" value="{{ prevTown }}" name="town"class="form-control" placeholder="Town">
+                          <input type="text" id="town" name="town" class="form-control" placeholder="Town">
                         </div>
                       </div>
                 </div>
@@ -168,7 +159,7 @@
                         <label for="#">County</label>
                         <div class="form-field">
                           <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text" value="{{ prevCounty }}" name="county" class="form-control" placeholder="County">
+                          <input type="text"  id="county" name="county" class="form-control" placeholder="County">
                         </div>
                       </div>
                 </div>
@@ -178,15 +169,7 @@
                     <label for="#">Zip Code</label>
                     <div class="form-field">
                       <div class="icon"><span class="fa fa-search"></span></div>
-                      <input type="text" value="{{ prevZip }}" name="zip" class="form-control" placeholder="Zip Code">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-sm align-self-end">
-                  <div class="form-group">
-                    <div class="form-field">
-                      <input type="submit" value="Search" class="form-control btn btn-primary">
+                      <input type="text" id="zip" name="zip" class="form-control" placeholder="Zip Code">
                     </div>
                   </div>
                 </div>
@@ -198,45 +181,118 @@
     </div>
 
     <main>
+
       <div class="container-fluid">
           <h1 class="mt-4"></h1>
           <div class="card mb-4">
-              <div class="card-body">
-                  <div class="table-responsive">
-                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                              <tr>
-                                  <th><i class="fas fa-home"></i>Address</th>
-                                  <th>Municipality</th>
-                                  <th>County</th>
-                                  <th>Status</th>
-                                  <th>1Bdr Units</th>
-                                  <th>2Bdr Units</th>
-                                  <th>3Bdr Units</th>
-                                  <th>Units Total</th>
-                                  <th>Family Units</th>
-                                  <th>Senior Units</th>
-                                  <th>SSN Units</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                            {% for i in range(rows|length): %}
-                            <tr>
-                              <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}&coords={{rows[i][1]}}' target="_blank">{{rows[i][0]}}</a></td>
-                              {% for j in range(2, rows[i]|length): %}
-                              <td>  {{ rows[i][j] }} </td>
-                              {% endfor %}
-                           </tr>
-                           {% endfor %}
-                          </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th><i class="fas fa-home"></i>Address</th>
+                      <th>Municipality</th>
+                      <th>County</th>
+                      <th>Status</th>
+                      <th>1Bdr Units</th>
+                      <th>2Bdr Units</th>
+                      <th>3Bdr Units</th>
+                      <th>Units Total</th>
+                      <th>Family Units</th>
+                      <th>Senior Units</th>
+                      <th>SSN Units</th>
+                    </tr>
+                  </thead>
+                  <tbody id="automate">
+                    {% for i in range(rows|length): %}
+                      <tr>
+                        <td><a href='details?id={{ids[i]}}' target="_blank">{{rows[i][0]}}</a></td>
+                        {% for j in range(2, rows[i]|length): %}
+                        <td>  {{ rows[i][j] }} </td>
+                        {% endfor %}
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+        </div>
+
       </main>
 
       {% include 'site/footer.html' %}
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+      </script>
+
+      <script>
+        'use strict';
+
+
+        function handleResponse(response)
+         {
+           $('#automate').html(response);
+         }
+
+         let request = null;
+
+        function getResults()
+        {
+
+          let ownership = $('#ownership').val();
+          ownership = encodeURIComponent(ownership);
+
+          let property = $('#property').val();
+          property = encodeURIComponent(property);
+
+          let bedrooms = $('#bedrooms').val();
+          bedrooms = encodeURIComponent(bedrooms);
+
+          let income = $('#income').val();
+          income = encodeURIComponent(income);
+
+          let town = $('#town').val();
+          town = encodeURIComponent(town);
+
+          let county = $('#county').val();
+          county = encodeURIComponent(county);
+
+          let zip = $('#zip').val();
+          zip = encodeURIComponent(zip);
+
+          let url = '/list-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
+
+          if (request != null)
+            request.abort();
+
+
+        request = $.ajax(
+          {
+            type: 'GET',
+            url: url,
+            success: handleResponse
+          }
+        );
+      }
+
+        function setup()
+        {
+          $('#ownership').focus();
+          $('#ownership').on('input', getResults);
+          $('#property').on('input', getResults);
+          $('#bedrooms').on('input', getResults);
+          $('#income').on('input', getResults);
+          $('#county').on('input', getResults);
+          $('#town').on('input', getResults);
+          $('#city').on('input', getResults);
+          $('#zip').on('input', getResults);
+        }
+
+        $('document').ready(setup);
+
+      </script>
+
 
   </body>
 </html>

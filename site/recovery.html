@@ -34,12 +34,12 @@
 
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Password</label>
-                                                        <input class="form-control py-4" name="inputPassword"  id="inputPassword"  type="password" placeholder="Enter new password" required/>
+                                                        <input class="form-control py-4" pattern=".{8,}"   required title="8 characters minimum" name="inputPassword"  id="inputPassword"  type="password" placeholder="Enter new password" required/>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="small mb-1" >Confirm Password</label>
-                                                        <input class="form-control py-4" name="inputConfirmPassword" id="inputConfirmPassword" type="password" placeholder="Confirm new password"   oninput="check_pass(this);" required/>
+                                                        <input class="form-control py-4" pattern=".{8,}"   required title="8 characters minimum" name="inputConfirmPassword" id="inputConfirmPassword" type="password" placeholder="Confirm new password"   oninput="check_pass(this);" required/>
                                                     </div>
 
                                               <input type="hidden" id="id" name="id" value={{id}}>

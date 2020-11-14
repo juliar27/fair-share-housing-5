@@ -26,6 +26,7 @@ def querying_location(description):
 
     rows = []
     ids = []
+
     row = cursor.fetchone()
     while row is not None:
         ids.append(row[0])
@@ -37,7 +38,9 @@ def querying_location(description):
         rows.append(row[1:])
         row = cursor.fetchone()
 
-    return rows, ids, database
+    database.disconnect()
+
+    return rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -137,7 +140,7 @@ def query(owner, prop, bed, income, town, county, zipCode):
             town = town.capitalize()
             filtering += " AND cities.municipality like \'%" + town + "%\'"
 
-        rows, ids, database = querying_location(filtering)
+        rows, ids = querying_location(filtering)
         x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
 
         database.disconnect()
@@ -153,15 +156,16 @@ def query2(owner, prop, bed, income, town, county, zipCode):
     filtering = ""
     options = "'"
 
-    if county is not None:
+    if county is not None and county is not '':
         county = county.capitalize()
         filtering += " AND counties.county like \'%" + county + "%\'"
 
-    if town is not None:
+    if town is not None and town is not '':
         town = town.capitalize()
         filtering += " AND cities.municipality like \'%" + town + "%\'"
 
-    rows, ids, database = querying_location(filtering)
+    rows, ids = querying_location(filtering)
+
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
 
     ids = []

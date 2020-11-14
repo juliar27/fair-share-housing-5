@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
-from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings
+from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
 from py.map import querying_location, filter_function, query2, query3, query
 from py.form import AddForm
@@ -11,6 +11,7 @@ from threading import Thread
 from rq import Queue
 from worker import conn
 from datetime import timedelta
+import json
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -51,7 +52,7 @@ class User(UserMixin):
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=20)
+    app.permanent_session_lifetime = timedelta(minutes=60)
     session.modified = True
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -67,7 +68,7 @@ def load_user(user_id):
 # ----------------------------------------------------------------------------------------------------------------------
 @app.errorhandler(404)
 def not_found(e):
-    t = render_template("site/404.html")
+    t = render_template("site/404.html", where="index", message="mapFSH")
     return make_response(t)
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -95,7 +96,6 @@ def show_home():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-
 @app.route('/filtering')
 @app.route('/map')
 def show_map():
@@ -184,6 +184,7 @@ def show_map():
     response.set_cookie('prevZip', zipCode, expires=0)
 
     return response
+# ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/favorites')
@@ -206,93 +207,65 @@ def get_favorites():
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/list-filtering')
+def show_filtered_listings():
+
+    if request.args.get('bedrooms') is not None:
+        bed = request.args.get('bedrooms')
+    else:
+        bed = "none"
+
+    if request.args.get('income') is not None:
+        income = request.args.get('income')
+    else:
+        income = "none"
+
+    if request.args.get('property') is not None:
+        prop = request.args.get('property')
+    else:
+        prop = "none"
+
+    if request.args.get('ownership') is not None:
+        owner = request.args.get('ownership')
+    else:
+        owner = "none"
+
+    if request.args.get('town') is not None:
+        town = request.args.get('town')
+    else:
+        town = ""
+
+    if request.args.get('county') is not None:
+        county = request.args.get('county')
+    else:
+        county = ""
+
+    if request.args.get('zip') is not None:
+        zipCode = request.args.get('zip')
+    else:
+        zipCode = ""
+
+    filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
+
+    html = ''
+    for i in range(len(filtered_rows)):
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        for j in range(2, len(filtered_rows[i])):
+            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
+        html += '</tr>'
+
+    return make_response(html)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 @app.route('/listings')
 def show_listings():
-    prevOwner = request.cookies.get('prevOwner')
-    prevProp = request.cookies.get('prevProp')
-    prevBed = request.cookies.get('prevBed')
-    prevIncome = request.cookies.get('prevIncome')
-    prevTown = request.cookies.get('prevTown')
-    prevCounty = request.cookies.get('prevCounty')
-    prevZip = request.cookies.get('prevZip')
-
-    if prevOwner is None:
-        prevOwner = "none"
-    if prevProp is None:
-        prevProp = 'none'
-    if prevBed is None:
-        prevBed = "none"
-    if prevIncome is None:
-        prevBed = "none"
-    if prevTown is None:
-        prevTown = ''
-    if prevCounty is None:
-        prevCounty = ''
-    if prevZip is None:
-        prevZip = ''
-
-    owner = request.args.get('ownership')
-    prop = request.args.get('property')
-    bed = request.args.get('bedrooms')
-    income = request.args.get('income')
-    town = request.args.get('town')
-    county = request.args.get('county')
-    zipCode = request.args.get('zip')
-
-    if owner is None:
-        if prevOwner is None:
-            owner = "none"
-        else:
-            owner = prevOwner
-    if prop is None:
-        if prevProp is None:
-            prop = "none"
-        else:
-            prop = prevProp
-
-    if bed is None:
-        if prevBed is None:
-            bed = "none"
-        else:
-            bed = prevBed
-
-    if income is None:
-        if prevIncome is None:
-            income = "none"
-        else:
-            income = prevIncome
-
-    if town is None:
-        if prevTown is None:
-            town = ''
-        else:
-            town = prevTown
-
-    if county is None:
-        if prevCounty is None:
-            county = ''
-        else:
-            county = prevCounty
-
-    if zipCode is None:
-        if prevZip is None:
-            zipCode = ''
-        else:
-            zipCode = prevZip
-
-    filtered_rows, filtered_ids,  county, town = query2(owner, prop, bed, income, town, county, zipCode)
-
-    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
-
+    filtered_rows, filtered_ids, county, town = query2("", "", "", "", "", "", "")
+    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids)
     response = make_response(t)
-    response.set_cookie('prevOwner', owner, expires=0)
-    response.set_cookie('prevProp', prop, expires=0)
-    response.set_cookie('prevBed', bed, expires=0)
-    response.set_cookie('prevIncome', income, expires=0)
-    response.set_cookie('prevTown', town, expires=0)
-    response.set_cookie('prevCounty', county, expires=0)
-    response.set_cookie('prevZip', zipCode, expires=0)
-    return make_response(t)
+    return response
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -300,13 +273,20 @@ def show_listings():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/details')
 def show_details():
-    adr = request.args.get('adr')
-    coords = request.args.get('coords').split(',')
+    id = request.args.get('id')
 
-    lat, long  = query3(coords)
+    if id == '' or id == None or not id.isnumeric():
+        t = render_template("site/404.html", where="listings", message="Return to Listings")
+        return make_response(t)
 
-    row = get_row(request.args.get('id'))
-    t = render_template('site/details.html', row=row, adr=adr, lat=lat, long=long)
+    info = get_details(id)
+
+    if type(info) == str:
+        t = render_template("site/404.html", where="listings", message="Return to Listings")
+        return make_response(t)
+
+    coords = info[1].split(',')
+    t = render_template('site/details.html', row=get_row(id), adr=info[0], lat=coords[0], long=coords[1])
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -528,11 +508,20 @@ def show_recovery():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
+@app.route('/verifypassword', methods=['GET'])
+def show_verifypassword():
+    t = render_template('site/verifypassword.html')
+    return make_response(t)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 @app.route('/newpassword', methods=['POST'])
 def show_newpassword():
     update_password(request.form.to_dict())
     return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/reset', methods=['POST'])
@@ -544,7 +533,7 @@ def show_reset():
     elif account and not verified:
         return redirect('/verify')
     else:
-        return redirect('/login')
+        return redirect('/verifypassword')
 # ----------------------------------------------------------------------------------------------------------------------
 
 

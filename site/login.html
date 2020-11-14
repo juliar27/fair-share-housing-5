@@ -28,7 +28,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="small mb-1" >Password</label>
-                                                <input class="form-control py-4" name="inputPassword" type="password" id = "xip_Password" placeholder="Enter password" required/>
+                                                <input class="form-control py-4" pattern=".{8,}"   required title="8 characters minimum" name="inputPassword" type="password" id = "xip_Password" placeholder="Enter password" required/>
                                             </div>
                                             <div class="form-group">
                                             <input id = "remember_me" value = "remember-me" type="checkbox" /> Remember Me
@@ -59,7 +59,7 @@
             <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
       <script>
             $(document).ready(function() {
- 
+
                 if (localStorage.chkbx && localStorage.chkbx != '') {
                     $('#remember_me').attr('checked', 'checked');
                     $('#xip_Name').val(localStorage.usrname);
@@ -69,7 +69,7 @@
                     $('#xip_Name').val('');
                     $('#xip_Password').val('');
                 }
- 
+
                 $('#login-form').submit(function(e) {
                     console.log("HI");
                     if ($('#remember_me').is(':checked')) {
@@ -87,9 +87,9 @@
                     };
 
                     $.ajax({
-                        type        : 'POST', 
-                        url         : '/check', 
-                        data        : formData, 
+                        type        : 'POST',
+                        url         : '/check',
+                        data        : formData,
                         dataType    : 'text',
                                     encode          : true
                     })
@@ -107,7 +107,7 @@
                     event.preventDefault();
                 });
             });
- 
+
         </script>
 
             {% include 'site/admin-footer.html' %}
