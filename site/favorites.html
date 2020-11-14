@@ -30,13 +30,13 @@
 
 </style>
 <head>
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script
       src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"
       data-auto-a11y="true"
     ></script>
-    
+
     <link rel="stylesheet" href="static/css/style.css">
       {% include 'site/header.html' %}
 </head>
@@ -156,7 +156,7 @@
                                             var rows = e['responseJSON']['out'][0];
                                             var ids = e['responseJSON']['out'][1];
                                             for (let i = 0; i < rows.length; i++) {
-                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + rows[i][0] + "&coords=" + rows[i][1] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
                                                 for (let j = 2; j < rows[i].length; j++) {
                                                     to_add.push("<td>" + rows[i][j] + "</td>");
                                                 }
