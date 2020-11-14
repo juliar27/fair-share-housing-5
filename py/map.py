@@ -210,7 +210,7 @@ def query3(coords):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def html_for_listings(filtered_rows):
+def html_for_listings(filtered_rows, filtered_ids):
 
     html = ''
     for i in range(len(filtered_rows)):
@@ -218,4 +218,5 @@ def html_for_listings(filtered_rows):
         for j in range(2, len(filtered_rows[i])):
             html += '<td>' + str(filtered_rows[i][j]) + '</td>'
         html += '</tr>'
+    return html
 # ----------------------------------------------------------------------------------------------------------------------

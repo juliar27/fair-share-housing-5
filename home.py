@@ -4,7 +4,7 @@ from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
-from py.map import querying_location, filter_function, query2, query3, query
+from py.map import querying_location, filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
 from threading import Thread
@@ -241,7 +241,7 @@ def show_filtered_listings():
 
     filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
 
-    html = html_for_listings(filtered_rows)
+    html = html_for_listings(filtered_rows, filtered_ids)
     return make_response(html)
 # ----------------------------------------------------------------------------------------------------------------------
 
