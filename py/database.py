@@ -13,15 +13,15 @@ def double_up(s):
 def get_coordinates(address, county, map):
     fullAddress = address + ", " + county + ", " + "NJ, USA"
     coordinates = "error"
+
     try:
         geocode_result = map.geocode(fullAddress)
         latitude = geocode_result[0]['geometry']['location'] ['lat']
         longitude = geocode_result[0]['geometry']['location'] ['lng']
         coordinates = str(latitude) + "," + str(longitude)
-        print("success")
     except:
-        print(fullAddress)
         return(coordinates)
+
     return(coordinates)
 # ----------------------------------------------------------------------------------------------------------------------
 
