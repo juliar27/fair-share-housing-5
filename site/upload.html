@@ -87,13 +87,36 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
-                        <form action = "/uploaded" method = "POST"
-                        enctype = "multipart/form-data">
-                        <input type = "file" name = "file" accept=".xlsx,.xls"/>
-                        <input type = "submit"/>
+                        <p id='errorPar' style='color:red'></p>
+                        <form id='filesubmit' enctype = "multipart/form-data">
+                        <input type = "file" id = 'file' name = "file" accept=".xlsx,.xls"/>
+                        <input id='submit' type = "submit"/>
                      </form>
                     </div>
                 </main>
+                
+
+            <script src="static/js/jquery.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('form#filesubmit').submit(function () {
+                            if ($('#file').val() === '') {
+                                $('#errorPar').html('Please choose a file.');
+                            }
+                            else {
+                                var formData = new FormData(this);
+                                console.log(formData)
+                                var xhr = new XMLHttpRequest();
+                                // Add any event handlers here...
+                                xhr.open('POST', '/uploaded', true);
+                                xhr.send(formData);
+
+                                
+                            }
+                            event.preventDefault();
+                        });
+                    });
+                </script>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
