@@ -166,10 +166,10 @@ def get_listings(sheet, database):
         try:
             if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
                 record['agent'] = row[d['AdminAgent']].value
-        
+
             elif row[d['AdminAgent']].value.strip() == "":
                 pass
-        
+
             else:
                 rand.append(['AdminAgent', row_number])
 
@@ -659,7 +659,6 @@ def parse_file(filename):
     col, rand, listings = get_listings(sheet, database)
 
     if col == [] and rand == []:
-        #database.clear()
         errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
 
     else:

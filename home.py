@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, send_file, session, jsonify
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
@@ -46,13 +46,13 @@ class User(UserMixin):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-# # ----------------------------------------------------------------------------------------------------------------------
-# @app.before_request
-# def before_request():
-#     session.permanent = True
-#     app.permanent_session_lifetime = timedelta(minutes=60)
-#     session.modified = True
-# # ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=60)
+    session.modified = True
+# ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -302,10 +302,12 @@ def show_register():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/tables')
 def show_tables():
-    rows = get_tables()
-    t = render_template('site/tables.html', rows=rows)
-    return make_response(t)
-
+    if current_user.is_authenticated:
+        rows = get_tables()
+        t = render_template('site/tables.html', rows=rows)
+        return make_response(t)
+    else:
+        return redirect('/login')
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -313,8 +315,14 @@ def show_tables():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/upload')
 def show_upload():
-    t = render_template('site/upload.html')
-    return make_response(t)
+    if current_user.is_authenticated:
+        if request.args.get('error') is None:
+            t = render_template('site/upload.html', error='')
+        else:
+            t = render_template('site/upload.html', error=request.args.get('error'))
+        return make_response(t)
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -322,21 +330,14 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
-    insert = request.args.getlist('insert')
-    col = request.args.getlist('col')
-    rand = request.args.getlist('rand')
-    t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand)
-    return make_response(t)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/upload-error')
-def show_upload_error():
-    t = render_template('site/upload-error.html')
-    return make_response(t)
+    if current_user.is_authenticated:
+        insert = request.args.getlist('insert')
+        col = request.args.getlist('col')
+        rand = request.args.getlist('rand')
+        t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand)
+        return make_response(t)
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -345,7 +346,10 @@ def show_upload_error():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/uploaded', methods=['GET'])
 def show_uploaded_get():
-    return redirect('/upload')
+    if current_user.is_authenticated:
+        return redirect('/upload')
+    else:
+        return redirect('/login')
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -353,17 +357,19 @@ def show_uploaded_get():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/uploaded', methods=['POST'])
 def show_uploaded_post():
-    if request.files['file'].filename != '':
-        flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-        q.enqueue(get_coords, changed_addresses)
+    if current_user.is_authenticated:
+        if request.files['file'].filename != '':
+            flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
+            q.enqueue(get_coords, changed_addresses)
 
-        if not flag:
-            return redirect(possible_redirect)
+            if not flag:
+                return redirect(possible_redirect)
+        else:
+            return redirect(url_for('show_upload', error="T."))
+
+        return redirect('/admin')
     else:
-        return redirect('/upload-error')
-
-
-    return redirect('/admin')
+        redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -371,8 +377,11 @@ def show_uploaded_post():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/download')
 def show_download():
-    t = render_template('site/download.html')
-    return make_response(t)
+    if current_user.is_authenticated:
+        t = render_template('site/download.html')
+        return make_response(t)
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -381,11 +390,14 @@ def show_download():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/downloaded', methods=['GET','POST'])
 def show_downloaded():
-    if request.method == "POST":
-        download('out.xls')
-        return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            download('out.xls')
+            return send_file('out.xls', attachment_filename='listings.xls', as_attachment=True)
+        else:
+            return redirect('/download')
     else:
-        return redirect('/download')
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -393,8 +405,11 @@ def show_downloaded():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/clear', methods=['GET', 'POST'])
 def show_clear():
-    clear()
-    return redirect('/admin')
+    if current_user.is_authenticated:
+        clear()
+        return redirect('/admin')
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -404,18 +419,21 @@ def show_clear():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
 
-    if request.method == 'GET':
-        return redirect('/tables')
-    else:
-        out = request.json
-        to_add = out['to_add']
-        to_delete = out['to_delete']
-        edit_listings(to_add)
-        for row in to_delete:
-            delete(row)
+    if current_user.is_authenticated:
+        if request.method == 'GET':
+            return redirect('/tables')
+        else:
+            out = request.json
+            to_add = out['to_add']
+            to_delete = out['to_delete']
+            edit_listings(to_add)
+            for row in to_delete:
+                delete(row)
 
-        data = {'message': 'Created', 'code': 'SUCCESS'}
-        return make_response(jsonify(data), 201)
+            data = {'message': 'Created', 'code': 'SUCCESS'}
+            return make_response(jsonify(data), 201)
+    else:
+        return redirect('/login')
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -423,15 +441,18 @@ def edit():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/edited', methods=['GET', 'POST'])
 def show_edited():
-    if request.method == "POST":
-        form = request.form
-        edit_table(form, request.args.get('id'))
-        return redirect('/tables')
-    else:
-        if request.args.get('id'):
-            return redirect('/edit?id=' + request.args.get('id'))
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            form = request.form
+            edit_table(form, request.args.get('id'))
+            return redirect('/tables')
+        else:
+            if request.args.get('id'):
+                return redirect('/edit?id=' + request.args.get('id'))
 
-        return redirect('/tables')
+            return redirect('/tables')
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -440,12 +461,15 @@ def show_edited():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/added', methods=['GET', 'POST'])
 def show_added():
-    if request.method == "POST":
-        form = request.form
-        add_to_table(form)
-        return redirect('/admin')
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            form = request.form
+            add_to_table(form)
+            return redirect('/admin')
+        else:
+            return redirect('/add')
     else:
-        return redirect('/add')
+        return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -453,9 +477,12 @@ def show_added():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/deleted', methods=['GET', 'POST'])
 def show_deleted():
-    if request.method == "POST":
-        delete(request.args.get('id'))
-    return redirect('/tables')
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            delete(request.args.get('id'))
+        return redirect('/tables')
+    else:
+        return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -539,8 +566,11 @@ def show_create():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/login', methods=['POST', 'GET'])
 def show_login():
-    t = render_template('site/login.html')
-    return make_response(t)
+    if current_user.is_authenticated:
+        return redirect('/admin')
+    else:
+        t = render_template('site/login.html')
+        return make_response(t)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -566,7 +596,7 @@ def show_check():
 @app.route('/logout', methods = ['POST', 'GET'])
 def show_logout():
     logout_user()
-    return redirect('/admin')
+    return redirect('/login')
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -574,8 +604,11 @@ def show_logout():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/admin')
 def show_admin():
-    t = render_template('site/admin.html', rows=get_tables())
-    return make_response(t)
+    if current_user.is_authenticated:
+        t = render_template('site/admin.html', rows=get_tables())
+        return make_response(t)
+    else:
+        return redirect('/login')
 
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -174,12 +174,7 @@
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
                     <select name="property" id="" class="form-control">
-                        {% if prevProp != "none" %}
-                        <option value="prop_default" selected disabled hidden>{{ prevProp.capitalize() }}</option>
                         <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% else %}
-                        <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% endif %}
                         <option value="family" style="background-color: #21243d;">Family</option>
                         <option value="senior" style="background-color: #21243d;">Senior</option>
                     </select>
@@ -193,12 +188,7 @@
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
                     <select name="bedrooms" id="" class="form-control">
-                        {% if prevBed != "none" %}
-                        <option value="prop_default" selected disabled hidden>{{ prevBed }}</option>
                         <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% else %}
-                        <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% endif %}
                         <option value="1" style="background-color: #21243d;">1</option>
                         <option value="2" style="background-color: #21243d;">2</option>
                         <option value="3+" style="background-color: #21243d;">3+</option>
@@ -213,12 +203,7 @@
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
                     <select name="income" id="" class="form-control">
-                        {% if prevIncome != "none" %}
-                        <option value="prop_default" selected disabled hidden>{{ prevIncome.capitalize() }}</option>
                         <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% else %}
-                        <option value="none" style="background-color: #21243d;">No Preference</option>
-                        {% endif %}
                         <option value="very" style="background-color: #21243d;">Very Low Income</option>
                         <option value="low" style="background-color: #21243d;">Low Income</option>
                         <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
@@ -274,12 +259,12 @@
             center: new google.maps.LatLng(40.3431, -74.6551),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
-    
+
         var infowindow = new google.maps.InfoWindow();
-        
+
         var marker, i;
-    
-        for (i = 0; i < locations.length; i++) { 
+
+        for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
                 map: map
@@ -347,7 +332,7 @@
 }
 .iw-content img {
 	float: right;
-	margin: 0 5px 5px 10px;	
+	margin: 0 5px 5px 10px;
 }
 </style>
 
