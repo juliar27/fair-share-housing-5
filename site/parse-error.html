@@ -18,17 +18,17 @@
 
 
                         {% if insert: %}
-                                Error inserting <span style="color: #24A146;">{{ insert|join("; ") }}</span>. Please contact the system adminstrator.<br>
+                                Error inserting <span style="color: #24A146;">{{ insert|join("; ") }}</span>. Please contact the system adminstrator.<br><br>
                         {% endif %}
-                        <br>
 
                         {% if col: %}
-                                Your database needs to include <span style="color: #24A146;">{{ col|join("; ") }} </span> Column(s).<br>
+                                Your database needs to include the following column(s): <span style="color: #24A146;">{{ col|join("; ") }}</span>.<br><br>
                         {% endif %}
-                        <br>
 
                         {% if rand: %}
-                                Incorrect Formatting at Column: <span style="color: #24A146;">{{ error[0] }}</span> and Row Number:  <span style="color: #24A146;">{{ error[1] }} </span>.<br>
+                            {% for a, y in rand %}
+                             Incorrect Formatting at <span style="color: #24A146;">{{ a }}</span>. These cells expected a <span style="color: #24A146;">{{ y }}</span>.   <br>
+                            {% endfor %}
                         {% endif %}
 
                     </div>
