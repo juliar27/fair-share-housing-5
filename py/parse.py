@@ -17,11 +17,42 @@ XL_CELL_DATE = 3
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------------------------------------------------
 def get_listings(sheet, database):
     d = {}
-    row = sheet.row(0)
+
+    expected = {'UNIQUEID': 'Number',  'Municode': 'Number', 'Municipality': 'Text',
+    'County': 'Text', 'Region': 'Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
+    'ComplianceMechanism': 'Text', 'AdminAgent': 'Text', 'Address': 'Text', 'Status': 'Text',
+    'OverallTotalUnits': 'Number', 'TotalFamily': 'Number', 'FamilyForSale': 'Number',
+    'FamilyRental': 'Number', 'TotalSenior': 'Number', 'SeniorForSale': 'Number', 'SeniorRental': 'Number',
+    'SSNTotal':  'Number', 'SSNForSale': 'Number', 'SSNRental': 'Number', 'OneBRTotal': 'Number',
+    'OneBRVLI':  'Number', 'OneBRLow': 'Number', 'OneBRMod': 'Number', 'TwoBRTotal': 'Number',
+    'TwoBRVLI': 'Number', 'TwoBRLow': 'Number',  'TwoBRMod': 'Number', 'ThreeBRTotal': 'Number',
+    'ThreeBRVLI': 'Number', 'ThreeBRLow':  'Number',  'ThreeBRMod': 'Number',
+     'SSNBRVLI': 'Number', 'SSNBRLow':  'Number', 'SSNBRMod':  'Number'}
+
+
+    if sheet.nrows > 0:
+        row = sheet.row(0)
+    else:
+        missing_columns = ['UNIQUEID', 'Municode', 'Municipality', 'County'
+        , 'Region','SiteProgramName', 'ProjectDeveloper', 'ComplianceMechanism',
+        'AdminAgent', 'Address', 'Status', 'OverallTotalUnits', 'TotalFamily',
+        'FamilyForSale', 'FamilyRental', 'TotalSenior', 'SeniorForSale',
+        'SeniorRental', 'SSNTotal', 'SSNForSale', 'SSNRental', 'OneBRTotal',
+        'OneBRVLI', 'OneBRLow', 'OneBRMod', 'TwoBRTotal', 'TwoBRVLI', 'TwoBRLow',
+        'TwoBRMod', 'ThreeBRTotal', 'ThreeBRVLI', 'ThreeBRLow', 'ThreeBRMod',
+        'SSNBRVLI', 'SSNBRLow', 'SSNBRMod']
+
+        x  = []
+
+        for i  in missing_columns:
+            x.append(expected[i])
+
+        return missing_columns, [], x, []
+
+
     for i in range(len(row)):
         d[row[i].value] = i
 
@@ -31,8 +62,7 @@ def get_listings(sheet, database):
 
     listings = {}
 
-    col = []
-    rand = []
+    rand = {}
     missing_columns = []
 
     for row in sheet.get_rows():
@@ -48,10 +78,13 @@ def get_listings(sheet, database):
             elif row[d['UNIQUEID']].value.strip() == "":
                 pass
             else:
-                rand.append(['UNIQUEID', row_number])
+                if 'UNIQUEID' not in rand:
+                    rand['UNIQUEID'] = str(row_number)
+                else:
+                    rand['UNIQUEID'] = rand['UNIQUEID'] + ", " + str(row_number)
+
         except:
             if 'UNIQUEID' not in missing_columns:
-                col.append('UNIQUEID')
                 missing_columns.append('UNIQUEID')
 
         try:
@@ -62,11 +95,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['Municode', row_number])
+                if 'Municode' not in rand:
+                    rand['Municode'] = str(row_number)
+                else:
+                    rand['Municode'] = rand['Municode'] + ", " + str(row_number)
 
         except:
             if 'Municode' not in missing_columns:
-                col.append('Municode')
                 missing_columns.append('Municode')
 
         try:
@@ -77,12 +112,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['Municipality', row_number])
+                if 'Municipality' not in rand:
+                    rand['Municipality'] = str(row_number)
+                else:
+                    rand['Municipality'] = rand['Municipality'] + ", " + str(row_number)
 
 
         except:
             if 'Municipality' not in missing_columns:
-                col.append('Municipality')
                 missing_columns.append('Municipality')
 
         try:
@@ -93,11 +130,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['County', row_number])
+                if 'County' not in rand:
+                    rand['County'] = str(row_number)
+                else:
+                    rand['County'] = rand['County'] + ", " + str(row_number)
 
         except:
             if 'County' not in missing_columns:
-                col.append('County')
                 missing_columns.append('County')
 
         try:
@@ -108,12 +147,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['Region', row_number])
+                if 'Region' not in rand:
+                    rand['Region'] = str(row_number)
+                else:
+                    rand['Region'] = rand['Region'] + ", " + str(row_number)
 
 
         except:
             if 'Region' not in missing_columns:
-                col.append('Region')
                 missing_columns.append('Region')
 
         try:
@@ -124,11 +165,13 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SiteProgramName', row_number])
+                if 'SiteProgramName' not in rand:
+                    rand['SiteProgramName'] = str(row_number)
+                else:
+                    rand['SiteProgramName'] = rand['SiteProgramName'] + ", " + str(row_number)
 
         except:
             if 'SiteProgramName' not in missing_columns:
-                col.append('SiteProgramName')
                 missing_columns.append('SiteProgramName')
 
         try:
@@ -139,12 +182,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ProjectDeveloper', row_number])
+                if 'ProjectDeveloper' not in rand:
+                    rand['ProjectDeveloper'] = str(row_number)
+                else:
+                    rand['ProjectDeveloper'] = rand['ProjectDeveloper'] + ", " + str(row_number)
 
 
         except:
             if 'ProjectDeveloper' not in missing_columns:
-                col.append('ProjectDeveloper')
                 missing_columns.append('ProjectDeveloper')
 
         try:
@@ -155,27 +200,32 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ComplianceMechanism', row_number])
+                if 'ComplianceMechanism' not in rand:
+                    rand['ComplianceMechanism'] = str(row_number)
+                else:
+                    rand['ComplianceMechanism'] = rand['ComplianceMechanism'] + ", " + str(row_number)
+
 
 
         except:
             if 'ComplianceMechanism' not in missing_columns:
-                col.append('ComplianceMechanism')
                 missing_columns.append('ComplianceMechanism')
 
         try:
             if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
                 record['agent'] = row[d['AdminAgent']].value
-        
+
             elif row[d['AdminAgent']].value.strip() == "":
                 pass
-        
+
             else:
-                rand.append(['AdminAgent', row_number])
+                if 'AdminAgent' not in rand:
+                    rand['AdminAgent'] = str(row_number)
+                else:
+                    rand['AdminAgent'] = rand['AdminAgent'] + ", " + str(row_number)
 
         except:
             if 'AdminAgent' not in missing_columns:
-                col.append('AdminAgent')
                 missing_columns.append('AdminAgent')
 
         try:
@@ -186,18 +236,25 @@ def get_listings(sheet, database):
                     record['addresses'] = row[d['Address']].value
 
                 else:
-                    rand.append(['Address', row_number])
+                    if 'Address' not in rand:
+                        rand['Address'] = str(row_number)
+                    else:
+                        rand['Address'] = rand['Address'] + ", " + str(row_number)
+
 
 
             elif row[d['Address']].value.strip() == "":
                 pass
 
             else:
-                rand.append(['Address', row_number])
+                if 'Address' not in rand:
+                    rand['Address'] = str(row_number)
+                else:
+                    rand['Address'] = rand['Address'] + ", " + str(row_number)
+
 
         except:
             if 'Address' not in missing_columns:
-                col.append('Address')
                 missing_columns.append('Address')
 
         try:
@@ -208,12 +265,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['Status', row_number])
+                if 'Status' not in rand:
+                    rand['Status'] = str(row_number)
+                else:
+                    rand['Status'] = rand['Status'] + ", " + str(row_number)
+
 
 
         except:
             if 'Status' not in missing_columns:
-                col.append('Status')
                 missing_columns.append('Status')
 
         try:
@@ -224,12 +284,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['OverallTotalUnits', row_number])
+                if 'OverallTotalUnits' not in rand:
+                    rand['OverallTotalUnits'] = str(row_number)
+                else:
+                    rand['OverallTotalUnits'] = rand['OverallTotalUnits'] + ", " + str(row_number)
+
 
 
         except:
             if 'OverallTotalUnits' not in missing_columns:
-                col.append('OverallTotalUnits')
                 missing_columns.append('OverallTotalUnits')
 
         try:
@@ -240,13 +303,16 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TotalFamily', row_number])
+                if 'TotalFamily' not in rand:
+                    rand['TotalFamily'] = str(row_number)
+                else:
+                    rand['TotalFamily'] = rand['TotalFamily'] + ", " + str(row_number)
+
 
 
 
         except:
             if 'TotalFamily' not in missing_columns:
-                col.append('TotalFamily')
                 missing_columns.append('TotalFamily')
 
         try:
@@ -257,12 +323,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['FamilyForSale', row_number])
+                if 'FamilyForSale' not in rand:
+                    rand['FamilyForSale'] = str(row_number)
+                else:
+                    rand['FamilyForSale'] = rand['FamilyForSale'] + ", " + str(row_number)
 
 
         except:
             if 'FamilyForSale' not in missing_columns:
-                col.append('FamilyForSale')
                 missing_columns.append('FamilyForSale')
 
         try:
@@ -273,12 +341,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['FamilyRental', row_number])
+                if 'FamilyRental' not in rand:
+                    rand['FamilyRental'] = str(row_number)
+                else:
+                    rand['FamilyRental'] = rand['FamilyRental'] + ", " + str(row_number)
 
 
         except:
             if 'FamilyRental' not in missing_columns:
-                col.append('FamilyRental')
                 missing_columns.append('FamilyRental')
 
         try:
@@ -289,12 +359,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TotalSenior', row_number])
+                if 'TotalSenior' not in rand:
+                    rand['TotalSenior'] = str(row_number)
+                else:
+                    rand['TotalSenior'] = rand['TotalSenior'] + ", " + str(row_number)
+
 
 
         except:
             if 'TotalSenior' not in missing_columns:
-                col.append('TotalSenior')
                 missing_columns.append('TotalSenior')
 
         try:
@@ -305,12 +378,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SeniorForSale', row_number])
+                if 'SeniorForSale' not in rand:
+                    rand['SeniorForSale'] = str(row_number)
+                else:
+                    rand['SeniorForSale'] = rand['SeniorForSale'] + ", " + str(row_number)
 
 
         except:
             if 'SeniorForSale' not in missing_columns:
-                col.append('SeniorForSale')
                 missing_columns.append('SeniorForSale')
 
         try:
@@ -321,12 +396,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SeniorRental', row_number])
+                if 'SeniorRental' not in rand:
+                    rand['SeniorRental'] = str(row_number)
+                else:
+                    rand['SeniorRental'] = rand['SeniorRental'] + ", " + str(row_number)
 
 
         except:
             if 'SeniorRental' not in missing_columns:
-                col.append('SeniorRental')
                 missing_columns.append('SeniorRental')
 
         try:
@@ -337,12 +414,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNTotal', row_number])
+                if 'SSNTotal' not in rand:
+                    rand['SSNTotal'] = str(row_number)
+                else:
+                    rand['SSNTotal'] = rand['SSNTotal'] + ", " + str(row_number)
 
 
         except:
             if 'SSNTotal' not in missing_columns:
-                col.append('SSNTotal')
                 missing_columns.append('SSNTotal')
 
         try:
@@ -353,12 +432,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNForSale', row_number])
+                if 'SSNForSale' not in rand:
+                    rand['SSNForSale'] = str(row_number)
+                else:
+                    rand['SSNForSale'] = rand['SSNForSale'] + ", " + str(row_number)
 
 
         except:
             if 'SSNForSale' not in missing_columns:
-                col.append('SSNForSale')
                 missing_columns.append('SSNForSale')
 
         try:
@@ -369,11 +450,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNRental', row_number])
+                if 'SSNRental' not in rand:
+                    rand['SSNRental'] = str(row_number)
+                else:
+                    rand['SSNRental'] = rand['SSNRental'] + ", " + str(row_number)
+
 
         except:
             if 'SSNRental' not in missing_columns:
-                col.append('SSNRental')
                 missing_columns.append('SSNRental')
 
         try:
@@ -384,12 +468,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['OneBRTotal', row_number])
+                if 'OneBRTotal' not in rand:
+                    rand['OneBRTotal'] = str(row_number)
+                else:
+                    rand['OneBRTotal'] = rand['OneBRTotal'] + ", " + str(row_number)
 
 
         except:
             if 'OneBRTotal' not in missing_columns:
-                col.append('OneBRTotal')
                 missing_columns.append('OneBRTotal')
 
         try:
@@ -400,12 +486,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['OneBRVLI', row_number])
+                if 'OneBRVLI' not in rand:
+                    rand['OneBRVLI'] = str(row_number)
+                else:
+                    rand['OneBRVLI'] = rand['OneBRVLI'] + ", " + str(row_number)
 
 
         except:
             if 'OneBRVLI' not in missing_columns:
-                col.append('OneBRVLI')
                 missing_columns.append('OneBRVLI')
 
         try:
@@ -416,12 +504,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['OneBRLow', row_number])
+                if 'OneBRLow' not in rand:
+                    rand['OneBRLow'] = str(row_number)
+                else:
+                    rand['OneBRLow'] = rand['OneBRLow'] + ", " + str(row_number)
+
 
 
         except:
             if 'OneBRLow' not in missing_columns:
-                col.append('OneBRLow')
                 missing_columns.append('OneBRLow')
 
         try:
@@ -432,12 +523,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['OneBRMod', row_number])
+                if 'OneBRMod' not in rand:
+                    rand['OneBRMod'] = str(row_number)
+                else:
+                    rand['OneBRMod'] = rand['OneBRMod'] + ", " + str(row_number)
 
 
         except:
             if 'OneBRMod' not in missing_columns:
-                col.append('OneBRMod')
                 missing_columns.append('OneBRMod')
 
         try:
@@ -448,12 +541,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TwoBRTotal', row_number])
+                if 'TwoBRTotal' not in rand:
+                    rand['TwoBRTotal'] = str(row_number)
+                else:
+                    rand['TwoBRTotal'] = rand['TwoBRTotal'] + ", " + str(row_number)
 
 
         except:
             if 'TwoBRTotal' not in missing_columns:
-                col.append('TwoBRTotal')
                 missing_columns.append('TwoBRTotal')
 
         try:
@@ -464,12 +559,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TwoBRVLI', row_number])
+                if 'TwoBRVLI' not in rand:
+                    rand['TwoBRVLI'] = str(row_number)
+                else:
+                    rand['TwoBRVLI'] = rand['TwoBRVLI'] + ", " + str(row_number)
 
 
         except:
             if 'TwoBRVLI' not in missing_columns:
-                col.append('TwoBRVLI')
                 missing_columns.append('TwoBRVLI')
 
         try:
@@ -480,12 +577,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TwoBRLow', row_number])
+                if 'TwoBRLow' not in rand:
+                    rand['TwoBRLow'] = str(row_number)
+                else:
+                    rand['TwoBRLow'] = rand['TwoBRLow'] + ", " + str(row_number)
 
 
         except:
             if 'TwoBRLow' not in missing_columns:
-                col.append('TwoBRLow')
                 missing_columns.append('TwoBRLow')
 
         try:
@@ -496,12 +595,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['TwoBRMod', row_number])
+                if 'TwoBRMod' not in rand:
+                    rand['TwoBRMod'] = str(row_number)
+                else:
+                    rand['TwoBRMod'] = rand['TwoBRMod'] + ", " + str(row_number)
+
 
 
         except:
             if 'TwoBRMod' not in missing_columns:
-                col.append('TwoBRMod')
                 missing_columns.append('TwoBRMod')
 
         try:
@@ -512,12 +614,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ThreeBRTotal', row_number])
+                if 'ThreeBRTotal' not in rand:
+                    rand['ThreeBRTotal'] = str(row_number)
+                else:
+                    rand['ThreeBRTotal'] = rand['ThreeBRTotal'] + ", " + str(row_number)
 
 
         except:
             if 'ThreeBRTotal' not in missing_columns:
-                col.append('ThreeBRTotal')
                 missing_columns.append('ThreeBRTotal')
 
         try:
@@ -528,12 +632,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ThreeBRVLI', row_number])
+                if 'ThreeBRVLI' not in rand:
+                    rand['ThreeBRVLI'] = str(row_number)
+                else:
+                    rand['ThreeBRVLI'] = rand['ThreeBRVLI'] + ", " + str(row_number)
 
 
         except:
             if 'ThreeBRVLI' not in missing_columns:
-                col.append('ThreeBRVLI')
                 missing_columns.append('ThreeBRVLI')
 
         try:
@@ -544,13 +650,15 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ThreeBRLow', row_number])
+                if 'ThreeBRLow' not in rand:
+                    rand['ThreeBRLow'] = str(row_number)
+                else:
+                    rand['ThreeBRLow'] = rand['ThreeBRLow'] + ", " + str(row_number)
 
 
 
         except:
             if 'ThreeBRLow' not in missing_columns:
-                col.append('ThreeBRLow')
                 missing_columns.append('ThreeBRLow')
 
         try:
@@ -561,12 +669,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['ThreeBRMod', row_number])
+                if 'ThreeBRMod' not in rand:
+                    rand['ThreeBRMod'] = str(row_number)
+                else:
+                    rand['ThreeBRMod'] = rand['ThreeBRMod'] + ", " + str(row_number)
 
 
         except:
             if 'ThreeBRMod' not in missing_columns:
-                col.append('ThreeBRMod')
                 missing_columns.append('ThreeBRMod')
 
         try:
@@ -577,12 +687,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNBRVLI', row_number])
+                if 'SSNBRVLI' not in rand:
+                    rand['SSNBRVLI'] = str(row_number)
+                else:
+                    rand['SSNBRVLI'] = rand['SSNBRVLI'] + ", " + str(row_number)
 
 
         except:
             if 'SSNBRVLI' not in missing_columns:
-                col.append('SSNBRVLI')
                 missing_columns.append('SSNBRVLI')
 
         try:
@@ -593,12 +705,14 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNBRLow', row_number])
+                if 'SSNBRLow' not in rand:
+                    rand['SSNBRLow'] = str(row_number)
+                else:
+                    rand['SSNBRLow'] = rand['SSNBRLow'] + ", " + str(row_number)
 
 
         except:
             if 'SSNBRLow' not in missing_columns:
-                col.append('SSNBRLow')
                 missing_columns.append('SSNBRLow')
 
         try:
@@ -609,20 +723,30 @@ def get_listings(sheet, database):
                 pass
 
             else:
-                rand.append(['SSNBRMod', row_number])
+                if 'SSNBRMod' not in rand:
+                    rand['SSNBRMod'] = str(row_number)
+                else:
+                    rand['SSNBRMod'] = rand['SSNBRMod'] + ", " + str(row_number)
 
 
         except:
             if 'SSNBRMod' not in missing_columns:
-                col.append('SSNBRMod')
                 missing_columns.append('SSNBRMod')
 
         row_number += 1
 
         listings[row_number] = record
 
+    x = []
+    y = []
 
-    return col, rand, listings
+    for i in rand:
+        num = " "
+        num += rand[i]
+        x.append(i + ": " + num)
+        y.append(expected[i])
+
+    return missing_columns, x, y, listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -656,21 +780,21 @@ def parse_file(filename):
     database = py.database.Database()
     database.connect()
 
-    col, rand, listings = get_listings(sheet, database)
+    col, rand, y, listings = get_listings(sheet, database)
 
     if col == [] and rand == []:
-        #database.clear()
         errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
 
     else:
         database.disconnect()
-        return False, url_for('show_parse_error', col=col, rand=rand, insert=[]), False
+        return False, url_for('show_parse_error', col=col, rand=rand, insert=[], exp=y), False
 
     database.disconnect()
     if errors_for_insert == []:
         return True, possible_redirect, changed_addresses
     else:
-        return False, url_for('show_parse_error', col=[], rand=[], insert=errors_for_insert), False
+        errors_for_insert.sort()
+        return False, url_for('show_parse_error', col=[], rand=[], exp=[], insert=errors_for_insert), False
 # ----------------------------------------------------------------------------------------------------------------------
 
 
