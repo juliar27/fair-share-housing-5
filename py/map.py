@@ -155,11 +155,11 @@ def query2(owner, prop, bed, income, town, county, zipCode):
     filtering = ""
     options = "'"
 
-    if county is not None and county is not '':
+    if county is not None and county != '':
         county = county.capitalize()
         filtering += " AND counties.county like \'%" + county + "%\'"
 
-    if town is not None and town is not '':
+    if town is not None and town != '':
         town = town.capitalize()
         filtering += " AND cities.municipality like \'%" + town + "%\'"
 

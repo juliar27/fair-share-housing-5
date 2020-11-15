@@ -262,11 +262,12 @@
                                     }
                                 });
                                 $('.delete-button').click(function() {
+                                    console.log("AHHHHHHH");
                                     var id = $(this).attr('name');
                                     console.log(id);
                                     var ids = t.column(1).data();
                                     for (let i = 0; i < ids.length; i++)
-                                        if (ids[i] === id) {
+                                        if (t.row(i).data()[1] === id) {
                                             console.log('FOUND HER');
                                             t.row(i).remove().draw();
                                             break;
@@ -320,7 +321,7 @@
                                 $("#add-row").click(function () {
                                     t.row.add([
                                     "<button name='" + counter + "' class='btn btn-primary delete-button'>Delete</button>",
-                                    counter,
+                                    "" + counter + "",
                                     "<div class='text-box' id='" + counter + ";1' contenteditable='true'></div>",
                                     "<div class='text-box' id='" + counter + ";2' contenteditable='true'></div>",
                                     "<div class='text-box' id='" + counter + ";3' contenteditable='true'></div>",
@@ -358,6 +359,23 @@
                                     "<div class='text-box' id='" + counter + ";35' contenteditable='true'></div>"
                                     ]
                                     ).order([1, 'desc']).draw();
+                                    $('.delete-button').click(function() {
+                                    console.log("AHHHHHHH");
+                                    var id = $(this).attr('name');
+                                    console.log(id);
+                                    var ids = t.column(1).data();
+                                    console.log(ids);
+                                    for (let i = 0; i < ids.length; i++)
+                                        if (t.row(i).data()[1] === id) {
+                                            console.log('FOUND HER');
+                                            t.row(i).remove().draw();
+                                            break;
+                                        }
+                                    to_delete.push(id)
+                                    $(window).on("beforeunload", function() {
+                                        return "Are you sure you don't want to save any changes?";
+                                    });
+                                });
                                     counter++;
                                     $(window).on("beforeunload", function() {
                                         return "Are you sure you don't want to save any changes?";
@@ -392,7 +410,6 @@
         <script src="static/js/scripts-admin.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="static/assets/demo/datatables-demo.js"></script> 
         <script>
             const row0 = []
             // for col in row -> add event listener -> onchange -> then update corresponding array element
