@@ -21,15 +21,24 @@
                                 Error inserting <span style="color: #24A146;">{{ insert|join("; ") }}</span>. Please contact the system adminstrator.<br><br>
                         {% endif %}
 
-                        {% if col: %}
+                        {% if col and flag: %}
                                 Your database needs to include the following column(s): <span style="color: #24A146;">{{ col|join("; ") }}</span>.<br><br>
                         {% endif %}
 
-                        {% if rand: %}
+                        {% if flag: %}
                             {% for a, y in rand %}
                              Incorrect Formatting at <span style="color: #24A146;">{{ a }}</span>. These cells expected a <span style="color: #24A146;">{{ y }}</span>.   <br>
                             {% endfor %}
+
+                        {% else: %}
+                        Your database needs to include a: <br>
+                            {% for a, y in col %}
+                              <span style="color: #24A146;">{{ a }}</span> column. These cells expect <span style="color: #24A146;">{{ y }}</span>.   <br>
+                            {% endfor %}
+
                         {% endif %}
+
+
 
                     </div>
                 </main>

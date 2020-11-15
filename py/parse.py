@@ -17,11 +17,42 @@ XL_CELL_DATE = 3
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------------------------------------------------
 def get_listings(sheet, database):
     d = {}
-    row = sheet.row(0)
+
+    expected = {'UNIQUEID': 'Number',  'Municode': 'Number', 'Municipality': 'Text',
+    'County': 'Text', 'Region': 'Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
+    'ComplianceMechanism': 'Text', 'AdminAgent': 'Text', 'Address': 'Text', 'Status': 'Text',
+    'OverallTotalUnits': 'Number', 'TotalFamily': 'Number', 'FamilyForSale': 'Number',
+    'FamilyRental': 'Number', 'TotalSenior': 'Number', 'SeniorForSale': 'Number', 'SeniorRental': 'Number',
+    'SSNTotal':  'Number', 'SSNForSale': 'Number', 'SSNRental': 'Number', 'OneBRTotal': 'Number',
+    'OneBRVLI':  'Number', 'OneBRLow': 'Number', 'OneBRMod': 'Number', 'TwoBRTotal': 'Number',
+    'TwoBRVLI': 'Number', 'TwoBRLow': 'Number',  'TwoBRMod': 'Number', 'ThreeBRTotal': 'Number',
+    'ThreeBRVLI': 'Number', 'ThreeBRLow':  'Number',  'ThreeBRMod': 'Number',
+     'SSNBRVLI': 'Number', 'SSNBRLow':  'Number', 'SSNBRMod':  'Number'}
+
+
+    if sheet.nrows > 0:
+        row = sheet.row(0)
+    else:
+        missing_columns = ['UNIQUEID', 'Municode', 'Municipality', 'County'
+        , 'Region','SiteProgramName', 'ProjectDeveloper', 'ComplianceMechanism',
+        'AdminAgent', 'Address', 'Status', 'OverallTotalUnits', 'TotalFamily',
+        'FamilyForSale', 'FamilyRental', 'TotalSenior', 'SeniorForSale',
+        'SeniorRental', 'SSNTotal', 'SSNForSale', 'SSNRental', 'OneBRTotal',
+        'OneBRVLI', 'OneBRLow', 'OneBRMod', 'TwoBRTotal', 'TwoBRVLI', 'TwoBRLow',
+        'TwoBRMod', 'ThreeBRTotal', 'ThreeBRVLI', 'ThreeBRLow', 'ThreeBRMod',
+        'SSNBRVLI', 'SSNBRLow', 'SSNBRMod']
+
+        x  = []
+
+        for i  in missing_columns:
+            x.append(expected[i])
+
+        return missing_columns, [], x, []
+
+
     for i in range(len(row)):
         d[row[i].value] = i
 
@@ -31,7 +62,6 @@ def get_listings(sheet, database):
 
     listings = {}
 
-    col = []
     rand = {}
     missing_columns = []
 
@@ -55,7 +85,6 @@ def get_listings(sheet, database):
 
         except:
             if 'UNIQUEID' not in missing_columns:
-                col.append('UNIQUEID')
                 missing_columns.append('UNIQUEID')
 
         try:
@@ -73,7 +102,6 @@ def get_listings(sheet, database):
 
         except:
             if 'Municode' not in missing_columns:
-                col.append('Municode')
                 missing_columns.append('Municode')
 
         try:
@@ -92,7 +120,6 @@ def get_listings(sheet, database):
 
         except:
             if 'Municipality' not in missing_columns:
-                col.append('Municipality')
                 missing_columns.append('Municipality')
 
         try:
@@ -110,7 +137,6 @@ def get_listings(sheet, database):
 
         except:
             if 'County' not in missing_columns:
-                col.append('County')
                 missing_columns.append('County')
 
         try:
@@ -129,7 +155,6 @@ def get_listings(sheet, database):
 
         except:
             if 'Region' not in missing_columns:
-                col.append('Region')
                 missing_columns.append('Region')
 
         try:
@@ -147,7 +172,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SiteProgramName' not in missing_columns:
-                col.append('SiteProgramName')
                 missing_columns.append('SiteProgramName')
 
         try:
@@ -166,7 +190,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ProjectDeveloper' not in missing_columns:
-                col.append('ProjectDeveloper')
                 missing_columns.append('ProjectDeveloper')
 
         try:
@@ -186,7 +209,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ComplianceMechanism' not in missing_columns:
-                col.append('ComplianceMechanism')
                 missing_columns.append('ComplianceMechanism')
 
         try:
@@ -204,7 +226,6 @@ def get_listings(sheet, database):
 
         except:
             if 'AdminAgent' not in missing_columns:
-                col.append('AdminAgent')
                 missing_columns.append('AdminAgent')
 
         try:
@@ -234,7 +255,6 @@ def get_listings(sheet, database):
 
         except:
             if 'Address' not in missing_columns:
-                col.append('Address')
                 missing_columns.append('Address')
 
         try:
@@ -254,7 +274,6 @@ def get_listings(sheet, database):
 
         except:
             if 'Status' not in missing_columns:
-                col.append('Status')
                 missing_columns.append('Status')
 
         try:
@@ -274,7 +293,6 @@ def get_listings(sheet, database):
 
         except:
             if 'OverallTotalUnits' not in missing_columns:
-                col.append('OverallTotalUnits')
                 missing_columns.append('OverallTotalUnits')
 
         try:
@@ -295,7 +313,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TotalFamily' not in missing_columns:
-                col.append('TotalFamily')
                 missing_columns.append('TotalFamily')
 
         try:
@@ -314,7 +331,6 @@ def get_listings(sheet, database):
 
         except:
             if 'FamilyForSale' not in missing_columns:
-                col.append('FamilyForSale')
                 missing_columns.append('FamilyForSale')
 
         try:
@@ -333,7 +349,6 @@ def get_listings(sheet, database):
 
         except:
             if 'FamilyRental' not in missing_columns:
-                col.append('FamilyRental')
                 missing_columns.append('FamilyRental')
 
         try:
@@ -353,7 +368,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TotalSenior' not in missing_columns:
-                col.append('TotalSenior')
                 missing_columns.append('TotalSenior')
 
         try:
@@ -372,7 +386,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SeniorForSale' not in missing_columns:
-                col.append('SeniorForSale')
                 missing_columns.append('SeniorForSale')
 
         try:
@@ -391,7 +404,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SeniorRental' not in missing_columns:
-                col.append('SeniorRental')
                 missing_columns.append('SeniorRental')
 
         try:
@@ -410,7 +422,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNTotal' not in missing_columns:
-                col.append('SSNTotal')
                 missing_columns.append('SSNTotal')
 
         try:
@@ -429,7 +440,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNForSale' not in missing_columns:
-                col.append('SSNForSale')
                 missing_columns.append('SSNForSale')
 
         try:
@@ -448,7 +458,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNRental' not in missing_columns:
-                col.append('SSNRental')
                 missing_columns.append('SSNRental')
 
         try:
@@ -467,7 +476,6 @@ def get_listings(sheet, database):
 
         except:
             if 'OneBRTotal' not in missing_columns:
-                col.append('OneBRTotal')
                 missing_columns.append('OneBRTotal')
 
         try:
@@ -486,7 +494,6 @@ def get_listings(sheet, database):
 
         except:
             if 'OneBRVLI' not in missing_columns:
-                col.append('OneBRVLI')
                 missing_columns.append('OneBRVLI')
 
         try:
@@ -506,7 +513,6 @@ def get_listings(sheet, database):
 
         except:
             if 'OneBRLow' not in missing_columns:
-                col.append('OneBRLow')
                 missing_columns.append('OneBRLow')
 
         try:
@@ -525,7 +531,6 @@ def get_listings(sheet, database):
 
         except:
             if 'OneBRMod' not in missing_columns:
-                col.append('OneBRMod')
                 missing_columns.append('OneBRMod')
 
         try:
@@ -544,7 +549,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TwoBRTotal' not in missing_columns:
-                col.append('TwoBRTotal')
                 missing_columns.append('TwoBRTotal')
 
         try:
@@ -563,7 +567,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TwoBRVLI' not in missing_columns:
-                col.append('TwoBRVLI')
                 missing_columns.append('TwoBRVLI')
 
         try:
@@ -582,7 +585,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TwoBRLow' not in missing_columns:
-                col.append('TwoBRLow')
                 missing_columns.append('TwoBRLow')
 
         try:
@@ -602,7 +604,6 @@ def get_listings(sheet, database):
 
         except:
             if 'TwoBRMod' not in missing_columns:
-                col.append('TwoBRMod')
                 missing_columns.append('TwoBRMod')
 
         try:
@@ -621,7 +622,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ThreeBRTotal' not in missing_columns:
-                col.append('ThreeBRTotal')
                 missing_columns.append('ThreeBRTotal')
 
         try:
@@ -640,7 +640,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ThreeBRVLI' not in missing_columns:
-                col.append('ThreeBRVLI')
                 missing_columns.append('ThreeBRVLI')
 
         try:
@@ -660,7 +659,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ThreeBRLow' not in missing_columns:
-                col.append('ThreeBRLow')
                 missing_columns.append('ThreeBRLow')
 
         try:
@@ -679,7 +677,6 @@ def get_listings(sheet, database):
 
         except:
             if 'ThreeBRMod' not in missing_columns:
-                col.append('ThreeBRMod')
                 missing_columns.append('ThreeBRMod')
 
         try:
@@ -698,7 +695,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNBRVLI' not in missing_columns:
-                col.append('SSNBRVLI')
                 missing_columns.append('SSNBRVLI')
 
         try:
@@ -717,7 +713,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNBRLow' not in missing_columns:
-                col.append('SSNBRLow')
                 missing_columns.append('SSNBRLow')
 
         try:
@@ -736,7 +731,6 @@ def get_listings(sheet, database):
 
         except:
             if 'SSNBRMod' not in missing_columns:
-                col.append('SSNBRMod')
                 missing_columns.append('SSNBRMod')
 
         row_number += 1
@@ -745,16 +739,6 @@ def get_listings(sheet, database):
 
     x = []
     y = []
-    expected = {'UNIQUEID': 'Number',  'Municode': 'Number', 'Municipality': 'Text',
-    'County': 'Text', 'Region': 'Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
-    'ComplianceMechanism': 'Text', 'AdminAgent': 'Text', 'Address': 'Text', 'Status': 'Text',
-    'OverallTotalUnits': 'Number', 'TotalFamily': 'Number', 'FamilyForSale': 'Number',
-    'FamilyRental': 'Number', 'TotalSenior': 'Number', 'SeniorForSale': 'Number', 'SeniorRental': 'Number',
-    'SSNTotal':  'Number', 'SSNForSale': 'Number', 'SSNRental': 'Number', 'OneBRTotal': 'Number',
-    'OneBRVLI':  'Number', 'OneBRLow': 'Number', 'OneBRMod': 'Number', 'TwoBRTotal': 'Number',
-    'TwoBRVLI': 'Number', 'TwoBRLow': 'Number',  'TwoBRMod': 'Number', 'ThreeBRTotal': 'Number',
-    'ThreeBRVLI': 'Number', 'ThreeBRLow':  'Number',  'ThreeBRMod': 'Number',
-     'SSNBRVLI': 'Number', 'SSNBRLow':  'Number', 'SSNBRMod':  'Number'}
 
     for i in rand:
         num = " "
@@ -762,7 +746,7 @@ def get_listings(sheet, database):
         x.append(i + ": " + num)
         y.append(expected[i])
 
-    return col, x, y, listings
+    return missing_columns, x, y, listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------

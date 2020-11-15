@@ -335,7 +335,12 @@ def show_parse_error():
         col = request.args.getlist('col')
         rand = request.args.getlist('rand')
         exp = request.args.getlist('exp')
-        t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp))
+
+        if rand != []:
+            t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
+        else:
+            t = render_template('site/parse-error.html', insert=insert, col=zip(col,exp), rand=exp, flag=False)
+
         return make_response(t)
     else:
         return redirect('/login')
@@ -361,7 +366,7 @@ def show_uploaded_post():
     if current_user.is_authenticated:
         if request.files['file'].filename != '':
             flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-            q.enqueue(get_coords, changed_addresses)
+            # q.enqueue(get_coords, changed_addresses)
 
             if not flag:
                 return redirect(possible_redirect)
