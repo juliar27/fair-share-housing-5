@@ -335,7 +335,7 @@ def show_parse_error():
         col = request.args.getlist('col')
         rand = request.args.getlist('rand')
         exp = request.args.getlist('exp')
-
+ 
         if rand != []:
             t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
         else:
@@ -369,13 +369,13 @@ def show_uploaded_post():
             q.enqueue(get_coords, changed_addresses)
 
             if not flag:
-                return redirect(possible_redirect)
+                return possible_redirect
         else:
-            return redirect(url_for('show_upload', error="T."))
+            return url_for('show_upload', error="T.")
 
-        return redirect('/admin')
+        return '/admin'
     else:
-        redirect('/login')
+        '/login'
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -622,6 +622,6 @@ def show_admin():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(port=44234, debug=True)
+    app.run(port=44134, debug=True)
 
 # ----------------------------------------------------------------------------------------------------------------------
