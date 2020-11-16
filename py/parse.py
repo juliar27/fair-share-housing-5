@@ -21,16 +21,16 @@ XL_CELL_DATE = 3
 def get_listings(sheet, database):
     d = {}
 
-    expected = {'UNIQUEID': 'Number',  'Municode': 'Number', 'Municipality': 'Text',
-    'County': 'Text', 'Region': 'Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
+    expected = {'UNIQUEID': 'a Number',  'Municode': 'a Number', 'Municipality': 'Text',
+    'County': 'Text', 'Region': 'a Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
     'ComplianceMechanism': 'Text', 'AdminAgent': 'Text', 'Address': 'Text', 'Status': 'Text',
-    'OverallTotalUnits': 'Number', 'TotalFamily': 'Number', 'FamilyForSale': 'Number',
-    'FamilyRental': 'Number', 'TotalSenior': 'Number', 'SeniorForSale': 'Number', 'SeniorRental': 'Number',
-    'SSNTotal':  'Number', 'SSNForSale': 'Number', 'SSNRental': 'Number', 'OneBRTotal': 'Number',
-    'OneBRVLI':  'Number', 'OneBRLow': 'Number', 'OneBRMod': 'Number', 'TwoBRTotal': 'Number',
-    'TwoBRVLI': 'Number', 'TwoBRLow': 'Number',  'TwoBRMod': 'Number', 'ThreeBRTotal': 'Number',
-    'ThreeBRVLI': 'Number', 'ThreeBRLow':  'Number',  'ThreeBRMod': 'Number',
-     'SSNBRVLI': 'Number', 'SSNBRLow':  'Number', 'SSNBRMod':  'Number'}
+    'OverallTotalUnits': 'a Number', 'TotalFamily': 'a Number', 'FamilyForSale': 'a Number',
+    'FamilyRental': 'a Number', 'TotalSenior': 'a Number', 'SeniorForSale': 'a Number', 'SeniorRental': 'a Number',
+    'SSNTotal':  'a Number', 'SSNForSale': 'a Number', 'SSNRental': 'a Number', 'OneBRTotal': 'a Number',
+    'OneBRVLI':  'a Number', 'OneBRLow': 'a Number', 'OneBRMod': 'a Number', 'TwoBRTotal': 'a Number',
+    'TwoBRVLI': 'a Number', 'TwoBRLow': 'a Number',  'TwoBRMod': 'a Number', 'ThreeBRTotal': 'a Number',
+    'ThreeBRVLI': 'a Number', 'ThreeBRLow':  'a Number',  'ThreeBRMod': 'a Number',
+     'SSNBRVLI': 'a Number', 'SSNBRLow':  'a Number', 'SSNBRMod':  'a Number'}
 
 
     if sheet.nrows > 0:

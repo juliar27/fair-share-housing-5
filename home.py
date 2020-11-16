@@ -316,10 +316,7 @@ def show_tables():
 @app.route('/upload')
 def show_upload():
     if current_user.is_authenticated:
-        if request.args.get('error') is None:
-            t = render_template('site/upload.html', error='')
-        else:
-            t = render_template('site/upload.html', error=request.args.get('error'))
+        t = render_template('site/upload.html')
         return make_response(t)
     else:
         return redirect('/login')
@@ -330,6 +327,7 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
+    print("hellloo")
     if current_user.is_authenticated:
         insert = request.args.getlist('insert')
         col = request.args.getlist('col')
