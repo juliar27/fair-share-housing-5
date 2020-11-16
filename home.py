@@ -327,6 +327,7 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
+    print("hellloo")
     if current_user.is_authenticated:
         insert = request.args.getlist('insert')
         col = request.args.getlist('col')
@@ -365,11 +366,12 @@ def show_uploaded_post():
         q.enqueue(get_coords, changed_addresses)
 
         if not flag:
-            return redirect(possible_redirect)
-
-        return redirect('/admin')
+            print(possible_redirect)
+            return possible_redirect
+        print("y")
+        return '/admin'
     else:
-        redirect('/login')
+        return '/login'
 
 
 # ----------------------------------------------------------------------------------------------------------------------
