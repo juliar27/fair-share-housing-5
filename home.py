@@ -316,10 +316,7 @@ def show_tables():
 @app.route('/upload')
 def show_upload():
     if current_user.is_authenticated:
-        if request.args.get('error') is None:
-            t = render_template('site/upload.html', error='')
-        else:
-            t = render_template('site/upload.html', error=request.args.get('error'))
+        t = render_template('site/upload.html')
         return make_response(t)
     else:
         return redirect('/login')
@@ -364,14 +361,11 @@ def show_uploaded_get():
 @app.route('/uploaded', methods=['POST'])
 def show_uploaded_post():
     if current_user.is_authenticated:
-        if request.files['file'].filename != '':
-            flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-            q.enqueue(get_coords, changed_addresses)
+        flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
+        q.enqueue(get_coords, changed_addresses)
 
-            if not flag:
-                return redirect(possible_redirect)
-        else:
-            return redirect(url_for('show_upload', error="T."))
+        if not flag:
+            return redirect(possible_redirect)
 
         return redirect('/admin')
     else:
