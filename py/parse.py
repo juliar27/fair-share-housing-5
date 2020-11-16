@@ -780,14 +780,14 @@ def parse_file(filename):
     database = py.database.Database()
     database.connect()
 
-    col, rand, y, listings = get_listings(sheet, database)
-
+    col, rand, expect, listings = get_listings(sheet, database)
+    print(col, rand, expect)
     if col == [] and rand == []:
         errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
 
     else:
         database.disconnect()
-        return False, url_for('show_parse_error', col=col, rand=rand, insert=[], exp=y), False
+        return False, url_for('show_parse_error', col=col, rand=rand, insert=[], exp=expect), False
 
     database.disconnect()
     if errors_for_insert == []:

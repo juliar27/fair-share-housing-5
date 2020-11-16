@@ -327,17 +327,16 @@ def show_upload():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/parse-error')
 def show_parse_error():
-    print("hellloo")
     if current_user.is_authenticated:
         insert = request.args.getlist('insert')
         col = request.args.getlist('col')
         rand = request.args.getlist('rand')
         exp = request.args.getlist('exp')
- 
-        if rand != []:
+
+        if exp != []:
             t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
         else:
-            t = render_template('site/parse-error.html', insert=insert, col=zip(col,exp), rand=exp, flag=False)
+            t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, flag=False)
 
         return make_response(t)
     else:
@@ -362,14 +361,11 @@ def show_uploaded_get():
 @app.route('/uploaded', methods=['POST'])
 def show_uploaded_post():
     if current_user.is_authenticated:
-        if request.files['file'].filename != '':
-            flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-            q.enqueue(get_coords, changed_addresses)
+        flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
+        q.enqueue(get_coords, changed_addresses)
 
-            if not flag:
-                return possible_redirect
-        else:
-            return url_for('show_upload', error="T.")
+        if not flag:
+            return possible_redirect
 
         return '/admin'
     else:

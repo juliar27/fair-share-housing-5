@@ -11,17 +11,12 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="admin">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Upload Data</li>
-                        </ol>
-
 
                         {% if insert: %}
                                 Error inserting <span style="color: #24A146;">{{ insert|join("; ") }}</span>. Please contact the system adminstrator.<br><br>
                         {% endif %}
 
-                        {% if col and flag: %}
+                        {% if col: %}
                                 Your database needs to include the following column(s): <span style="color: #24A146;">{{ col|join("; ") }}</span>.<br><br>
                         {% endif %}
 
@@ -29,13 +24,6 @@
                             {% for a, y in rand %}
                              Incorrect Formatting at <span style="color: #24A146;">{{ a }}</span>. These cells expected a <span style="color: #24A146;">{{ y }}</span>.   <br>
                             {% endfor %}
-
-                        {% else: %}
-                        Your database needs to include a: <br>
-                            {% for a, y in col %}
-                              <span style="color: #24A146;">{{ a }}</span> column. These cells expect <span style="color: #24A146;">{{ y }}</span>.   <br>
-                            {% endfor %}
-
                         {% endif %}
 
 
