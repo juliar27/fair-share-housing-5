@@ -150,6 +150,8 @@
             <div class="form-field">
                 <div class="select-wrap" id="counties_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <select name="county" id="county" class="form-control">
+                    </select>
             </div>
                 </div>
         </div>
@@ -161,6 +163,8 @@
             <div class="form-field">
                 <div class="select-wrap" id="towns_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <select name="town" id="town" class="form-control">
+                    </select>
             </div>
                 </div>
         </div>
@@ -189,10 +193,8 @@
  
   var values = {{ counties|safe }};
  
-  var select = document.createElement("select");
-  select.name = "county";
-  select.id = "county";
-    select.className = "form-control";
+  var select = document.getElementById("county");
+
 
 //    the no-preference option
     var option = document.createElement("option");
@@ -215,10 +217,7 @@ function init_town() {
  
   var values = {{ towns|safe }};
  
-  var select = document.createElement("select");
-  select.name = "town";
-  select.id = "town";
-  select.className = "form-control";
+  var select = document.getElementById("town");
 
 //    the no-preference option
     var option = document.createElement("option");

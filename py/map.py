@@ -74,14 +74,10 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
 
         if county != "none":
             if (rows[i][3] != county):
-                print(county)
-                print(rows[i][3])
                 flag = False
 
         if town != "none":
             if (rows[i][2] != town):
-                print(town)
-                print(rows[i][2])
                 flag = False
     
         if bed is not None:
