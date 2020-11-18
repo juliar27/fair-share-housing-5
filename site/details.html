@@ -483,7 +483,13 @@
                           </div>
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
                             <hr> <h2> Contact Information </h2> <hr>
-                            <p> {{row['agent']}} </p>
+                            <p>
+                              {% if row['agent'] %}
+                                  Please contact this housing program at: <br> 
+                                  {{row['agent']}}
+                              {% else: %}
+                                  Unfortunately contact information is unavailable at this time. Please contact the municipality this is located in directly.
+                              {% endif %} </p>
                           </div>
                           <div class="tab-pane fade" id="v-pills-eligibility" role="tabpanel" aria-labelledby="v-pills-eligibility-tab">
                             <hr> <h2> Eligibility and Resources </h2> <hr>
