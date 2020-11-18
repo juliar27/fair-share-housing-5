@@ -62,10 +62,10 @@ def recovery_email(receiver_email, link):
         <html>
           <body>
             <p>
-               To change your mapFSH password, please use this link: {{link}}
+               Someone (hopefully you) has requested a password reset. To change your mapFSH password, please use this link: {{link}}
                <br>
                <br>
-               If you did not request to change your password, please contact the system administrators.
+               If you don't wish to reset your password, disregard this email and no action will be taken.
                <br><br>
                mapFSH
             </p>
