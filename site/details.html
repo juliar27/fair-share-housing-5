@@ -279,6 +279,7 @@
                           <a class="nav-link" id="v-pills-unitsavails-tab" data-toggle="pill" href="#v-pills-unitsavail" role="tab" aria-controls="v-pills-unitsavail" aria-selected="false">Units Available</a>
                           <a class="nav-link" id="v-pills-types-tab" data-toggle="pill" href="#v-pills-types" role="tab" aria-controls="v-pills-types" aria-selected="false">Unit Types</a>
                           <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact Information</a>
+                          <a class="nav-link" id="v-pills-eligibility-tab" data-toggle="pill" href="#v-pills-eligibility" role="tab" aria-controls="v-pills-eligibility" aria-selected="false">Eligibity</a>
                         </div>
                       </div>
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
@@ -390,7 +391,7 @@
                               </script>
                           </div>
                           <div class="tab-pane fade" id="v-pills-unitsavail" role="tabpanel" aria-labelledby="v-pills-unitsavail-tab">
-                            <table class="table table-hover table-responsive">
+                            <table class="table table-hover">
                               <hr> <h2> Units Available </h2> <hr>
                               <thead>
                                   <tr>
@@ -483,6 +484,18 @@
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
                             <hr> <h2> Contact Information </h2> <hr>
                             <p> {{row['agent']}} </p>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-eligibility" role="tabpanel" aria-labelledby="v-pills-eligibility-tab">
+                            <hr> <h2> Eligibility and Resources </h2> <hr>
+                            <p> Your eligibility for a subsidized unit depends on the following factors:<p>
+                              <ul>
+                                <li> Annual Gross Income </li>
+                                <li> Whether you qualify as elderly, a person with a disability, or as a family </li>
+                                <li> U.S. citizenship or eligible immigration status </li>
+                                <li> References </li>
+                              </ul>
+                            <p> Please click <a href='https://www.nj211.org/subsidized-housing-how-it-works' target="_blank">here</a> for an overview of affordable housing eligibility requirements in NJ.</p>
+                            <p> Please click <a href='https://www.pchhomes.org/sites/default/files/Income_Limits_2020_0.pdf' target="_blank">here</a> to see income limits by household size in NJ.</p>
                           </div>
                         </div>
                       </div>
