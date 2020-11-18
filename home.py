@@ -166,7 +166,7 @@ def show_map():
         else:
             zipCode = prevZip
 
-    
+
     x, addressInfo, counties, towns, rows, ids = query(owner, prop, bed, income, town, county, zipCode)
     t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
 
@@ -436,54 +436,6 @@ def edit():
     else:
         return redirect('/login')
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/edited', methods=['GET', 'POST'])
-def show_edited():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            form = request.form
-            edit_table(form, request.args.get('id'))
-            return redirect('/tables')
-        else:
-            if request.args.get('id'):
-                return redirect('/edit?id=' + request.args.get('id'))
-
-            return redirect('/tables')
-    else:
-        return redirect('/login')
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/added', methods=['GET', 'POST'])
-def show_added():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            form = request.form
-            add_to_table(form)
-            return redirect('/admin')
-        else:
-            return redirect('/add')
-    else:
-        return redirect('/login')
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/deleted', methods=['GET', 'POST'])
-def show_deleted():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            delete(request.args.get('id'))
-        return redirect('/tables')
-    else:
-        return redirect('/login')
 # ----------------------------------------------------------------------------------------------------------------------
 
 
