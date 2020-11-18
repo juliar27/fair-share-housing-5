@@ -212,6 +212,7 @@
             </div>
         </div>
 
+<!--
         <div class="form-group">
             <label for="#">Town</label>
             <div class="form-field">
@@ -219,14 +220,26 @@
                 <input type="text" value="{{ prevTown }}" name="town"class="form-control" placeholder="Town">
             </div>
         </div>
-
-        <div class="form-group">
+-->
+            
+            <div class="form-group">
             <label for="#">County</label>
             <div class="form-field">
-                <div class="icon"><span class="fa fa-search"></span></div>
-                <input type="text" value="{{ prevCounty }}" name="county" class="form-control" placeholder="County">
+                <div class="select-wrap" id="counties_drop">
+                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
             </div>
+                </div>
         </div>
+
+            <div class="form-group">
+            <label for="#">Town</label>
+            <div class="form-field">
+                <div class="select-wrap" id="towns_drop">
+                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
+            </div>
+                </div>
+        </div>
+
 
         <div class="form-group">
             <label for="#">Zip Code</label>
@@ -238,15 +251,78 @@
 
         <div class="form-group">
             <div class="form-field">
-                <input type="submit" name="search" value="Search" class="form-control btn btn-primary">
+                <input type="submit"id="search" name="search" value="Search" class="form-control btn btn-primary">
             </div>
         </div>
 
         </form>
     </div>
 </section>
+          
 </div>
 </body>
+    
+    <script>
+    function init_counties() {
+ 
+  var values = {{ counties|safe }};
+ 
+  var select = document.createElement("select");
+  select.name = "county";
+  select.id = "county";
+    select.className = "form-control";
+
+//    the no-preference option
+    var option = document.createElement("option");
+    option.value = "none";
+    option.text = "No Preference";
+    select.appendChild(option);
+ 
+  for (const val of values) {
+    var option = document.createElement("option");
+    option.value = String(val);
+    option.text = String(val);
+    select.appendChild(option);
+  }
+ 
+
+  document.getElementById("counties_drop").appendChild(select);
+}
+
+function init_town() {
+ 
+  var values = {{ towns|safe }};
+ 
+  var select = document.createElement("select");
+  select.name = "town";
+  select.id = "town";
+  select.className = "form-control";
+
+//    the no-preference option
+    var option = document.createElement("option");
+    option.value = "none";
+    option.text = "No Preference";
+    select.appendChild(option);
+ 
+  for (const val of values) {
+    var option = document.createElement("option");
+    option.value = String(val);
+    option.text = String(val);
+    select.appendChild(option);
+  }
+ 
+
+  document.getElementById("towns_drop").appendChild(select);
+}
+
+window.onload = function() {
+  init_counties();
+    init_town();
+};
+
+    </script>
+    
+    
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ"
             type="text/javascript"></script>

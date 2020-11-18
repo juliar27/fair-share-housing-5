@@ -4,7 +4,7 @@ from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
-from py.map import querying_location, filter_function, query2, query3, query, html_for_listings
+from py.map import filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
 from threading import Thread
@@ -111,9 +111,9 @@ def show_map():
     if prevIncome is None:
         prevBed = "none"
     if prevTown is None:
-        prevTown = ''
+        prevTown = "none"
     if prevCounty is None:
-        prevCounty = ''
+        prevCounty = "none"
     if prevZip is None:
         prevZip = ''
 
@@ -150,13 +150,13 @@ def show_map():
 
     if town is None:
         if prevTown is None:
-            town = ''
+            town = "none"
         else:
             town = prevTown
 
     if county is None:
         if prevCounty is None:
-            county = ''
+            county = "none"
         else:
             county = prevCounty
 
@@ -166,8 +166,9 @@ def show_map():
         else:
             zipCode = prevZip
 
-    rows,x, addressInfo = query(owner, prop, bed, income, town, county, zipCode)
-    t = render_template('site/map.html', ro=x, info=addressInfo, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
+    
+    x, addressInfo, counties, towns, rows, ids = query(owner, prop, bed, income, town, county, zipCode)
+    t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
 
     response = make_response(t)
     response.set_cookie('prevOwner', owner, expires=0)
@@ -227,19 +228,19 @@ def show_filtered_listings():
     if request.args.get('town') is not None:
         town = request.args.get('town')
     else:
-        town = ""
+        town = "none"
 
     if request.args.get('county') is not None:
         county = request.args.get('county')
     else:
-        county = ""
+        county = "none"
 
     if request.args.get('zip') is not None:
         zipCode = request.args.get('zip')
     else:
         zipCode = ""
 
-    filtered_rows, filtered_ids, county, town = query2(owner, prop, bed, income, town, county, zipCode)
+    filtered_rows, filtered_ids, counties, towns = query2(owner, prop, bed, income, town, county, zipCode)
 
     html = html_for_listings(filtered_rows, filtered_ids)
     return make_response(html)
@@ -249,8 +250,8 @@ def show_filtered_listings():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/listings')
 def show_listings():
-    filtered_rows, filtered_ids, county, town = query2("", "", "", "", "", "", "")
-    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids)
+    filtered_rows, filtered_ids, counties, towns = query2("", "", "", "","none", "none", "")
+    t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, counties=counties, towns=towns)
     response = make_response(t)
     return response
 

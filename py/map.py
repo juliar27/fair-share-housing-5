@@ -2,28 +2,21 @@ from py.database import Database, get_listings
 from googlemaps import Client as GoogleMaps
 
 # ----------------------------------------------------------------------------------------------------------------------
-def querying_location(description):
+def querying_location():
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-
-    if description == "":
-        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
+    counties = []
+    towns = []
+    
+    stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
                 "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
                 "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
                 "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
                 "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
                 "listings.municode = cities.municode AND cities.county = counties.county"
-        cursor.execute(stmt)
-    else:
-        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
-                "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
-                "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
-                "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
-                "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-                "listings.municode = cities.municode AND cities.county = counties.county" + description
-        cursor.execute(stmt)
-
+    cursor.execute(stmt)
+    
     rows = []
     ids = []
 
@@ -37,10 +30,17 @@ def querying_location(description):
         row = tuple(row)
         rows.append(row[1:])
         row = cursor.fetchone()
+        
+    for i in range(len(rows)):
+        if rows[i][3] not in counties:
+            counties.append(rows[i][3])
+            
+        if rows[i][2] not in towns:
+            towns.append(rows[i][2])
 
     database.disconnect()
 
-    return rows, ids
+    return rows, ids, counties, towns
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -49,6 +49,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
     x = []
     flag = True
     addressInfo = []
+
 
     if ((zipCode is not None) and (zipCode != '')):
         mapVar = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
@@ -71,6 +72,18 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
     for i in range(len(rows)):
         flag = True
 
+        if county != "none":
+            if (rows[i][3] != county):
+                print(county)
+                print(rows[i][3])
+                flag = False
+
+        if town != "none":
+            if (rows[i][2] != town):
+                print(town)
+                print(rows[i][2])
+                flag = False
+    
         if bed is not None:
             if income is not None:
                 if ((bed == "1") & (income == "very") & (rows[i][9] == 0)) or ((bed == "1") & (income == "low") & (rows[i][12] == 0)) or ((bed == "1") & (income == "moderate") & (rows[i][15] == 0)) :
@@ -110,6 +123,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
                 flag = False
 
         if flag == True:
+#            print(rows[i][2])
             addr = str(rows[i][0])
             fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
             coords = rows[i][1].split(',')
@@ -128,23 +142,21 @@ def query(owner, prop, bed, income, town, county, zipCode):
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-    filtering = ""
-    options = "'"
 
-    if county is not None:
-        county = county.capitalize()
-        filtering += " AND counties.county like \'%" + county + "%\'"
+#    if county is not None:
+#        county = county.capitalize()
+#        filtering += " AND counties.county like \'%" + county + "%\'"
+#
+#    if town is not None:
+#        town = town.capitalize()
+#        filtering += " AND cities.municipality like \'%" + town + "%\'"
 
-    if town is not None:
-        town = town.capitalize()
-        filtering += " AND cities.municipality like \'%" + town + "%\'"
-
-    rows, ids = querying_location(filtering)
+    rows, ids, counties, towns = querying_location()
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
 
     database.disconnect()
 
-    return rows, x, addressInfo
+    return x, addressInfo, counties, towns, rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -152,19 +164,17 @@ def query2(owner, prop, bed, income, town, county, zipCode):
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-    filtering = ""
-    options = "'"
 
-    if county is not None and county != '':
-        county = county.capitalize()
-        filtering += " AND counties.county like \'%" + county + "%\'"
 
-    if town is not None and town != '':
-        town = town.capitalize()
-        filtering += " AND cities.municipality like \'%" + town + "%\'"
+#    if county is not None and county != '':
+#        county = county.capitalize()
+#        filtering += " AND counties.county like \'%" + county + "%\'"
+#
+#    if town is not None and town != '':
+#        town = town.capitalize()
+#        filtering += " AND cities.municipality like \'%" + town + "%\'"
 
-    rows, ids = querying_location(filtering)
-
+    rows, ids, counties, towns = querying_location()
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
 
     ids = []
@@ -191,7 +201,7 @@ def query2(owner, prop, bed, income, town, county, zipCode):
 
     database.disconnect()
 
-    return filtered_rows, filtered_ids,  county, town
+    return filtered_rows, filtered_ids, counties, towns
 # ----------------------------------------------------------------------------------------------------------------------
 
 

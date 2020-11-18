@@ -146,22 +146,24 @@
 
                 <div class="col-sm align-items-end">
                       <div class="form-group">
-                        <label for="#">Town</label>
-                        <div class="form-field">
-                          <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text" id="town" name="town" class="form-control" placeholder="Town">
-                        </div>
-                      </div>
+            <label for="#">County</label>
+            <div class="form-field">
+                <div class="select-wrap" id="counties_drop">
+                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
+            </div>
+                </div>
+        </div>
                 </div>
 
                 <div class="col-sm align-items-end">
                       <div class="form-group">
-                        <label for="#">County</label>
-                        <div class="form-field">
-                          <div class="icon"><span class="fa fa-search"></span></div>
-                          <input type="text"  id="county" name="county" class="form-control" placeholder="County">
-                        </div>
-                      </div>
+            <label for="#">Town</label>
+            <div class="form-field">
+                <div class="select-wrap" id="towns_drop">
+                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
+            </div>
+                </div>
+        </div>
                 </div>
 
                 <div class="col-sm align-items-end">
@@ -179,6 +181,68 @@
         </div>
       </div>
     </div>
+    
+    
+    
+        <script>
+    function init_counties() {
+ 
+  var values = {{ counties|safe }};
+ 
+  var select = document.createElement("select");
+  select.name = "county";
+  select.id = "county";
+    select.className = "form-control";
+
+//    the no-preference option
+    var option = document.createElement("option");
+    option.value = "none";
+    option.text = "No Preference";
+    select.appendChild(option);
+ 
+  for (const val of values) {
+    var option = document.createElement("option");
+    option.value = String(val);
+    option.text = String(val);
+    select.appendChild(option);
+  }
+ 
+
+  document.getElementById("counties_drop").appendChild(select);
+}
+
+function init_town() {
+ 
+  var values = {{ towns|safe }};
+ 
+  var select = document.createElement("select");
+  select.name = "town";
+  select.id = "town";
+  select.className = "form-control";
+
+//    the no-preference option
+    var option = document.createElement("option");
+    option.value = "none";
+    option.text = "No Preference";
+    select.appendChild(option);
+ 
+  for (const val of values) {
+    var option = document.createElement("option");
+    option.value = String(val);
+    option.text = String(val);
+    select.appendChild(option);
+  }
+ 
+
+  document.getElementById("towns_drop").appendChild(select);
+}
+
+window.onload = function() {
+  init_counties();
+    init_town();
+};
+
+    </script>
 
     <main>
 
