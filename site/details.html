@@ -196,15 +196,15 @@
                   {% endif %}
                   <section class="4u">
                     <meta id='adr' data-adr='{{adr}}'>
+                    <meta id='lid' data-lid='{{row["id"]}}'>
                     <i class="fa fa-heart fa-2x" onload='setColor(this)' onclick='toggler(this)' ></i>
                     <script src="static/js/jquery.min.js"></script>
                     <script>
 
                       function setColor(x) {
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-                        var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
-                        console.log(adr);
-                        console.log(favorites);
+                        var adr = $('#adr').data('adr'), id = $('#lid').data('lid'), index = favorites.indexOf(id + ";" + adr);
+
                         if (index == -1) {
                           x.style.color = 'white';
                         // item is already favorite
@@ -216,9 +216,9 @@
                       function toggler(x) {
 
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-                        var adr = $('#adr').data('adr'), index = favorites.indexOf(adr);
+                        var adr = $('#adr').data('adr'), id = $('#lid').data('lid'), index = favorites.indexOf(id + ";" + adr);
                         if (index == -1) {
-                          favorites.push(adr);
+                          favorites.push(id + ";" + adr);
                           x.style.color = 'red';
                         // item is already favorite
                         } else {

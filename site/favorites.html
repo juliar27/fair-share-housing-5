@@ -116,12 +116,12 @@
 
             <script src="static/js/jquery.min.js"></script>
                         <script>
-                            function toggler(x, adr) {
+                            function toggler(x, id, adr) {
                                 console.log(adr);
                                 var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-                                var index = favorites.indexOf(adr);
+                                var index = favorites.indexOf(id + ";" + adr);
                                 if (index == -1) {
-                                favorites.push(adr);
+                                favorites.push(id + ";" + adr);
                                 x.style.color = 'red';
                                 // item is already favorite
                                 } else {
@@ -156,7 +156,7 @@
                                             var rows = e['responseJSON']['out'][0];
                                             var ids = e['responseJSON']['out'][1];
                                             for (let i = 0; i < rows.length; i++) {
-                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
                                                 for (let j = 2; j < rows[i].length; j++) {
                                                     to_add.push("<td>" + rows[i][j] + "</td>");
                                                 }

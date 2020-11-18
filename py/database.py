@@ -392,12 +392,14 @@ def get_favorite_listings(favorites):
     database.connect()
     ids = []
     rows = []
-    for adr in favorites:
+    for idadr in favorites:
+        id = idadr.split(';')[0]
+        adr = ';'.join(idadr.split(';')[1:])
         cursor = database._connection.cursor()
         stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
           " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
           "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-          "listings.municode = cities.municode AND cities.county = counties.county AND addresses.address = '" + double_up(adr) + "'"
+          "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
         cursor.execute(stmt)
         row = cursor.fetchone()
 
@@ -525,12 +527,12 @@ def coords():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def get_details(id):
+def get_details(id, adr):
     db = Database()
     db.connect()
 
     stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
-        "addresses.listingid = " + id
+        "addresses.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
 
     cursor = db._connection.cursor()
     cursor.execute(stmt)

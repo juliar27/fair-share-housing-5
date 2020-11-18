@@ -262,12 +262,12 @@ def show_listings():
 @app.route('/details')
 def show_details():
     id = request.args.get('id')
-
+    adr = request.args.get('adr')
     if id == '' or id == None or not id.isnumeric():
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
 
-    info = get_details(id)
+    info = get_details(id, adr)
 
     if type(info) == str:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
