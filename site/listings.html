@@ -185,14 +185,14 @@
         </div>
       </div>
     </div>
-    
-    
-    
+
+
+
         <script>
     function init_counties() {
- 
+
   var values = {{ counties|safe }};
- 
+
   var select = document.getElementById("county");
 
 
@@ -201,22 +201,22 @@
     option.value = "none";
     option.text = "No Preference";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("counties_drop").appendChild(select);
 }
 
 function init_town() {
- 
+
   var values = {{ towns|safe }};
- 
+
   var select = document.getElementById("town");
 
 //    the no-preference option
@@ -224,14 +224,14 @@ function init_town() {
     option.value = "none";
     option.text = "No Preference";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("towns_drop").appendChild(select);
 }

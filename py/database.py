@@ -5,6 +5,7 @@ import py.parse
 
 # ----------------------------------------------------------------------------------------------------------------------
 def double_up(s):
+    print(s)
     return s.replace("'", "''")
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -532,7 +533,8 @@ def get_details(id, adr):
     db.connect()
 
     stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
-        "addresses.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
+        "addresses.listingid = " + id
+         # + " AND addresses.address = '" + double_up(adr) + "'"
 
     cursor = db._connection.cursor()
     cursor.execute(stmt)
