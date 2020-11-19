@@ -363,10 +363,10 @@ window.onload = function() {
                           '<p>Total units: ' + locations[i][3] +
                           '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
                           '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
-                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
-//                          '<p>For more information, click' + 
-//'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">here</a>' +
-                      '</div>');
+                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
+                          '</p><p style="text-align: center;">Click ' + 
+'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">here</a>' +
+                      ' to learn more!</p></div>');
                     infowindow.open(map, marker);
                 }
             })(marker, i));
@@ -405,7 +405,7 @@ window.onload = function() {
 	line-height: 18px;
 	font-weight: 400;
 	margin-right: 1px;
-	padding: 15px 5px 20px 15px;
+	padding: 5px 5px 5px 5px;
 	max-height: 110px;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -415,5 +415,5 @@ window.onload = function() {
 	margin: 0 5px 5px 10px;
 }
 </style>
-
+    </body>
 </html>
