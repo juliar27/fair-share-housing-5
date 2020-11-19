@@ -263,7 +263,7 @@ def show_listings():
 def show_details():
     id = request.args.get('id')
     adr = request.args.get('adr')
-    if id == '' or id == None or not id.isnumeric():
+    if id == '' or id == None or not id.isnumeric() or adr is None:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
 
