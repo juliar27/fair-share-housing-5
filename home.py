@@ -50,7 +50,7 @@ class User(UserMixin):
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=60)
+    app.permanent_session_lifetime = timedelta(minutes=1440)
     session.modified = True
 # ----------------------------------------------------------------------------------------------------------------------
 
