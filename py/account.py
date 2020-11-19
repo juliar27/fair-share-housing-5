@@ -39,10 +39,8 @@ def make_account(user):
         if cursor.fetchone() is None:
             query = "INSERT INTO users(email, password, first_name, last_name) VALUES( %s, crypt( %s, gen_salt('bf', 8)),  %s, %s );"
             cursor.execute(query, tuple([email, password, first_name, last_name]))
-            ret = True
         else:
-            ret = False
-
+            return False
 
         query = "SELECT id from users where email = %s ;;"
         cursor.execute(query, [email])
@@ -61,7 +59,7 @@ def make_account(user):
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
         auth_email(email, link)
-        return ret
+        return True
     except:
         return False
 
@@ -90,25 +88,24 @@ def check_account(user):
             cursor.execute(query, tuple([email, password, encrypted_password]))
 
             if cursor.fetchone() is None:
-                ret = False, False, False
+                return False, False, False
             else:
                 query = "SELECT verified from users where email = %s ;;"
                 cursor.execute(query, [email])
                 result = cursor.fetchone()[0]
                 if not result:
-                    ret = False, False, True
+                    return False, False, True
                 else:
                     query = "SELECT id from users where email = %s ;;"
                     cursor.execute(query, [email])
                     id = cursor.fetchone()
-
-                    ret = True, id[0], False
+                    return True, id[0], False
 
         else:
-            ret = False, False, False
+            return False, False, False
 
         database.disconnect()
-        return ret
+        return True, True, True
 
     except:
         return False, False, False
@@ -122,16 +119,16 @@ def authenticate(id):
         cursor = database._connection.cursor()
         query = "select * from users where temp_id = %s ;;"
         cursor.execute(query, [id])
-        ret = False
+        return False
 
         if cursor.fetchone() is not None:
             query = "update users set temp_id = NULL, verified = not verified where temp_id = %s ;;"
             cursor.execute(query, [id])
             database._connection.commit()
-            ret = True
+            return True
 
         database.disconnect()
-        return ret
+        return True
     except:
         return False
 # ----------------------------------------------------------------------------------------------------------------------
@@ -144,13 +141,12 @@ def valid_id(id):
         cursor = database._connection.cursor()
         query = "select * from users where temp_id = %s ;;"
         cursor.execute(query, [id])
-        ret = False
 
         if cursor.fetchone() is not None:
-            ret = True
-
-        database.disconnect()
-        return ret
+            database.disconnect()
+            return True
+        else:
+            return False
 
     except:
         return False
