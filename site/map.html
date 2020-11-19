@@ -347,32 +347,34 @@ window.onload = function() {
                 position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
                 map: map
             });
+//            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+//                return function() {
+//                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
+//                    window.open(url)
+//                }
+//            })(marker, i));
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
-                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
-                    window.open(url)
-                }
-            })(marker, i));
-            google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
-                return function() {
                     infowindow.setContent('<div id="iw-container">' +
-                        '<div class="iw-title" >' + String(addressesInfo[i][2]) + '</div>' +
-                        '<div class="iw-content">' +
-                 '<img src="/static/images/house_icon.png" height="85" width="83">' +
-                          '<div class="iw-subTitle"><strong>Details:</strong></div>' +
+                        '<div class="iw-title" >' + 
+'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">' +
+                    String(addressesInfo[i][2]) + '</div></a><div class="iw-content">' +
+                 '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
-                          '<br>Units with one bedroom: ' + parseInt(locations[i][4]) +
-                          '<br>Units with two bedrooms: ' + parseInt(locations[i][5])  +
-                          '<br>Units with three bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
+                          '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
+                          '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
+                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
+//                          '<p>For more information, click' + 
+//'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">here</a>' +
                       '</div>');
                     infowindow.open(map, marker);
                 }
             })(marker, i));
-            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
-                return function() {
-                    infowindow.close(map, marker);
-                }
-            })(marker, i));
+//            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
+//                return function() {
+//                    infowindow.close(map, marker);
+//                }
+//            })(marker, i));
         }
     </script>
 <style>
@@ -404,7 +406,7 @@ window.onload = function() {
 	font-weight: 400;
 	margin-right: 1px;
 	padding: 15px 5px 20px 15px;
-	max-height: 100px;
+	max-height: 110px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
