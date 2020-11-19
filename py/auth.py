@@ -30,6 +30,8 @@ class Server:
 
         self._server.sendmail(sender_email, receiver_email, message.as_string())
 
+        return
+
 class EmailThreads (Thread):
     def __init__(self, server, receiver_email, html, subject, link):
         Thread.__init__(self)
@@ -41,6 +43,7 @@ class EmailThreads (Thread):
 
     def run(self):
         self._server.sendEmail(self._subject, self._receiver_email, self._html, self._link)
+        return
 
 
 def auth_email(receiver_email, link):
@@ -63,6 +66,7 @@ def auth_email(receiver_email, link):
     thread.start()
     t1 = time.time()
     print(t1-t0)
+    return
 
 
 def recovery_email(receiver_email, link):
@@ -88,3 +92,4 @@ def recovery_email(receiver_email, link):
     thread.start()
     t1 = time.time()
     print(t1-t0)
+    return
