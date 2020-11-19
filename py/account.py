@@ -40,6 +40,7 @@ def make_account(user):
             query = "INSERT INTO users(email, password, first_name, last_name) VALUES( %s, crypt( %s, gen_salt('bf', 8)),  %s, %s );"
             cursor.execute(query, tuple([email, password, first_name, last_name]))
         else:
+            database.disconnect()
             return False
 
         query = "SELECT id from users where email = %s ;;"
@@ -60,6 +61,7 @@ def make_account(user):
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
         auth_email(email, link)
         return True
+
     except:
         return False
 
@@ -88,24 +90,26 @@ def check_account(user):
             cursor.execute(query, tuple([email, password, encrypted_password]))
 
             if cursor.fetchone() is None:
+                database.disconnect()
                 return False, False, False
+
             else:
                 query = "SELECT verified from users where email = %s ;;"
                 cursor.execute(query, [email])
                 result = cursor.fetchone()[0]
                 if not result:
+                    database.disconnect()
                     return False, False, True
                 else:
                     query = "SELECT id from users where email = %s ;;"
                     cursor.execute(query, [email])
                     id = cursor.fetchone()
+                    database.disconnect()
                     return True, id[0], False
 
         else:
+            database.disconnect()
             return False, False, False
-
-        database.disconnect()
-        return True, True, True
 
     except:
         return False, False, False
@@ -119,16 +123,17 @@ def authenticate(id):
         cursor = database._connection.cursor()
         query = "select * from users where temp_id = %s ;;"
         cursor.execute(query, [id])
-        return False
 
         if cursor.fetchone() is not None:
             query = "update users set temp_id = NULL, verified = not verified where temp_id = %s ;;"
             cursor.execute(query, [id])
             database._connection.commit()
+            database.disconnect()
             return True
 
         database.disconnect()
-        return True
+        return False
+
     except:
         return False
 # ----------------------------------------------------------------------------------------------------------------------
@@ -146,6 +151,7 @@ def valid_id(id):
             database.disconnect()
             return True
         else:
+            database.disconnect()
             return False
 
     except:
@@ -182,17 +188,17 @@ def recovery(dict):
         query = "SELECT id from users where email = %s ;;"
         cursor.execute(query, [email])
         id = cursor.fetchone()
-        ret = False, False
 
         if id is not None:
             id = id[0]
-
+        else:
+            database.disconnect()
+            return False, False
 
         if id is not None:
             query = "SELECT verified from users where email = %s ;;"
             cursor.execute(query, [email])
             verified = cursor.fetchone()[0]
-            ret = True, False
 
             if verified:
                 query = "SELECT temp_id from users where email = %s ;;"
@@ -211,10 +217,16 @@ def recovery(dict):
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
                 recovery_email(email, link)
-                ret = True, True
+                database.disconnect()
+                return True, True
+                
+            else:
+                database.disconnect()
+                return True, False
 
-        database.disconnect()
-        return ret
+        else:
+            database.disconnect()
+            return False, False
 
     except:
         return False, False
