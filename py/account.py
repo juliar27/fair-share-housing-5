@@ -1,6 +1,8 @@
 from py.database import Database
 from py.auth import auth_email, recovery_email, Server
+from threading import Thread
 import string
+from queue import Queue
 import random
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -22,9 +24,20 @@ def account_get(userid):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
+def start_server(q):
+    server = Server()
+    q.put(server)
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
 def make_account(user):
     try:
-        server = Server()
+        q = Queue()
+        thread = Thread(target=start_server, args=(q, ))
+        thread.start()
+        thread.join()
+
         first_name = user["inputFirstName"]
         last_name = user["inputLastName"]
         email = user["inputEmailAddress"]
@@ -60,7 +73,7 @@ def make_account(user):
         database.disconnect()
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        auth_email(email, link, server)
+        auth_email(email, link, q.get())
         return True
 
     except:
@@ -182,7 +195,11 @@ def update_password(dict):
 # ----------------------------------------------------------------------------------------------------------------------
 def recovery(dict):
     try:
-        server = Server()
+        q = Queue()
+        thread = Thread(target=start_server, args=[q])
+        thread.start()
+        thread.join()
+
         email = dict['inputEmailAddress']
         database = Database()
         database.connect()
@@ -218,7 +235,7 @@ def recovery(dict):
                 database._connection.commit()
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
-                recovery_email(email, link, server)
+                recovery_email(email, link, q.get())
                 database.disconnect()
                 return True, True
 

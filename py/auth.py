@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from jinja2 import Environment
 from threading import Thread
 
+# ----------------------------------------------------------------------------------------------------------------------
 class Server:
     def __init__(self):
         self._context = ssl.create_default_context()
@@ -30,7 +31,9 @@ class Server:
         self._server.sendmail(sender_email, receiver_email, message.as_string())
 
         return
+# ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
 class EmailThreads (Thread):
     def __init__(self, server, receiver_email, html, subject, link):
         Thread.__init__(self)
@@ -43,8 +46,8 @@ class EmailThreads (Thread):
     def run(self):
         self._server.sendEmail(self._subject, self._receiver_email, self._html, self._link)
         return
-
-
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 def auth_email(receiver_email, link, server):
     html = """\
         <html>
@@ -61,8 +64,9 @@ def auth_email(receiver_email, link, server):
     thread = EmailThreads(server, receiver_email, html, "Verify your mapFSH Account", link)
     thread.start()
     return
+# ----------------------------------------------------------------------------------------------------------------------
 
-
+# ----------------------------------------------------------------------------------------------------------------------
 def recovery_email(receiver_email, link, server):
     html = """\
         <html>
@@ -82,3 +86,4 @@ def recovery_email(receiver_email, link, server):
     thread = EmailThreads(server, receiver_email, html, "Reset your mapFSH Password", link)
     thread.start()
     return
+# ----------------------------------------------------------------------------------------------------------------------
