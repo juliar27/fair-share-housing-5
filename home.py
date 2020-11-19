@@ -495,12 +495,11 @@ def show_newpassword():
 def show_reset():
     account, verified = recovery(request.form.to_dict())
     if not account and not verified:
-        return redirect(url_for('show_account_error', errorMsg="You do not have an account associated with this email.", ref="register", ref_msg="Would you like to create an account?"))
-
+        return '/error'
     elif account and not verified:
-        return redirect('/verify')
+        return '/verify'
     else:
-        return redirect('/verifypassword')
+        return '/verifypassword'
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -508,12 +507,10 @@ def show_reset():
 @app.route('/create', methods=['POST'])
 def show_create():
     flag = make_account(request.form.to_dict())
-
     if not flag:
-        return redirect(url_for('show_account_error', errorMsg="This email is already in-use.", ref="password", ref_msg="Did you forget your password?"))
-
+        return '/error'
     else:
-        return redirect('/verify')
+        return '/verify'
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
