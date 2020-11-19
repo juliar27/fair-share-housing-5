@@ -221,7 +221,7 @@
             </div>
         </div>
 -->
-            
+
             <div class="form-group">
             <label for="#">County</label>
             <div class="form-field">
@@ -262,15 +262,15 @@
         </form>
     </div>
 </section>
-          
+
 </div>
 </body>
-    
+
     <script>
     function init_counties() {
- 
+
   var values = {{ counties|safe }};
- 
+
 var select = document.getElementById("county");
 
 //    the no-preference option
@@ -279,7 +279,7 @@ var select = document.getElementById("county");
     option.text = "No Preference";
     option.style = "background-color: #21243d";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
@@ -287,15 +287,15 @@ var select = document.getElementById("county");
     option.style = "background-color: #21243d";
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("counties_drop").appendChild(select);
 }
 
 function init_town() {
- 
+
   var values = {{ towns|safe }};
- 
+
 var select = document.getElementById("town");
 
 //    the no-preference option
@@ -304,7 +304,7 @@ var select = document.getElementById("town");
     option.text = "No Preference";
     option.style = "background-color: #21243d";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
@@ -312,7 +312,7 @@ var select = document.getElementById("town");
     option.style = "background-color: #21243d";
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("towns_drop").appendChild(select);
 }
@@ -323,8 +323,8 @@ window.onload = function() {
 };
 
     </script>
-    
-    
+
+
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ"
             type="text/javascript"></script>
@@ -356,16 +356,16 @@ window.onload = function() {
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     infowindow.setContent('<div id="iw-container">' +
-                        '<div class="iw-title" >' + 
-'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank"><u>' +
+                        '<div class="iw-title" >' +
+'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank"><u>' +
                     String(addressesInfo[i][2]) + '</u></div></a><div class="iw-content">' +
                  '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
                           '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
                           '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
                           '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
-                          '</p><p style="text-align: center;">Click ' + 
-'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">here</a>' +
+                          '</p><p style="text-align: center;">Click ' +
+'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank">here</a>' +
                       ' to learn more!</p></div>');
                     infowindow.open(map, marker);
                 }
