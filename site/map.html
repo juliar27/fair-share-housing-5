@@ -357,8 +357,8 @@ window.onload = function() {
                 return function() {
                     infowindow.setContent('<div id="iw-container">' +
                         '<div class="iw-title" >' + 
-'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank">' +
-                    String(addressesInfo[i][2]) + '</div></a><div class="iw-content">' +
+'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '&coords=' + addressesInfo[i][1] + '", target="_blank"><u>' +
+                    String(addressesInfo[i][2]) + '</u></div></a><div class="iw-content">' +
                  '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
                           '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
