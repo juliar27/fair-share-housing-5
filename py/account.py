@@ -1,5 +1,5 @@
 from py.database import Database
-from py.auth import auth_email, recovery_email
+from py.auth import auth_email, recovery_email, Server
 import string
 import random
 
@@ -24,6 +24,7 @@ def account_get(userid):
 # ----------------------------------------------------------------------------------------------------------------------
 def make_account(user):
     try:
+        server = Server()
         first_name = user["inputFirstName"]
         last_name = user["inputLastName"]
         email = user["inputEmailAddress"]
@@ -59,7 +60,7 @@ def make_account(user):
         database.disconnect()
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        auth_email(email, link)
+        auth_email(email, link, server)
         return True
 
     except:
@@ -181,6 +182,7 @@ def update_password(dict):
 # ----------------------------------------------------------------------------------------------------------------------
 def recovery(dict):
     try:
+        server = Server()
         email = dict['inputEmailAddress']
         database = Database()
         database.connect()
@@ -216,10 +218,10 @@ def recovery(dict):
                 database._connection.commit()
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
-                recovery_email(email, link)
+                recovery_email(email, link, server)
                 database.disconnect()
                 return True, True
-                
+
             else:
                 database.disconnect()
                 return True, False

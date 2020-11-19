@@ -3,7 +3,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from jinja2 import Environment
 from threading import Thread
-import time
 
 class Server:
     def __init__(self):
@@ -46,9 +45,7 @@ class EmailThreads (Thread):
         return
 
 
-def auth_email(receiver_email, link):
-    t0 = time.time()
-
+def auth_email(receiver_email, link, server):
     html = """\
         <html>
           <body>
@@ -61,17 +58,12 @@ def auth_email(receiver_email, link):
         </html>
         """
 
-    server = Server()
     thread = EmailThreads(server, receiver_email, html, "Verify your mapFSH Account", link)
     thread.start()
-    t1 = time.time()
-    print(t1-t0)
     return
 
 
-def recovery_email(receiver_email, link):
-    t0 = time.time()
-
+def recovery_email(receiver_email, link, server):
     html = """\
         <html>
           <body>
@@ -87,9 +79,6 @@ def recovery_email(receiver_email, link):
         </html>
         """
 
-    server = Server()
     thread = EmailThreads(server, receiver_email, html, "Reset your mapFSH Password", link)
     thread.start()
-    t1 = time.time()
-    print(t1-t0)
     return
