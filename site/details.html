@@ -486,7 +486,7 @@
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
                             <hr> <h2> Contact Information </h2> <hr>
                             <p>
-                              {% if row['agent'] %}
+                              {% if row['agent'] and row['agent'] != "N/A"%}
                                   Please contact this housing program at: <br>
                                   {{row['agent']}}
                               {% else: %}
