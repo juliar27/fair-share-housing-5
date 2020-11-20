@@ -18,6 +18,47 @@
     stroke-width: 5;
   }
 
+  .container_warning {
+    position: relative;
+    width: 30%;
+    display: block;
+    float: right;
+    
+  }
+
+  .warning_image {
+    display: block;
+    position: relative;
+    width: 10%;
+    height: auto;
+    /* float: right; */
+  }
+
+  .hidden_warning {
+    position: relative;
+    height: 100%;
+    width: 20%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+  }
+
+  .container_warning:hover .hidden_warning {
+    opacity: 1;
+  }
+
+  .hidden_warning_text {
+    color: white;
+    font-size: 20px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
 #information
 	{
 		padding: 1em 1em;
@@ -121,6 +162,9 @@
                     <!-- <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
                          <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p> -->
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
+
+
+
                   {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
@@ -192,9 +236,13 @@
                       {% endif %}
 
                       {{ types }}
+
+
                     </h6>
                   {% endif %}
-                  <section class="4u">
+
+
+                  <section class="4u" style="float:center;">
                     <meta id='adr' data-adr='{{adr}}'>
                     <meta id='lid' data-lid='{{row["id"]}}'>
                     <i class="fa fa-heart fa-2x" onload='setColor(this)' onclick='toggler(this)' ></i>
@@ -234,6 +282,16 @@
                   </section>
                 </div>
               </div>
+
+
+              <div class="container_warning">
+              <img src="static/images/warning.png" alt="Avatar" class="warning_image">
+              <div class="hidden_warning">
+                <div class="hidden_warning_text">Hello World</div>
+              </div>
+            </div>
+
+
           </section>
 
         <section class="details-container">
@@ -270,7 +328,7 @@
         		</div>
         </section>
 
-        <section class="container ftco-section ftco-no-pb ftco-no-pt">
+        <section class="container ftco-section ftco-no-pb ftco-no-pt" >
                   <div class="container">
                     <div class="row">
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
