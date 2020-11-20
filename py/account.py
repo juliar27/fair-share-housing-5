@@ -36,7 +36,6 @@ def make_account(user):
         q = Queue()
         thread = Thread(target=start_server, args=(q, ))
         thread.start()
-        thread.join()
 
         first_name = user["inputFirstName"]
         last_name = user["inputLastName"]
@@ -73,6 +72,7 @@ def make_account(user):
         database.disconnect()
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
+        thread.join()
         auth_email(email, link, q.get())
         return True
 
@@ -198,7 +198,6 @@ def recovery(dict):
         q = Queue()
         thread = Thread(target=start_server, args=[q])
         thread.start()
-        thread.join()
 
         email = dict['inputEmailAddress']
         database = Database()
@@ -235,6 +234,7 @@ def recovery(dict):
                 database._connection.commit()
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
+                thread.join()
                 recovery_email(email, link, q.get())
                 database.disconnect()
                 return True, True
