@@ -173,7 +173,7 @@
                   {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
-                    <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available: </strong>
+                    <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available:</strong>
                       {% set types = '' %}
 
                       {% if row['vli1'] + row['vli2'] + row['vli3'] + row['vssn'] > 0 %}
@@ -246,10 +246,11 @@
                     </h6>
 
                   {% endif %}
-                  <div class="container_warning" style="float:left !important;">
+
+                  <div class="container_warning" style="float:right !important;">
                   <img src="static/images/warning.png" alt="Avatar" class="warning_image">
-                  <div class="hidden_warning hidden_warning_text">
-                    <p>There may be innaccurate, or incomplete data in this page. If you have questions or concerns, please reach out to the agents listed in the Contact Information section, or the municipality. </p>
+                  <div class="hidden_warning hidden_warning_text"><br><br>
+                    <p style="text-align: right;">There may be inconsistent, or incomplete data in this page. If you have questions or concerns, please reach out to the agents listed in the Contact Information section, or the municipality. </p>
                   </div>
                   </div>
 
