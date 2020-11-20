@@ -121,9 +121,6 @@
                     <!-- <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
                          <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p> -->
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
-
-
-
                   {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
@@ -518,6 +515,10 @@
                     </div>
                   </div>
                 </section>
+
+                <div class="alert alert-warning" role="alert" style="text-align: center;">
+                  The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
+                </div>
 
                 {% include 'site/footer.html' %}
 
