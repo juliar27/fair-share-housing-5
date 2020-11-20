@@ -18,52 +18,6 @@
     stroke-width: 5;
   }
 
-  .container_warning {
-    position: relative;
-    width: 30%;
-    display: block;
-    float: right;
-
-  }
-
-  .warning_image {
-    display: block;
-    position: relative;
-    width: 10%;
-    height: auto;
-    /* float: right; */
-  }
-
-  .hidden_warning {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    transition: .5s ease;
-    /* background-color: #24A148; */
-  }
-
-  .container_warning:hover .hidden_warning {
-    opacity: 1;
-  }
-
-  .hidden_warning_text {
-    color: white;
-    font-size: 14px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding-bottom: 45%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-
 #information
 	{
 		padding: 1em 1em;
@@ -246,13 +200,6 @@
                     </h6>
 
                   {% endif %}
-
-                  <div class="container_warning" style="float:right !important;">
-                  <img src="static/images/warning.png" alt="Avatar" class="warning_image">
-                  <div class="hidden_warning hidden_warning_text"><br><br>
-                    <p style="text-align: right;">There may be inconsistent, or incomplete data in this page. If you have questions or concerns, please reach out to the agents listed in the Contact Information section, or the municipality. </p>
-                  </div>
-                  </div>
 
                   <section class="4u" style="float:center;">
                     <meta id='adr' data-adr='{{adr}}'>
