@@ -23,7 +23,7 @@
     width: 30%;
     display: block;
     float: right;
-    
+
   }
 
   .warning_image {
@@ -36,8 +36,8 @@
 
   .hidden_warning {
     position: relative;
-    height: 100%;
-    width: 20%;
+    height: auto;
+    width: auto;
     opacity: 0;
     transition: .5s ease;
     background-color: #008CBA;
@@ -49,10 +49,10 @@
 
   .hidden_warning_text {
     color: white;
-    font-size: 20px;
+    font-size: 12px;
     position: relative;
-    top: 50%;
-    left: 50%;
+    /* top: 50%;
+    left: 50%; */
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -239,6 +239,14 @@
 
 
                     </h6>
+
+                    <div class="container_warning" style="float:right !important;">
+                    <img src="static/images/warning.png" alt="Avatar" class="warning_image">
+                    <div class="hidden_warning">
+                      <div class="hidden_warning_text">Although we try our best to keep this to a minimum, there still may be inconsistencies in the  data. If you  have questions or concerns,  please reach out to someone listed under the Contact Information section.</div>
+                    </div>
+                  </div>
+
                   {% endif %}
 
 
@@ -282,15 +290,6 @@
                   </section>
                 </div>
               </div>
-
-
-              <div class="container_warning">
-              <img src="static/images/warning.png" alt="Avatar" class="warning_image">
-              <div class="hidden_warning">
-                <div class="hidden_warning_text">Hello World</div>
-              </div>
-            </div>
-
 
           </section>
 
