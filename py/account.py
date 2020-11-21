@@ -65,15 +65,16 @@ def make_account(user):
             id += random.choice(string.ascii_letters)
             i += 1
 
+        link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
+        thread.join()
+        auth_email(email, link, q.get())
+
         query = "update users set temp_id = %s where email = %s ;;"
 
         cursor.execute(query, tuple([id, email]))
         database._connection.commit()
         database.disconnect()
 
-        link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        thread.join()
-        auth_email(email, link, q.get())
         return True
 
     except:
@@ -222,21 +223,20 @@ def recovery(dict):
                 query = "SELECT temp_id from users where email = %s ;;"
                 cursor.execute(query, [email])
 
-                dup = cursor.fetchone()
-
                 i = 0
                 while i < 10:
                     id += random.choice(string.ascii_letters)
                     i += 1
 
-                query = "update users set temp_id = %s where email = %s ;;"
-                cursor.execute(query, tuple([id, email]))
-                database._connection.commit()
-
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
                 thread.join()
                 recovery_email(email, link, q.get())
+
+                query = "update users set temp_id = %s where email = %s ;;"
+                cursor.execute(query, tuple([id, email]))
+                database._connection.commit()
                 database.disconnect()
+
                 return True, True
 
             else:

@@ -5,20 +5,22 @@ from jinja2 import Environment
 from threading import Thread
 
 # ----------------------------------------------------------------------------------------------------------------------
+sender_email = "nobodyatmapfsh@gmail.com"
+password = "welovebob"
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
 class Server:
     def __init__(self):
         self._context = ssl.create_default_context()
         self._server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self._context)
+        self._server.login(sender_email, password)
+        self._message = MIMEMultipart("alternative")
+        self._message["From"] = sender_email
 
     def sendEmail(self, subject, receiver_email, html, link):
-        sender_email = "nobodyatmapfsh@gmail.com"
-        password = "welovebob"
-
-        self._server.login(sender_email, password)
-        message = MIMEMultipart("alternative")
-        message["Subject"] = subject
-        message["From"] = sender_email
-        message["To"] = receiver_email
+        self._message["Subject"] = subject
+        self._message["To"] = receiver_email
 
         part2 = MIMEText(
             Environment().from_string(html).render(
@@ -26,9 +28,8 @@ class Server:
             ), "html"
         )
 
-        message.attach(part2)
-
-        self._server.sendmail(sender_email, receiver_email, message.as_string())
+        self._message.attach(part2)
+        self._server.sendmail(sender_email, receiver_email, self._message.as_string())
 
         return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -47,6 +48,7 @@ class EmailThreads (Thread):
         self._server.sendEmail(self._subject, self._receiver_email, self._html, self._link)
         return
 # ----------------------------------------------------------------------------------------------------------------------
+
 # ----------------------------------------------------------------------------------------------------------------------
 def auth_email(receiver_email, link, server):
     html = """\
