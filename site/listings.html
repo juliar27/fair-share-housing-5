@@ -266,7 +266,6 @@ window.onload = function() {
                 <tbody id="automate">
                   {% for i in range(rows|length): %}
                     <tr>
-
                       <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}' target="_blank">{{rows[i][0]}}</a></td>
                       {% for j in range(2, rows[i]|length): %}
                       <td>  {{ rows[i][j] }} </td>

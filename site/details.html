@@ -118,9 +118,11 @@
             <div class="overlay"></div>
               <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate pb-0 text-center" style="height: 30%;">
-                    <!-- <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
-                         <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p> -->
+                  {% if adr|length > 31%}
+                  <h2 class="mb-3 bread" style="color: white"><i class="fas fa-home"></i>{{adr}}</h2>
+                  {% else %}
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
+                  {% endif %}
                   {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
