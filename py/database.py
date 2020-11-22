@@ -532,11 +532,11 @@ def get_details(id, adr):
     db = Database()
     db.connect()
 
-    stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
-        "addresses.listingid = " + id
+    stmt = "SELECT addresses.coordinates FROM addresses WHERE " + \
+        "addresses.listingid = %s"
 
     cursor = db._connection.cursor()
-    cursor.execute(stmt)
+    cursor.execute(stmt, (id,))
     row = cursor.fetchone()
 
     if row is None:

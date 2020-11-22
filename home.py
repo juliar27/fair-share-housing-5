@@ -273,7 +273,7 @@ def show_details():
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
 
-    coords = info[1].split(',')
+    coords = info[0].split(',')
     t = render_template('site/details.html', row=get_row(id), adr=adr, lat=coords[0], long=coords[1])
     return make_response(t)
 
