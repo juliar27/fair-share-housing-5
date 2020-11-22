@@ -267,7 +267,7 @@ def show_details():
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
 
-    info = get_details(id, adr)
+    info = get_details(id)
 
     if type(info) == str:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
