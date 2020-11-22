@@ -353,12 +353,15 @@ window.onload = function() {
 //                    window.open(url)
 //                }
 //            })(marker, i));
+
+
+
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     infowindow.setContent('<div id="iw-container">' +
-                        '<div class="iw-title" >' +
-'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank"><u>' +
-                    String(addressesInfo[i][2]) + '</u></div></a><div class="iw-content">' +
+                      '<div class="iw-title" >' +
+'<a class="hover" href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank">' +
+                    String(addressesInfo[i][2]) + '</a></div><div class="iw-content">' +
                  '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
                           '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
@@ -387,6 +390,14 @@ window.onload = function() {
 	border: 1px solid rgba(72, 181, 233, 0.6);
 	border-radius: 2px 2px 10px 10px;
 }
+
+
+a:hover, a:focus,
+button.link:hover,
+button.link:focus {
+  color: #21243d !important;
+}
+
 #iw-container {
 	margin-bottom: 10px;
 }
@@ -395,10 +406,10 @@ window.onload = function() {
 	font-size: 22px;
 	font-weight: 400;
 	padding: 10px;
-	background-color: #21243d;
+	background-color: #FFF;
 	color: white;
 	margin: 0;
-	border-radius: 2px 2px 0 0;
+	/* border-radius: 2px 2px 0 0; */
 }
 #iw-container .iw-content {
 	font-size: 13px;
