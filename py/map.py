@@ -121,7 +121,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
         if flag == True:
 #            print(rows[i][2])
             addr = str(rows[i][0])
-            fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
+            fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ"
             coords = rows[i][1].split(',')
             x.append([float(coords[0]), float(coords[1]), ids[i], int(rows[i][8]), rows[i][5], rows[i][6], rows[i][7]])
             addressInfo.append([addr, rows[i][1], fullAddr])
