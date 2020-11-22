@@ -536,7 +536,7 @@ def get_details(id, adr):
         "addresses.listingid = %s"
 
     cursor = db._connection.cursor()
-    cursor.execute(stmt, (id,))
+    cursor.execute(stmt, [id])
     row = cursor.fetchone()
 
     if row is None:
