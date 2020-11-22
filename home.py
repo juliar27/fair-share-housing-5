@@ -274,7 +274,7 @@ def show_details():
         return make_response(t)
 
     coords = info[1].split(',')
-    t = render_template('site/details.html', row=get_row(id), adr=info[0], lat=coords[0], long=coords[1])
+    t = render_template('site/details.html', row=get_row(id), adr=adr, lat=coords[0], long=coords[1])
     return make_response(t)
 
 #-----------------------------------------------------------------------------------------------------------------------
