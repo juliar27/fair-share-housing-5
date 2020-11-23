@@ -5,7 +5,6 @@ import py.parse
 
 # ----------------------------------------------------------------------------------------------------------------------
 def double_up(s):
-    print(s)
     return s.replace("'", "''")
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -173,7 +172,6 @@ class Database:
 
 # ----------------------------------------------------------------------------------------------------------------------
     def get_coords(self, changed_addresses):
-        print(changed_addresses)
         mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
         cursor = self._connection.cursor()
         stmt = "SELECT listings.listingid, cities.municipality, cities.county, addresses.address FROM listings, " + \
@@ -183,9 +181,7 @@ class Database:
         new_cursor = self._connection.cursor()
 
         while row is not None:
-            print(row[0])
             if str(row[0]) in changed_addresses:
-                print('getting')
                 coordinates = get_coordinates(row[3], row[2], mapsObj)
 
 
@@ -518,7 +514,6 @@ def coords():
     for i in range(len(rows)):
         addr = str(rows[i][0])
         fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
-        print(fullAddr)
         coords = rows[i][1].split(',')
         x.append([float(coords[0]), float(coords[1]), ids[i]])
         addressInfo.append([addr, rows[i][1], fullAddr])
@@ -550,8 +545,6 @@ def get_details(id):
 def get_coords(changed_addresses):
    database = Database()
    database.connect()
-   print("we doing")
    database.get_coords(changed_addresses)
-   print("WE DIDDDDDDDDD")
    database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
