@@ -156,7 +156,7 @@
                                             var rows = e['responseJSON']['out'][0];
                                             var ids = e['responseJSON']['out'][1];
                                             for (let i = 0; i < rows.length; i++) {
-                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + rows[i][0] + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]) + "' target='_blank'>" + rows[i][0] + "</a></td>"];
                                                 for (let j = 2; j < rows[i].length; j++) {
                                                     to_add.push("<td>" + rows[i][j] + "</td>");
                                                 }
