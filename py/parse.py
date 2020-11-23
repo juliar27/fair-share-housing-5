@@ -73,7 +73,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['UNIQUEID']].ctype == XL_CELL_NUMBER:
-                record['listingid'] = str(int(row[d['UNIQUEID']].value))
+                record['listingid'] = str(int(row[d['UNIQUEID']].value)).strip()
             elif row[d['UNIQUEID']].value.strip() == "":
                 pass
             else:
@@ -88,7 +88,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['Municode']].ctype == XL_CELL_NUMBER:
-                record['municode'] = str(row[d['Municode']].value)
+                record['municode'] = str(row[d['Municode']].value).strip()
 
             elif row[d['Municode']].value.strip() == "":
                 pass
@@ -105,7 +105,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['Municipality']].ctype == XL_CELL_TEXT:
-                record['municipality'] = row[d['Municipality']].value
+                record['municipality'] = row[d['Municipality']].value.strip()
 
             elif row[d['Municipality']].value.strip() == "":
                 pass
@@ -123,7 +123,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['County']].ctype == XL_CELL_TEXT:
-                record['county'] = row[d['County']].value
+                record['county'] = row[d['County']].value.strip()
 
             elif row[d['County']].value.strip() == "":
                 pass
@@ -140,7 +140,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['Region']].ctype == XL_CELL_NUMBER:
-                record['region'] = str(row[d['Region']].value)
+                record['region'] = str(row[d['Region']].value).strip()
 
             elif row[d['Region']].value.strip() == "":
                 pass
@@ -158,7 +158,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SiteProgramName']].ctype == XL_CELL_TEXT:
-                record['name'] = row[d['SiteProgramName']].value
+                record['name'] = row[d['SiteProgramName']].value.strip()
 
             elif row[d['SiteProgramName']].value.strip() == "":
                 pass
@@ -175,7 +175,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ProjectDeveloper']].ctype == XL_CELL_TEXT:
-                record['developer'] = row[d['ProjectDeveloper']].value
+                record['developer'] = row[d['ProjectDeveloper']].value.strip()
 
             elif row[d['ProjectDeveloper']].value.strip() == "":
                 pass
@@ -193,7 +193,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ComplianceMechanism']].ctype == XL_CELL_TEXT:
-                record['compliance'] = row[d['ComplianceMechanism']].value
+                record['compliance'] = row[d['ComplianceMechanism']].value.strip()
 
             elif row[d['ComplianceMechanism']].value.strip() == "":
                 pass
@@ -212,7 +212,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
-                record['agent'] = row[d['AdminAgent']].value
+                record['agent'] = row[d['AdminAgent']].value.strip()
 
             elif row[d['AdminAgent']].value.strip() == "":
                 pass
@@ -231,7 +231,7 @@ def get_listings(sheet, database):
             if row[d['Address']].ctype == XL_CELL_TEXT:
                 if row[d['Address']].value not in \
                         ("TBD", "n/a", "", "N/A", "Site to be determined", "Various", "Varies- See Suppl Tab"):
-                    record['address'] = parse_address(row[d['Address']].value)
+                    record['address'] = parse_address(row[d['Address']].value.strip())
                     record['addresses'] = row[d['Address']].value
 
                 else:
@@ -258,7 +258,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['Status']].ctype == XL_CELL_TEXT:
-                record['status'] = row[d['Status']].value
+                record['status'] = row[d['Status']].value.strip()
 
             elif row[d['Status']].value.strip() == "":
                 pass
@@ -277,7 +277,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['OverallTotalUnits']].ctype == XL_CELL_NUMBER:
-                record['total'] = str(row[d['OverallTotalUnits']].value)
+                record['total'] = str(row[d['OverallTotalUnits']].value).strip()
 
             elif row[d['OverallTotalUnits']].value.strip() == "":
                 pass
@@ -296,7 +296,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TotalFamily']].ctype == XL_CELL_NUMBER:
-                record['family'] = str(row[d['TotalFamily']].value)
+                record['family'] = str(row[d['TotalFamily']].value).strip()
 
             elif row[d['TotalFamily']].value.strip() == "":
                 pass
@@ -316,7 +316,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['FamilyForSale']].ctype == XL_CELL_NUMBER:
-                record['famsale'] = str(row[d['FamilyForSale']].value)
+                record['famsale'] = str(row[d['FamilyForSale']].value).strip()
 
             elif row[d['FamilyForSale']].value.strip() == "":
                 pass
@@ -334,7 +334,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['FamilyRental']].ctype == XL_CELL_NUMBER:
-                record['famrent'] = str(row[d['FamilyRental']].value)
+                record['famrent'] = str(row[d['FamilyRental']].value).strip()
 
             elif row[d['FamilyRental']].value.strip() == "":
                 pass
@@ -352,7 +352,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TotalSenior']].ctype == XL_CELL_NUMBER:
-                record["sr"] = str(row[d['TotalSenior']].value)
+                record["sr"] = str(row[d['TotalSenior']].value).strip()
 
             elif row[d['TotalSenior']].value.strip() == "":
                 pass
@@ -371,7 +371,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SeniorForSale']].ctype == XL_CELL_NUMBER:
-                record["srsale"] = str(row[d['SeniorForSale']].value)
+                record["srsale"] = str(row[d['SeniorForSale']].value).strip()
 
             elif row[d['SeniorForSale']].value.strip() == "":
                 pass
@@ -389,7 +389,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SeniorRental']].ctype == XL_CELL_NUMBER:
-                record["srrent"] = str(row[d['SeniorRental']].value)
+                record["srrent"] = str(row[d['SeniorRental']].value).strip()
 
             elif row[d['SeniorRental']].value.strip() == "":
                 pass
@@ -407,7 +407,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNTotal']].ctype == XL_CELL_NUMBER:
-                record["ssn"] = str(row[d['SSNTotal']].value)
+                record["ssn"] = str(row[d['SSNTotal']].value).strip()
 
             elif row[d['SSNTotal']].value.strip() == "":
                 pass
@@ -425,7 +425,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNForSale']].ctype == XL_CELL_NUMBER:
-                record["ssnsale"] = str(row[d['SSNForSale']].value)
+                record["ssnsale"] = str(row[d['SSNForSale']].value).strip()
 
             elif row[d['SSNForSale']].value.strip() == "":
                 pass
@@ -443,7 +443,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNRental']].ctype == XL_CELL_NUMBER:
-                record["ssnrent"] = str(row[d['SSNRental']].value)
+                record["ssnrent"] = str(row[d['SSNRental']].value).strip()
 
             elif row[d['SSNRental']].value.strip() == "":
                 pass
@@ -461,7 +461,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['OneBRTotal']].ctype == XL_CELL_NUMBER:
-                record["br1"] = str(row[d['OneBRTotal']].value)
+                record["br1"] = str(row[d['OneBRTotal']].value).strip()
 
             elif row[d['OneBRTotal']].value.strip() == "":
                 pass
@@ -479,7 +479,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['OneBRVLI']].ctype == XL_CELL_NUMBER:
-                record["v1"] = str(row[d['OneBRVLI']].value)
+                record["v1"] = str(row[d['OneBRVLI']].value).strip()
 
             elif row[d['OneBRVLI']].value.strip() == "":
                 pass
@@ -497,7 +497,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['OneBRLow']].ctype == XL_CELL_NUMBER:
-                record["l1"] = str(row[d['OneBRLow']].value)
+                record["l1"] = str(row[d['OneBRLow']].value).strip()
 
             elif row[d['OneBRLow']].value.strip() == "":
                 pass
@@ -516,7 +516,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['OneBRMod']].ctype == XL_CELL_NUMBER:
-                record["m1"] = str(row[d['OneBRMod']].value)
+                record["m1"] = str(row[d['OneBRMod']].value).strip()
 
             elif row[d['OneBRMod']].value.strip() == "":
                 pass
@@ -534,7 +534,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TwoBRTotal']].ctype == XL_CELL_NUMBER:
-                record["br2"] = str(row[d['TwoBRTotal']].value)
+                record["br2"] = str(row[d['TwoBRTotal']].value).strip()
 
             elif row[d['TwoBRTotal']].value.strip() == "":
                 pass
@@ -552,7 +552,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TwoBRVLI']].ctype == XL_CELL_NUMBER:
-                record["v2"] = str(row[d['TwoBRVLI']].value)
+                record["v2"] = str(row[d['TwoBRVLI']].value).strip()
 
             elif row[d['TwoBRVLI']].value.strip() == "":
                 pass
@@ -570,7 +570,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TwoBRLow']].ctype == XL_CELL_NUMBER:
-                record["l2"] = str(row[d['TwoBRLow']].value)
+                record["l2"] = str(row[d['TwoBRLow']].value).strip()
 
             elif row[d['TwoBRLow']].value.strip() == "":
                 pass
@@ -588,7 +588,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['TwoBRMod']].ctype == XL_CELL_NUMBER:
-                record["m2"] = str(row[d['TwoBRMod']].value)
+                record["m2"] = str(row[d['TwoBRMod']].value).strip()
 
             elif row[d['TwoBRMod']].value.strip() == "":
                 pass
@@ -607,7 +607,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ThreeBRTotal']].ctype == XL_CELL_NUMBER:
-                record["br3"] = str(row[d['ThreeBRTotal']].value)
+                record["br3"] = str(row[d['ThreeBRTotal']].value).strip()
 
             elif row[d['ThreeBRTotal']].value.strip() == "":
                 pass
@@ -625,7 +625,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ThreeBRVLI']].ctype == XL_CELL_NUMBER:
-                record["v3"] = str(row[d['ThreeBRVLI']].value)
+                record["v3"] = str(row[d['ThreeBRVLI']].value).strip()
 
             elif row[d['ThreeBRVLI']].value.strip() == "":
                 pass
@@ -643,7 +643,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ThreeBRLow']].ctype == XL_CELL_NUMBER:
-                record["l3"] = str(row[d['ThreeBRLow']].value)
+                record["l3"] = str(row[d['ThreeBRLow']].value).strip()
 
             elif row[d['ThreeBRLow']].value.strip() == "":
                 pass
@@ -662,7 +662,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['ThreeBRMod']].ctype == XL_CELL_NUMBER:
-                record["m3"] = str(row[d['ThreeBRMod']].value)
+                record["m3"] = str(row[d['ThreeBRMod']].value).strip()
 
             elif row[d['ThreeBRMod']].value.strip() == "":
                 pass
@@ -680,7 +680,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNBRVLI']].ctype == XL_CELL_NUMBER:
-                record["vssn"] = str(row[d['SSNBRVLI']].value)
+                record["vssn"] = str(row[d['SSNBRVLI']].value).strip()
 
             elif row[d['SSNBRVLI']].value.strip() == "":
                 pass
@@ -698,7 +698,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNBRLow']].ctype == XL_CELL_NUMBER:
-                record["lssn"] = str(row[d['SSNBRLow']].value)
+                record["lssn"] = str(row[d['SSNBRLow']].value).strip()
 
             elif row[d['SSNBRLow']].value.strip() == "":
                 pass
@@ -716,7 +716,7 @@ def get_listings(sheet, database):
 
         try:
             if row[d['SSNBRMod']].ctype == XL_CELL_NUMBER:
-                record["mssn"] = str(row[d['SSNBRMod']].value)
+                record["mssn"] = str(row[d['SSNBRMod']].value).strip()
 
             elif row[d['SSNBRMod']].value.strip() == "":
                 pass

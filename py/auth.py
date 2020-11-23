@@ -76,8 +76,7 @@ def recovery_email(receiver_email, link, server):
           <body>
             <p>
                Someone (hopefully you) has requested a password reset. To change your mapFSH password, please use this link: {{link}}
-               <br>
-               <br>
+               <br><br>
                If you don't wish to reset your password, disregard this email and no action will be taken.
                <br><br>
                mapFSH
@@ -85,7 +84,6 @@ def recovery_email(receiver_email, link, server):
           </body>
         </html>
         """
-
     thread = EmailThreads(server, receiver_email, html, "Reset your mapFSH Password", link)
     thread.start()
     # thread.join()
