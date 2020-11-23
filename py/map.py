@@ -1,5 +1,6 @@
 from py.database import Database, get_listings
 from googlemaps import Client as GoogleMaps
+from urllib.parse import quote_plus
 
 # ----------------------------------------------------------------------------------------------------------------------
 def querying_location():
@@ -220,7 +221,7 @@ def html_for_listings(filtered_rows, filtered_ids):
 
     html = ''
     for i in range(len(filtered_rows)):
-        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '&adr=' + str(filtered_rows[i][0]) + '\'' + 'target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '&adr=' + str(quote_plus(filtered_rows[i][0])) + '\'' + 'target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
         for j in range(2, len(filtered_rows[i])):
             html += '<td>' + str(filtered_rows[i][j]) + '</td>'
         html += '</tr>'

@@ -360,7 +360,7 @@ window.onload = function() {
                 return function() {
                     infowindow.setContent('<div id="iw-container">' +
                       '<div class="iw-title" >' +
-'<a class="hover" href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank">' +
+'<a class="hover" href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">' +
                     String(addressesInfo[i][2]) + '</a></div><div class="iw-content">' +
                  '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
@@ -368,7 +368,7 @@ window.onload = function() {
                           '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
                           '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
                           '</p><p style="text-align: center;">Click ' +
-'<a href="details?id=' + locations[i][2] + '&adr=' + addressesInfo[i][0] + '", target="_blank">here</a>' +
+'<a href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">here</a>' +
                       ' to learn more!</p></div>');
                     infowindow.open(map, marker);
                 }
