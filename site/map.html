@@ -270,6 +270,7 @@
     function init_counties() {
 
   var values = {{ counties|safe }};
+  values.sort()
 
 var select = document.getElementById("county");
 
@@ -295,6 +296,7 @@ var select = document.getElementById("county");
 function init_town() {
 
   var values = {{ towns|safe }};
+  values.sort()
 
 var select = document.getElementById("town");
 
