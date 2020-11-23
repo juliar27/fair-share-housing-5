@@ -4,6 +4,7 @@ from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
+from py.auth import Server,  auth_email
 from py.map import filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
@@ -19,7 +20,7 @@ app.config['SECRET_KEY'] = 'ausdhfaiuhvizizuhfsi'
 q = Queue(connection=conn)
 login = LoginManager(app)
 login.login_view = "\login"
-
+server = Server()
 
 # ----------------------------------------------------------------------------------------------------------------------
 class User(UserMixin):
@@ -264,12 +265,6 @@ def show_details():
     id = request.args.get('id')
     adr = request.args.get('adr')
 
-    dict = request.args
-
-    for i in dict:
-        if i != 'id' and i != 'adr':
-            adr += i
-
     if id == '' or id == None or not id.isnumeric() or adr is None:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
@@ -500,7 +495,7 @@ def show_newpassword():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/reset', methods=['POST'])
 def show_reset():
-    account, verified = recovery(request.form.to_dict())
+    account, verified = recovery(request.form.to_dict(), server)
     if not account and not verified:
         return '/error'
     elif account and not verified:
@@ -513,7 +508,7 @@ def show_reset():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/create', methods=['POST'])
 def show_create():
-    flag = make_account(request.form.to_dict())
+    flag = make_account(request.form.to_dict(), server)
     if not flag:
         return '/error'
     else:

@@ -1,5 +1,5 @@
 from py.database import Database
-from py.auth import auth_email, recovery_email, Server
+from py.auth import auth_email, recovery_email
 from threading import Thread
 import string
 from queue import Queue
@@ -24,19 +24,8 @@ def account_get(userid):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def start_server(q):
-    server = Server()
-    q.put(server)
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------------------------------------
-def make_account(user):
+def make_account(user, server):
     try:
-        q = Queue()
-        thread = Thread(target=start_server, args=(q, ))
-        thread.start()
-
         first_name = user["inputFirstName"]
         last_name = user["inputLastName"]
         email = user["inputEmailAddress"]
@@ -66,8 +55,7 @@ def make_account(user):
             i += 1
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        thread.join()
-        auth_email(email, link, q.get())
+        auth_email(email, link, server)
 
         query = "update users set temp_id = %s where email = %s ;;"
 
@@ -194,12 +182,8 @@ def update_password(dict):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def recovery(dict):
+def recovery(dict, server):
     try:
-        q = Queue()
-        thread = Thread(target=start_server, args=[q])
-        thread.start()
-
         email = dict['inputEmailAddress']
         database = Database()
         database.connect()
@@ -229,8 +213,7 @@ def recovery(dict):
                     i += 1
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
-                thread.join()
-                recovery_email(email, link, q.get())
+                recovery_email(email, link,  server)
 
                 query = "update users set temp_id = %s where email = %s ;;"
                 cursor.execute(query, tuple([id, email]))
