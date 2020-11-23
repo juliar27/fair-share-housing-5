@@ -370,7 +370,7 @@ def show_uploaded_get():
 def show_uploaded_post():
     if current_user.is_authenticated:
         flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-        # q.enqueue(get_coords, changed_addresses)
+        q.enqueue(get_coords, changed_addresses)
 
         if not flag:
             return possible_redirect

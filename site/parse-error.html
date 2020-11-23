@@ -14,7 +14,7 @@
 
                           {% if empty_excel !=  []: %}
                           {% for a, y in empty_excel %}
-                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column expected <span style="color: #24A146;">{{ y }}</span>.  <br>
+                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column must be populated with <span style="color: #24A146;">{{ y }}</span>.  <br>
                           {% endfor %}
                           <br>
                           {% endif %}
@@ -22,7 +22,7 @@
 
                           {%  if empty_excel == []: %}
                           {% for a, y in missing_columns %}
-                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column expected <span style="color: #24A146;">{{ y }}</span>.   <br>
+                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column must be populated with <span style="color: #24A146;">{{ y }}</span>.   <br>
                           {% endfor %}
                           <br>
                           {%  endif %}
