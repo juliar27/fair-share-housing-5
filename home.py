@@ -264,6 +264,12 @@ def show_details():
     id = request.args.get('id')
     adr = request.args.get('adr')
 
+    dict = request.args
+
+    for i in dict:
+        if i != 'id' and i != 'adr':
+            adr += i
+
     if id == '' or id == None or not id.isnumeric() or adr is None:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
@@ -330,17 +336,15 @@ def show_upload():
 @app.route('/parse-error')
 def show_parse_error():
     if current_user.is_authenticated:
-        insert = request.args.getlist('insert')
-        col = request.args.getlist('col')
-        rand = request.args.getlist('rand')
-        exp = request.args.getlist('exp')
+        missing_columns = request.args.getlist('missing_columns')
+        missing_columns_type = request.args.getlist('missing_columns_type')
+        wrongtype = request.args.getlist('wrongtype')
+        wrongtype_expected = request.args.getlist('wrongtype_expected')
 
-        if exp != [] and col != [] and rand == []:
-            t = render_template('site/parse-error.html', insert=[], col=[], rand=zip(col, exp), empty=True, flag=False)
-        elif exp != []:
-            t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
+        if missing_columns != [] and wrongtype == []:
+            t = render_template('site/parse-error.html', empty_excel=zip(missing_columns,missing_columns_type), empty=True)
         else:
-            t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, flag=False)
+            t = render_template('site/parse-error.html', empty_excel=[], missing_columns=zip(missing_columns,missing_columns_type), wrongtype=zip(wrongtype, wrongtype_expected))
 
         return make_response(t)
     else:
@@ -366,7 +370,7 @@ def show_uploaded_get():
 def show_uploaded_post():
     if current_user.is_authenticated:
         flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-        q.enqueue(get_coords, changed_addresses)
+        # q.enqueue(get_coords, changed_addresses)
 
         if not flag:
             return possible_redirect

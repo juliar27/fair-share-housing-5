@@ -21,16 +21,16 @@ XL_CELL_DATE = 3
 def get_listings(sheet, database):
     d = {}
 
-    expected = {'UNIQUEID': 'Number',  'Municode': 'Number', 'Municipality': 'Text',
-    'County': 'Text', 'Region': 'Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
+    expected = {'UNIQUEID': 'a Number',  'Municode': 'a Number', 'Municipality': 'Text',
+    'County': 'Text', 'Region': 'a Number', 'SiteProgramName': 'Text', 'ProjectDeveloper': 'Text',
     'ComplianceMechanism': 'Text', 'AdminAgent': 'Text', 'Address': 'Text', 'Status': 'Text',
-    'OverallTotalUnits': 'Number', 'TotalFamily': 'Number', 'FamilyForSale': 'Number',
-    'FamilyRental': 'Number', 'TotalSenior': 'Number', 'SeniorForSale': 'Number', 'SeniorRental': 'Number',
-    'SSNTotal':  'Number', 'SSNForSale': 'Number', 'SSNRental': 'Number', 'OneBRTotal': 'Number',
-    'OneBRVLI':  'Number', 'OneBRLow': 'Number', 'OneBRMod': 'Number', 'TwoBRTotal': 'Number',
-    'TwoBRVLI': 'Number', 'TwoBRLow': 'Number',  'TwoBRMod': 'Number', 'ThreeBRTotal': 'Number',
-    'ThreeBRVLI': 'Number', 'ThreeBRLow':  'Number',  'ThreeBRMod': 'Number',
-     'SSNBRVLI': 'Number', 'SSNBRLow':  'Number', 'SSNBRMod':  'Number'}
+    'OverallTotalUnits': 'a Number', 'TotalFamily': 'a Number', 'FamilyForSale': 'a Number',
+    'FamilyRental': 'a Number', 'TotalSenior': 'a Number', 'SeniorForSale': 'a Number', 'SeniorRental': 'a Number',
+    'SSNTotal':  'a Number', 'SSNForSale': 'a Number', 'SSNRental': 'a Number', 'OneBRTotal': 'a Number',
+    'OneBRVLI':  'a Number', 'OneBRLow': 'a Number', 'OneBRMod': 'a Number', 'TwoBRTotal': 'a Number',
+    'TwoBRVLI': 'a Number', 'TwoBRLow': 'a Number',  'TwoBRMod': 'a Number', 'ThreeBRTotal': 'a Number',
+    'ThreeBRVLI': 'a Number', 'ThreeBRLow':  'a Number',  'ThreeBRMod': 'a Number',
+     'SSNBRVLI': 'a Number', 'SSNBRLow':  'a Number', 'SSNBRMod':  'a Number'}
 
 
     if sheet.nrows > 0:
@@ -45,13 +45,12 @@ def get_listings(sheet, database):
         'TwoBRMod', 'ThreeBRTotal', 'ThreeBRVLI', 'ThreeBRLow', 'ThreeBRMod',
         'SSNBRVLI', 'SSNBRLow', 'SSNBRMod']
 
-        x  = []
+        missing_columns_type = []
 
         for i  in missing_columns:
-            x.append(expected[i])
+            missing_columns_type.append(expected[i])
 
-        return missing_columns, [], x, []
-
+        return True, missing_columns, missing_columns_type, [], [], []
 
     for i in range(len(row)):
         d[row[i].value] = i
@@ -737,16 +736,20 @@ def get_listings(sheet, database):
 
         listings[row_number] = record
 
-    x = []
-    y = []
+    missing_columns_type = []
+    for i in missing_columns:
+        missing_columns_type.append(expected[i])
+
+    wrongtype = []
+    wrongtype_expected = []
 
     for i in rand:
         num = " "
         num += rand[i]
-        x.append(i + ": " + num)
-        y.append(expected[i])
+        wrongtype.append(i + ": " + num)
+        wrongtype_expected.append(expected[i])
 
-    return missing_columns, x, y, listings
+    return False, missing_columns, missing_columns_type, wrongtype, wrongtype_expected, listings
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -755,7 +758,6 @@ def get_listings(sheet, database):
 def insert(database, records):
     mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
 
-    errors_for_insert = []
     changed_addresses = []
     for listings in records:
         try:
@@ -764,9 +766,8 @@ def insert(database, records):
                 changed_addresses.append(records[listings]['listingid'])
         except Exception as e:
             print(str(e))
-            errors_for_insert.append(listings)
 
-    return errors_for_insert, records, changed_addresses
+    return records, changed_addresses
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -780,20 +781,19 @@ def parse_file(filename):
     database = py.database.Database()
     database.connect()
 
-    col, rand, expect, listings = get_listings(sheet, database)
+    empty_flag, missing_columns, missing_columns_type, wrongtype, wrongtype_expected, listings = get_listings(sheet, database)
 
-    if col == [] and rand == []:
-        errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
+    if empty_flag:
+        return False, url_for('show_parse_error', missing_columns=missing_columns, missing_columns_type=missing_columns_type, wrongtype=[],  wrongtype_expected=[]), False
+
+    if missing_columns == [] and wrongtype == []:
+         records, changed_addresses = insert(database, listings)
     else:
         database.disconnect()
-        return False, url_for('show_parse_error', col=col, rand=rand, insert=[], exp=expect), False
+        return False, url_for('show_parse_error', missing_columns=missing_columns, missing_columns_type=missing_columns_type, wrongtype=wrongtype,  wrongtype_expected=wrongtype_expected), False
 
     database.disconnect()
-    if errors_for_insert == []:
-        return True, possible_redirect, changed_addresses
-    else:
-        errors_for_insert.sort()
-        return False, url_for('show_parse_error', col=[], rand=[], exp=[], insert=errors_for_insert), False
+    return True, records, changed_addresses
 # ----------------------------------------------------------------------------------------------------------------------
 
 
