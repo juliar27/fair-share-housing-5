@@ -781,10 +781,9 @@ def parse_file(filename):
     database.connect()
 
     col, rand, expect, listings = get_listings(sheet, database)
-    print(col, rand, expect)
+
     if col == [] and rand == []:
         errors_for_insert, possible_redirect, changed_addresses = insert(database, listings)
-
     else:
         database.disconnect()
         return False, url_for('show_parse_error', col=col, rand=rand, insert=[], exp=expect), False

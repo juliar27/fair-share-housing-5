@@ -341,7 +341,9 @@ def show_parse_error():
         rand = request.args.getlist('rand')
         exp = request.args.getlist('exp')
 
-        if exp != []:
+        if exp != [] and col != [] and rand == []:
+            t = render_template('site/parse-error.html', insert=[], col=[], rand=zip(col, exp), empty=True, flag=False)
+        elif exp != []:
             t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
         else:
             t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, flag=False)
