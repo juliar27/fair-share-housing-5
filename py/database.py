@@ -528,15 +528,15 @@ def coords():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def get_details(id):
+def get_details(id, adr):
     db = Database()
     db.connect()
 
-    stmt = "SELECT addresses.coordinates FROM addresses WHERE " + \
-        "addresses.listingid = %s"
+    stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
+        "addresses.listingid = %s AND addresses.address = %s"
 
     cursor = db._connection.cursor()
-    cursor.execute(stmt, [id])
+    cursor.execute(stmt, (id, adr))
     row = cursor.fetchone()
 
     if row is None:
