@@ -15,12 +15,12 @@ class Server:
         self._context = ssl.create_default_context()
         self._server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self._context)
         self._server.login(sender_email, password)
-        self._message = MIMEMultipart("alternative")
-        self._message["From"] = sender_email
 
     def sendEmail(self, subject, receiver_email, html, link):
-        self._message["Subject"] = subject
-        self._message["To"] = receiver_email
+        message = MIMEMultipart("alternative")
+        message["Subject"] = subject
+        message["To"] = receiver_email
+        message["From"] = sender_email
 
         part2 = MIMEText(
             Environment().from_string(html).render(
@@ -28,10 +28,8 @@ class Server:
             ), "html"
         )
 
-        self._message.attach(part2)
-        self._server.sendmail(sender_email, receiver_email, self._message.as_string())
-
-        return
+        message.attach(part2)
+        self._server.sendmail(sender_email, receiver_email, message.as_string())
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -62,7 +60,7 @@ def auth_email(receiver_email, link, server):
           </body>
         </html>
         """
-
+    print("auth_email", receiver_email, link)
     thread = EmailThreads(server, receiver_email, html, "Verify your mapFSH Account", link)
     thread.start()
     # thread.join()
