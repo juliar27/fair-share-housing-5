@@ -60,7 +60,7 @@ def auth_email(receiver_email, link, server):
           </body>
         </html>
         """
-    print("auth_email", receiver_email, link)
+
     thread = EmailThreads(server, receiver_email, html, "Verify your mapFSH Account", link)
     thread.start()
     # thread.join()
