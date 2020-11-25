@@ -19,7 +19,7 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <table class="table table-bordered" id="dataTaable"  width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Listing ID</th>
@@ -86,5 +86,26 @@
 
     </body>
 
+<!-- 
+    <script src="static/js/jquery.min.js"></script> -->
+<script>
+    $(document).ready(function () {
+        var t = $('#dataTaable').DataTable({
+                                    "scrollY": "50vh",
+                                    "paging": false,
+                                    "bInfo": false,
+                                    "searching": true,
+                                    "sScrollX":"100%",
+                                    "scrollCollapse": true,
+                                    "columnDefs": [
+                                        {"className": "dt-center", "targets": "_all"}
+                                    ]
+
+                                });
+        console.log('hi');
+        t.draw();
+    });
+
+</script>
 
 </html>
