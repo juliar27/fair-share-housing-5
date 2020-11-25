@@ -1,5 +1,6 @@
 from py.database import Database, get_listings
 from googlemaps import Client as GoogleMaps
+from urllib.parse import quote_plus
 
 # ----------------------------------------------------------------------------------------------------------------------
 def querying_location():
@@ -8,7 +9,7 @@ def querying_location():
     cursor = database._connection.cursor()
     counties = []
     towns = []
-    
+
     stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
                 "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
                 "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
@@ -16,7 +17,7 @@ def querying_location():
                 "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
                 "listings.municode = cities.municode AND cities.county = counties.county"
     cursor.execute(stmt)
-    
+
     rows = []
     ids = []
 
@@ -30,11 +31,11 @@ def querying_location():
         row = tuple(row)
         rows.append(row[1:])
         row = cursor.fetchone()
-        
+
     for i in range(len(rows)):
         if rows[i][3] not in counties:
             counties.append(rows[i][3])
-            
+
         if rows[i][2] not in towns:
             towns.append(rows[i][2])
 
@@ -79,7 +80,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
         if town != "none":
             if (rows[i][2] != town):
                 flag = False
-    
+
         if bed is not None:
             if income is not None:
                 if ((bed == "1") & (income == "very") & (rows[i][9] == 0)) or ((bed == "1") & (income == "low") & (rows[i][12] == 0)) or ((bed == "1") & (income == "moderate") & (rows[i][15] == 0)) :
@@ -121,7 +122,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
         if flag == True:
 #            print(rows[i][2])
             addr = str(rows[i][0])
-            fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
+            fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ"
             coords = rows[i][1].split(',')
             x.append([float(coords[0]), float(coords[1]), ids[i], int(rows[i][8]), rows[i][5], rows[i][6], rows[i][7]])
             addressInfo.append([addr, rows[i][1], fullAddr])
@@ -220,7 +221,7 @@ def html_for_listings(filtered_rows, filtered_ids):
 
     html = ''
     for i in range(len(filtered_rows)):
-        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '\' target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '&adr=' + str(quote_plus(filtered_rows[i][0])) + '\'' + 'target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
         for j in range(2, len(filtered_rows[i])):
             html += '<td>' + str(filtered_rows[i][j]) + '</td>'
         html += '</tr>'

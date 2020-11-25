@@ -12,20 +12,27 @@
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
 
-                        {% if insert: %}
-                                Error inserting <span style="color: #24A146;">{{ insert|join("; ") }}</span>. Please contact the system adminstrator.<br><br>
-                        {% endif %}
+                          {% if empty_excel !=  []: %}
+                          {% for a, y in empty_excel %}
+                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column must be populated with <span style="color: #24A146;">{{ y }}</span>.  <br>
+                          {% endfor %}
+                          <br>
+                          {% endif %}
 
-                        {% if col: %}
-                                Your database needs to include the following column(s): <span style="color: #24A146;">{{ col|join("; ") }}</span>.<br><br>
-                        {% endif %}
 
-                        {% if flag: %}
-                            {% for a, y in rand %}
-                             Incorrect Formatting at <span style="color: #24A146;">{{ a }}</span>. These cells expected a <span style="color: #24A146;">{{ y }}</span>.   <br>
-                            {% endfor %}
-                        {% endif %}
+                          {%  if empty_excel == []: %}
+                          {% for a, y in missing_columns %}
+                           Missing Column <span style="color: #24A146;">{{ a }}</span>. This column must be populated with <span style="color: #24A146;">{{ y }}</span>.   <br>
+                          {% endfor %}
+                          <br>
+                          {%  endif %}
 
+                          {%  if empty_excel == []: %}
+                          {% for a, y in wrongtype %}
+                          Incorrect Formatting at <span style="color: #24A146;">{{ a }}</span>. These cells expected <span style="color: #24A146;">{{ y }}</span>.   <br>
+                          {% endfor %}
+                          <br>
+                          {%  endif %}
 
 
                     </div>

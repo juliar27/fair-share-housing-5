@@ -1,6 +1,8 @@
 from py.database import Database
 from py.auth import auth_email, recovery_email
+from threading import Thread
 import string
+from queue import Queue
 import random
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -22,7 +24,7 @@ def account_get(userid):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def make_account(user):
+def make_account(user, server):
     try:
         first_name = user["inputFirstName"]
         last_name = user["inputLastName"]
@@ -39,10 +41,9 @@ def make_account(user):
         if cursor.fetchone() is None:
             query = "INSERT INTO users(email, password, first_name, last_name) VALUES( %s, crypt( %s, gen_salt('bf', 8)),  %s, %s );"
             cursor.execute(query, tuple([email, password, first_name, last_name]))
-            ret = True
         else:
-            ret = False
-
+            database.disconnect()
+            return False
 
         query = "SELECT id from users where email = %s ;;"
         cursor.execute(query, [email])
@@ -53,15 +54,17 @@ def make_account(user):
             id += random.choice(string.ascii_letters)
             i += 1
 
+        link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
+        auth_email(email, link, server)
+
         query = "update users set temp_id = %s where email = %s ;;"
 
         cursor.execute(query, tuple([id, email]))
         database._connection.commit()
         database.disconnect()
 
-        link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        auth_email(email, link)
-        return ret
+        return True
+
     except:
         return False
 
@@ -90,25 +93,26 @@ def check_account(user):
             cursor.execute(query, tuple([email, password, encrypted_password]))
 
             if cursor.fetchone() is None:
-                ret = False, False, False
+                database.disconnect()
+                return False, False, False
+
             else:
                 query = "SELECT verified from users where email = %s ;;"
                 cursor.execute(query, [email])
                 result = cursor.fetchone()[0]
                 if not result:
-                    ret = False, False, True
+                    database.disconnect()
+                    return False, False, True
                 else:
                     query = "SELECT id from users where email = %s ;;"
                     cursor.execute(query, [email])
                     id = cursor.fetchone()
-
-                    ret = True, id[0], False
+                    database.disconnect()
+                    return True, id[0], False
 
         else:
-            ret = False, False, False
-
-        database.disconnect()
-        return ret
+            database.disconnect()
+            return False, False, False
 
     except:
         return False, False, False
@@ -122,16 +126,17 @@ def authenticate(id):
         cursor = database._connection.cursor()
         query = "select * from users where temp_id = %s ;;"
         cursor.execute(query, [id])
-        ret = False
 
         if cursor.fetchone() is not None:
             query = "update users set temp_id = NULL, verified = not verified where temp_id = %s ;;"
             cursor.execute(query, [id])
             database._connection.commit()
-            ret = True
+            database.disconnect()
+            return True
 
         database.disconnect()
-        return ret
+        return False
+
     except:
         return False
 # ----------------------------------------------------------------------------------------------------------------------
@@ -144,13 +149,13 @@ def valid_id(id):
         cursor = database._connection.cursor()
         query = "select * from users where temp_id = %s ;;"
         cursor.execute(query, [id])
-        ret = False
 
         if cursor.fetchone() is not None:
-            ret = True
-
-        database.disconnect()
-        return ret
+            database.disconnect()
+            return True
+        else:
+            database.disconnect()
+            return False
 
     except:
         return False
@@ -177,7 +182,7 @@ def update_password(dict):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def recovery(dict):
+def recovery(dict, server):
     try:
         email = dict['inputEmailAddress']
         database = Database()
@@ -186,39 +191,45 @@ def recovery(dict):
         query = "SELECT id from users where email = %s ;;"
         cursor.execute(query, [email])
         id = cursor.fetchone()
-        ret = False, False
 
         if id is not None:
             id = id[0]
-
+        else:
+            database.disconnect()
+            return False, False
 
         if id is not None:
             query = "SELECT verified from users where email = %s ;;"
             cursor.execute(query, [email])
             verified = cursor.fetchone()[0]
-            ret = True, False
 
             if verified:
                 query = "SELECT temp_id from users where email = %s ;;"
                 cursor.execute(query, [email])
-
-                dup = cursor.fetchone()
 
                 i = 0
                 while i < 10:
                     id += random.choice(string.ascii_letters)
                     i += 1
 
+                link = "fairsharehousing.herokuapp.com/recovery?id=" + id
+                
+                recovery_email(email, link,  server)
+
                 query = "update users set temp_id = %s where email = %s ;;"
                 cursor.execute(query, tuple([id, email]))
                 database._connection.commit()
+                database.disconnect()
 
-                link = "fairsharehousing.herokuapp.com/recovery?id=" + id
-                recovery_email(email, link)
-                ret = True, True
+                return True, True
 
-        database.disconnect()
-        return ret
+            else:
+                database.disconnect()
+                return True, False
+
+        else:
+            database.disconnect()
+            return False, False
 
     except:
         return False, False

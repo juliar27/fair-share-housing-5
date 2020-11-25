@@ -4,6 +4,7 @@ from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
+from py.auth import Server,  auth_email
 from py.map import filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
@@ -19,7 +20,7 @@ app.config['SECRET_KEY'] = 'ausdhfaiuhvizizuhfsi'
 q = Queue(connection=conn)
 login = LoginManager(app)
 login.login_view = "\login"
-
+server = Server()
 
 # ----------------------------------------------------------------------------------------------------------------------
 class User(UserMixin):
@@ -50,7 +51,7 @@ class User(UserMixin):
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=60)
+    app.permanent_session_lifetime = timedelta(minutes=1440)
     session.modified = True
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -166,7 +167,7 @@ def show_map():
         else:
             zipCode = prevZip
 
-    
+
     x, addressInfo, counties, towns, rows, ids = query(owner, prop, bed, income, town, county, zipCode)
     t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
 
@@ -263,7 +264,8 @@ def show_listings():
 def show_details():
     id = request.args.get('id')
     adr = request.args.get('adr')
-    if id == '' or id == None or not id.isnumeric():
+
+    if id == '' or id == None or not id.isnumeric() or adr is None:
         t = render_template("site/404.html", where="listings", message="Return to Listings")
         return make_response(t)
 
@@ -329,15 +331,15 @@ def show_upload():
 @app.route('/parse-error')
 def show_parse_error():
     if current_user.is_authenticated:
-        insert = request.args.getlist('insert')
-        col = request.args.getlist('col')
-        rand = request.args.getlist('rand')
-        exp = request.args.getlist('exp')
+        missing_columns = request.args.getlist('missing_columns')
+        missing_columns_type = request.args.getlist('missing_columns_type')
+        wrongtype = request.args.getlist('wrongtype')
+        wrongtype_expected = request.args.getlist('wrongtype_expected')
 
-        if exp != []:
-            t = render_template('site/parse-error.html', insert=insert, col=col, rand=zip(rand,exp), flag=True)
+        if missing_columns != [] and wrongtype == []:
+            t = render_template('site/parse-error.html', empty_excel=zip(missing_columns,missing_columns_type), empty=True)
         else:
-            t = render_template('site/parse-error.html', insert=insert, col=col, rand=rand, flag=False)
+            t = render_template('site/parse-error.html', empty_excel=[], missing_columns=zip(missing_columns,missing_columns_type), wrongtype=zip(wrongtype, wrongtype_expected))
 
         return make_response(t)
     else:
@@ -440,54 +442,6 @@ def edit():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/edited', methods=['GET', 'POST'])
-def show_edited():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            form = request.form
-            edit_table(form, request.args.get('id'))
-            return redirect('/tables')
-        else:
-            if request.args.get('id'):
-                return redirect('/edit?id=' + request.args.get('id'))
-
-            return redirect('/tables')
-    else:
-        return redirect('/login')
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/added', methods=['GET', 'POST'])
-def show_added():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            form = request.form
-            add_to_table(form)
-            return redirect('/admin')
-        else:
-            return redirect('/add')
-    else:
-        return redirect('/login')
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-@app.route('/deleted', methods=['GET', 'POST'])
-def show_deleted():
-    if current_user.is_authenticated:
-        if request.method == "POST":
-            delete(request.args.get('id'))
-        return redirect('/tables')
-    else:
-        return redirect('/login')
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
 @app.route('/verify', methods=['GET', 'POST'])
 def show_verify():
     t = render_template('site/verify.html')
@@ -541,27 +495,24 @@ def show_newpassword():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/reset', methods=['POST'])
 def show_reset():
-    account, verified = recovery(request.form.to_dict())
+    account, verified = recovery(request.form.to_dict(), server)
     if not account and not verified:
-        return redirect(url_for('show_account_error', errorMsg="You do not have an account associated with this email.", ref="register", ref_msg="Would you like to create an account?"))
-
+        return '/error'
     elif account and not verified:
-        return redirect('/verify')
+        return '/verify'
     else:
-        return redirect('/verifypassword')
+        return '/verifypassword'
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/create', methods=['POST'])
 def show_create():
-    flag = make_account(request.form.to_dict())
-
+    flag = make_account(request.form.to_dict(), server)
     if not flag:
-        return redirect(url_for('show_account_error', errorMsg="This email is already in-use.", ref="password", ref_msg="Did you forget your password?"))
-
+        return '/error'
     else:
-        return redirect('/verify')
+        return '/verify'
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -613,7 +564,6 @@ def show_admin():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":

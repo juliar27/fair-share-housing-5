@@ -70,7 +70,9 @@ button {
 
                                     <!-- <div class="card-header"><h3 class="text-center font-weight-light my-4"></h3></div> -->
                                     <div class="card-body">
-                                            <form id="form" action="/create" method="post">
+                                      <p style='color:red' id='failed'></p>
+
+                                              <form id='login-form' method="post">
 
                                             <div class="form-row">
                                                 <div class="col-md-6">
@@ -90,7 +92,7 @@ button {
                                             <div class="form-group">
                                                 <label class="small mb-1" >Email</label>
                                                 <!-- pattern=".+@fairsharehousing.org"  -->
-                                                <input class="form-control py-4" name="inputEmailAddress"   type="email" aria-describedby="emailHelp" placeholder="Enter email address"
+                                                <input class="form-control py-4" id="inputEmailAddress"  name="inputEmailAddress"   type="email" aria-describedby="emailHelp" placeholder="Enter email address"
                                                 oninvalid="this.setCustomValidity('Please enter a @fairsharehousing.org email.')" oninput="this.setCustomValidity('')" required />
                                             </div>
                                             <div class="form-row">
@@ -127,6 +129,41 @@ button {
                     </div>
                 </main>
             </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+      <script>
+            $(document).ready(function() {
+
+                $('#login-form').submit(function(e) {
+                    var formData = {
+                        'inputFirstName' : $('#inputFirstName').val(),
+                        'inputLastName'     : $('#inputLastName').val(),
+                        'inputEmailAddress'     : $('#inputEmailAddress').val(),
+                        'inputPassword'     : $('#inputPassword').val(),
+                        'inputConfirmPassword'     : $('#inputConfirmPassword').val()
+
+                    };
+
+                    $.ajax({
+                        type        : 'POST',
+                        url         : '/create',
+                        data        : formData,
+                        dataType    : 'text',
+                                    encode          : true
+                    })
+                        .done(function(data) {
+                            if (data === '/error') {
+                                $('#failed').html('This email is already in-use. Did you forget your password?');
+                                                          }
+                            else {
+                                window.location.replace(data);
+                            }
+                        });
+                    event.preventDefault();
+                });
+            });
+
+        </script>
+
 
             {% include 'site/error-footer.html' %}
     </body>

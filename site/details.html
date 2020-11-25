@@ -118,13 +118,15 @@
             <div class="overlay"></div>
               <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate pb-0 text-center" style="height: 30%;">
-                    <!-- <p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span>
-                         <span><a href="listings">Listings <i class="fa fa-chevron-right"></i></a></span></p> -->
+                  {% if adr|length > 31%}
+                  <h2 class="mb-3 bread" style="color: white"><i class="fas fa-home"></i>{{adr}}</h2>
+                  {% else %}
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
+                  {% endif %}
                   {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
-                    <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available: </strong>
+                    <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available:</strong>
                       {% set types = '' %}
 
                       {% if row['vli1'] + row['vli2'] + row['vli3'] + row['vssn'] > 0 %}
@@ -192,9 +194,13 @@
                       {% endif %}
 
                       {{ types }}
+
+
                     </h6>
+
                   {% endif %}
-                  <section class="4u">
+
+                  <section class="4u" style="float:center;">
                     <meta id='adr' data-adr='{{adr}}'>
                     <meta id='lid' data-lid='{{row["id"]}}'>
                     <i class="fa fa-heart fa-2x" onload='setColor(this)' onclick='toggler(this)' ></i>
@@ -234,7 +240,9 @@
                   </section>
                 </div>
               </div>
+
           </section>
+
 
         <section class="details-container">
             <div id="information">
@@ -270,7 +278,11 @@
         		</div>
         </section>
 
-        <section class="container ftco-section ftco-no-pb ftco-no-pt">
+        <div class="alert alert-warning" role="alert" style="text-align: center;"> <i class="fas fa-exclamation-triangle"></i>
+          The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
+        </div>
+
+        <section class="container ftco-section ftco-no-pb ftco-no-pt" >
                   <div class="container">
                     <div class="row">
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
@@ -279,6 +291,7 @@
                           <a class="nav-link" id="v-pills-unitsavails-tab" data-toggle="pill" href="#v-pills-unitsavail" role="tab" aria-controls="v-pills-unitsavail" aria-selected="false">Units Available</a>
                           <a class="nav-link" id="v-pills-types-tab" data-toggle="pill" href="#v-pills-types" role="tab" aria-controls="v-pills-types" aria-selected="false">Unit Types</a>
                           <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact Information</a>
+                          <a class="nav-link" id="v-pills-eligibility-tab" data-toggle="pill" href="#v-pills-eligibility" role="tab" aria-controls="v-pills-eligibility" aria-selected="false">Eligibility</a>
                         </div>
                       </div>
                       <div class="col-md-5 wrap-about py-md-5 ftco-animate">
@@ -390,7 +403,8 @@
                               </script>
                           </div>
                           <div class="tab-pane fade" id="v-pills-unitsavail" role="tabpanel" aria-labelledby="v-pills-unitsavail-tab">
-                            <table class="table table-hover table-responsive">
+                            <table class="table table-hover">
+                              <caption>View units by income level and number of bedrooms<br>See "Eligibility" for resources on calculating income limits for listings</caption>
                               <hr> <h2> Units Available </h2> <hr>
                               <thead>
                                   <tr>
@@ -443,6 +457,7 @@
                           </div>
                           <div class="tab-pane fade" id="v-pills-types" role="tabpanel" aria-labelledby="v-pills-types-tab">
                             <table class="table table-hover">
+                              <caption>View units by ownership type and property type<br>SSN=Special Needs</caption>
                               <hr> <h2> Unit Types </h2> <hr>
                                 <thead>
                                     <tr>
@@ -482,7 +497,25 @@
                           </div>
                           <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
                             <hr> <h2> Contact Information </h2> <hr>
-                            <p> {{row['agent']}} </p>
+                            <p>
+                              {% if row['agent'] and row['agent'] != "N/A"%}
+                                  Please contact this housing program at: <br>
+                                  {{row['agent']}}
+                              {% else: %}
+                                  Unfortunately contact information is unavailable at this time. Please contact the municipality this is located in directly.
+                              {% endif %} </p>
+                          </div>
+                          <div class="tab-pane fade" id="v-pills-eligibility" role="tabpanel" aria-labelledby="v-pills-eligibility-tab">
+                            <hr> <h2> Eligibility and Resources </h2> <hr>
+                            <p> Your eligibility for a subsidized unit depends on the following factors:<p>
+                              <ul>
+                                <li> Annual Gross Income </li>
+                                <li> Whether you qualify as elderly, a person with a disability, or as a family </li>
+                                <li> U.S. citizenship or eligible immigration status </li>
+                                <li> References </li>
+                              </ul>
+                            <p> Please click <a href='https://www.nj211.org/subsidized-housing-how-it-works' target="_blank">here</a> for an overview of affordable housing eligibility requirements in NJ.</p>
+                            <p> Please click <a href='https://www.pchhomes.org/sites/default/files/Income_Limits_2020_0.pdf' target="_blank">here</a> to see income limits by household size in NJ.</p>
                           </div>
                         </div>
                       </div>

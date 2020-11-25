@@ -221,12 +221,14 @@
             </div>
         </div>
 -->
-            
+
             <div class="form-group">
             <label for="#">County</label>
             <div class="form-field">
                 <div class="select-wrap" id="counties_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <select name="county" id="county" class="form-control">
+                    </select>
             </div>
                 </div>
         </div>
@@ -236,6 +238,8 @@
             <div class="form-field">
                 <div class="select-wrap" id="towns_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <select name="town" id="town" class="form-control">
+                    </select>
             </div>
                 </div>
         </div>
@@ -258,59 +262,59 @@
         </form>
     </div>
 </section>
-          
+
 </div>
 </body>
-    
+
     <script>
     function init_counties() {
- 
+
   var values = {{ counties|safe }};
- 
-  var select = document.createElement("select");
-  select.name = "county";
-  select.id = "county";
-    select.className = "form-control";
+  values.sort()
+
+var select = document.getElementById("county");
 
 //    the no-preference option
     var option = document.createElement("option");
     option.value = "none";
     option.text = "No Preference";
+    option.style = "background-color: #21243d";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
+    option.style = "background-color: #21243d";
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("counties_drop").appendChild(select);
 }
 
 function init_town() {
- 
+
   var values = {{ towns|safe }};
- 
-  var select = document.createElement("select");
-  select.name = "town";
-  select.id = "town";
-  select.className = "form-control";
+  values.sort()
+
+var select = document.getElementById("town");
 
 //    the no-preference option
     var option = document.createElement("option");
     option.value = "none";
     option.text = "No Preference";
+    option.style = "background-color: #21243d";
     select.appendChild(option);
- 
+
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
+    option.style = "background-color: #21243d";
     select.appendChild(option);
   }
- 
+
 
   document.getElementById("towns_drop").appendChild(select);
 }
@@ -321,8 +325,8 @@ window.onload = function() {
 };
 
     </script>
-    
-    
+
+
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ"
             type="text/javascript"></script>
@@ -345,32 +349,37 @@ window.onload = function() {
                 position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
                 map: map
             });
+//            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+//                return function() {
+//                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
+//                    window.open(url)
+//                }
+//            })(marker, i));
+
+
+
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
-                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
-                    window.open(url)
-                }
-            })(marker, i));
-            google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
-                return function() {
                     infowindow.setContent('<div id="iw-container">' +
-                        '<div class="iw-title" >' + String(addressesInfo[i][2]) + '</div>' +
-                        '<div class="iw-content">' +
-                 '<img src="/static/images/house_icon.png" height="85" width="83">' +
-                          '<div class="iw-subTitle"><strong>Details:</strong></div>' +
+                      '<div class="iw-title" >' +
+'<a class="hover" href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">' +
+                    String(addressesInfo[i][2]) + '</a></div><div class="iw-content">' +
+                 '<img src="/static/images/house_icon.png" height="75" width="83">' +
                           '<p>Total units: ' + locations[i][3] +
-                          '<br>Units with one bedroom: ' + parseInt(locations[i][4]) +
-                          '<br>Units with two bedrooms: ' + parseInt(locations[i][5])  +
-                          '<br>Units with three bedrooms: ' + parseInt(locations[i][6]) + '</p>' +
-                      '</div>');
+                          '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
+                          '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
+                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
+                          '</p><p style="text-align: center;">Click ' +
+'<a href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">here</a>' +
+                      ' to learn more!</p></div>');
                     infowindow.open(map, marker);
                 }
             })(marker, i));
-            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
-                return function() {
-                    infowindow.close(map, marker);
-                }
-            })(marker, i));
+//            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
+//                return function() {
+//                    infowindow.close(map, marker);
+//                }
+//            })(marker, i));
         }
     </script>
 <style>
@@ -383,6 +392,14 @@ window.onload = function() {
 	border: 1px solid rgba(72, 181, 233, 0.6);
 	border-radius: 2px 2px 10px 10px;
 }
+
+
+a:hover, a:focus,
+button.link:hover,
+button.link:focus {
+  color: #21243d ;
+}
+
 #iw-container {
 	margin-bottom: 10px;
 }
@@ -391,18 +408,18 @@ window.onload = function() {
 	font-size: 22px;
 	font-weight: 400;
 	padding: 10px;
-	background-color: #21243d;
+	background-color: #FFF;
 	color: white;
 	margin: 0;
-	border-radius: 2px 2px 0 0;
+	/* border-radius: 2px 2px 0 0; */
 }
 #iw-container .iw-content {
 	font-size: 13px;
 	line-height: 18px;
 	font-weight: 400;
 	margin-right: 1px;
-	padding: 15px 5px 20px 15px;
-	max-height: 100px;
+	padding: 5px 5px 5px 5px;
+	max-height: 110px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -411,5 +428,5 @@ window.onload = function() {
 	margin: 0 5px 5px 10px;
 }
 </style>
-
+    </body>
 </html>

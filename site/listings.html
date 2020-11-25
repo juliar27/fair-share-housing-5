@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-#dataTable {
+.dataTable {
   border-collapse: collapse;
   width: 100%;
 }
-#dataTable tr:nth-child(even){background-color: #f2f2f2;}
-#dataTable tr:hover {background-color: #ddd;}
-#dataTable th {
+.dataTable tr:nth-child(even){background-color: #f2f2f2;}
+.dataTable tr:hover {background-color: #ddd;}
+.dataTable th {
   padding-top: 12px;
-  /* padding-bottom: 12px; */
+  padding-bottom: 12px; */
   text-align: left;
   background-color: #21243d;
   color: white;
@@ -56,28 +56,26 @@
           <div class="col-md-9 ftco-animate pb-0 text-center">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span> <span>Listings <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">Listings</h1>
+            <div style="float:right;">
+            <button onclick="document.getElementById('form').reset()" id="reset" class="btn btn-primary">Reset Search</button>
+            </div>
           </div>
-
         </div>
       </div>
     </section>
-
 
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="search-wrap-1 ftco-animate p-4">
-
-            <form action="/list-filtering" class="search-property-1">
+            <form action="/list-filtering" class="search-property-1" id='form'>
               <div class="row">
-
                 <div class="col-sm-auto align-items-end">
                   <div class="form-group">
                     <label for="#">Ownership Type</label>
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-
                         <select  name="ownership" id="ownership" class="form-control">
                           <option value="none" style="background-color: #21243d;">No Preference</option>
                           <option value="rent" style="background-color: #21243d;">Rent</option>
@@ -87,8 +85,6 @@
                     </div>
                   </div>
                 </div>
-
-
 
                 <div class="col-sm-auto align-items-end">
                   <div class="form-group">
@@ -131,8 +127,6 @@
                     <div class="form-field">
                       <div class="select-wrap">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
-
-
                         <select name="income" id="income" class="form-control">
                             <option value="none" style="background-color: #21243d;">No Preference</option>
                             <option value="very" style="background-color: #21243d;">Very Low Income</option>
@@ -145,29 +139,27 @@
                 </div>
 
                 <div class="col-sm align-items-end">
-                      <div class="form-group">
-            <label for="#">County</label>
-            <div class="form-field">
-                <div class="select-wrap" id="counties_drop">
-                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="county" id="county" class="form-control">
-                    </select>
-            </div>
-                </div>
-        </div>
+                  <div class="form-group">
+                    <label for="#">County</label>
+                    <div class="form-field">
+                      <div class="select-wrap" id="counties_drop">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="county" id="county" class="form-control"></select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-sm align-items-end">
-                      <div class="form-group">
-            <label for="#">Town</label>
-            <div class="form-field">
-                <div class="select-wrap" id="towns_drop">
-                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="town" id="town" class="form-control">
-                    </select>
-            </div>
-                </div>
-        </div>
+                  <div class="form-group">
+                    <label for="#">Town</label>
+                    <div class="form-field">
+                      <div class="select-wrap" id="towns_drop">
+                        <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                        <select name="town" id="town" class="form-control"></select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-sm align-items-end">
@@ -179,6 +171,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </form>
           </div>
@@ -188,11 +181,12 @@
 
 
 
+
         <script>
     function init_counties() {
 
   var values = {{ counties|safe }};
-
+values.sort()
   var select = document.getElementById("county");
 
 
@@ -200,12 +194,14 @@
     var option = document.createElement("option");
     option.value = "none";
     option.text = "No Preference";
+    option.style = "background-color: #21243d";
     select.appendChild(option);
 
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
+    option.style = "background-color: #21243d";
     select.appendChild(option);
   }
 
@@ -216,19 +212,21 @@
 function init_town() {
 
   var values = {{ towns|safe }};
-
+  values.sort()
   var select = document.getElementById("town");
 
 //    the no-preference option
     var option = document.createElement("option");
     option.value = "none";
     option.text = "No Preference";
+    option.style = "background-color: #21243d";
     select.appendChild(option);
 
   for (const val of values) {
     var option = document.createElement("option");
     option.value = String(val);
     option.text = String(val);
+    option.style = "background-color: #21243d";
     select.appendChild(option);
   }
 
@@ -249,43 +247,45 @@ window.onload = function() {
           <h1 class="mt-4"></h1>
           <div class="card mb-4">
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th><i class="fas fa-home"></i>Address</th>
+                    <th>Municipality</th>
+                    <th>County</th>
+                    <th>Status</th>
+                    <th>1Bdr Units</th>
+                    <th>2Bdr Units</th>
+                    <th>3Bdr Units</th>
+                    <th>Units Total</th>
+                    <th>Family Units</th>
+                    <th>Senior Units</th>
+                    <th>SSN Units</th>
+                  </tr>
+                </thead>
+                <tbody id="automate">
+                  {% for i in range(rows|length): %}
                     <tr>
-                      <th><i class="fas fa-home"></i>Address</th>
-                      <th>Municipality</th>
-                      <th>County</th>
-                      <th>Status</th>
-                      <th>1Bdr Units</th>
-                      <th>2Bdr Units</th>
-                      <th>3Bdr Units</th>
-                      <th>Units Total</th>
-                      <th>Family Units</th>
-                      <th>Senior Units</th>
-                      <th>SSN Units</th>
-                    </tr>
-                  </thead>
-                  <tbody id="automate">
-                    {% for i in range(rows|length): %}
-                      <tr>
-                        <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]}}' target="_blank">{{rows[i][0]}}</a></td>
-                        {% for j in range(2, rows[i]|length): %}
-                        <td>  {{ rows[i][j] }} </td>
-                        {% endfor %}
-                     </tr>
-                     {% endfor %}
-                  </tbody>
-                </table>
-              </div>
+                      <td><a href='details?id={{ids[i]}}&adr={{rows[i][0]|urlencode}}' target="_blank">{{rows[i][0]}}</a></td>
+                      {% for j in range(2, rows[i]|length): %}
+                      <td>  {{ rows[i][j] }} </td>
+                      {% endfor %}
+                   </tr>
+                   {% endfor %}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
       </main>
+      <div class="alert alert-warning" role="alert" style="text-align: center;"> <i class="fas fa-exclamation-triangle"></i>
+        The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
+      </div>
 
+	<span syle="position: fixed;">
       {% include 'site/footer.html' %}
-
+	</span>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
       </script>
 
@@ -350,12 +350,17 @@ window.onload = function() {
           $('#town').on('input', getResults);
           $('#city').on('input', getResults);
           $('#zip').on('input', getResults);
+          $('#reset').on('click', getResults);
         }
 
         $('document').ready(setup);
 
       </script>
 
-
+      <script src="static/js/scripts-admin.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+      <script src="static/assets/demo/datatables-demo.js"></script>
   </body>
 </html>
