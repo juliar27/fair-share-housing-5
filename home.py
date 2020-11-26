@@ -95,29 +95,16 @@ def show_home():
 @app.route('/filtering')
 @app.route('/map')
 def show_map():
-    prevOwner = request.cookies.get('prevOwner')
-    prevProp = request.cookies.get('prevProp')
-    prevBed = request.cookies.get('prevBed')
-    prevIncome = request.cookies.get('prevIncome')
-    prevTown = request.cookies.get('prevTown')
-    prevCounty = request.cookies.get('prevCounty')
-    prevZip = request.cookies.get('prevZip')
+    x, addressInfo, counties, towns, rows, ids = query("none", "none", "none", "none", "none", "none", '')
+    t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows)
 
-    if prevOwner is None:
-        prevOwner = "none"
-    if prevProp is None:
-        prevProp = 'none'
-    if prevBed is None:
-        prevBed = "none"
-    if prevIncome is None:
-        prevBed = "none"
-    if prevTown is None:
-        prevTown = "none"
-    if prevCounty is None:
-        prevCounty = "none"
-    if prevZip is None:
-        prevZip = ''
+    response = make_response(t)
+    return response
+# ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/map-filtering')
+def show_map_filtering():
     owner = request.args.get('ownership')
     prop = request.args.get('property')
     bed = request.args.get('bedrooms')
@@ -127,60 +114,24 @@ def show_map():
     zipCode = request.args.get('zip')
 
     if owner is None:
-        if prevOwner is None:
-            owner = "none"
-        else:
-            owner = prevOwner
+        owner = "none"
     if prop is None:
-        if prevProp is None:
-            prop = "none"
-        else:
-            prop = prevProp
-
+        prop = "none"
     if bed is None:
-        if prevBed is None:
-            bed = "none"
-        else:
-            bed = prevBed
-
+        bed = "none"
     if income is None:
-        if prevIncome is None:
-            income = "none"
-        else:
-            income = prevIncome
-
+        income = "none"
     if town is None:
-        if prevTown is None:
-            town = "none"
-        else:
-            town = prevTown
-
+        town = "none"
     if county is None:
-        if prevCounty is None:
-            county = "none"
-        else:
-            county = prevCounty
-
+        county = "none"
     if zipCode is None:
-        if prevZip is None:
-            zipCode = ''
-        else:
-            zipCode = prevZip
-
+        zipCode = ''
 
     x, addressInfo, counties, towns, rows, ids = query(owner, prop, bed, income, town, county, zipCode)
-    t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows, prevOwner=owner, prevProp=prop, prevBed=bed, prevIncome=income, prevTown=town, prevCounty=county, prevZip=zipCode)
-
-    response = make_response(t)
-    response.set_cookie('prevOwner', owner, expires=0)
-    response.set_cookie('prevProp', prop, expires=0)
-    response.set_cookie('prevBed', bed, expires=0)
-    response.set_cookie('prevIncome', income, expires=0)
-    response.set_cookie('prevTown', town, expires=0)
-    response.set_cookie('prevCounty', county, expires=0)
-    response.set_cookie('prevZip', zipCode, expires=0)
-
-    return response
+    y = jsonify([x, addressInfo, counties, towns, rows, ids])
+    print(y)
+    return make_response(y)
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------

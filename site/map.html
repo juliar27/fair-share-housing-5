@@ -1,6 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
+.gm-style-iw {
+	width: 350px !important;
+	top: 15px !important;
+	left: 0px !important;
+	background-color: #fff;
+	box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+	border: 1px solid rgba(72, 181, 233, 0.6);
+	border-radius: 2px 2px 10px 10px;
+}
+
+
+a:hover, a:focus,
+button.link:hover,
+button.link:focus {
+  color: #21243d ;
+}
+
+#iw-container {
+	margin-bottom: 10px;
+}
+#iw-container .iw-title {
+	font-family: 'Nunito Sans', 'Open Sans Condensed', sans-serif;
+	font-size: 22px;
+	font-weight: 400;
+	padding: 10px;
+	background-color: #FFF;
+	color: white;
+	margin: 0;
+	/* border-radius: 2px 2px 0 0; */
+}
+#iw-container .iw-content {
+	font-size: 13px;
+	line-height: 18px;
+	font-weight: 400;
+	margin-right: 1px;
+	padding: 5px 5px 5px 5px;
+	max-height: 110px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.iw-content img {
+	float: right;
+	margin: 0 5px 5px 10px;
+}
+
+
     .sidenav {
         height: 735px;
         width: 25%;
@@ -158,8 +204,7 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="ownership" id="" class="form-control">
-                        <option value="owner_default" selected disabled hidden>{{ prevOwner.capitalize() }}</option>
+                    <select name="ownership" id="ownership" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="rent" style="background-color: #21243d;">Rent</option>
                         <option value="buy" style="background-color: #21243d;">Buy</option>
@@ -173,7 +218,7 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="property" id="" class="form-control">
+                    <select name="property" id="property" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="family" style="background-color: #21243d;">Family</option>
                         <option value="senior" style="background-color: #21243d;">Senior</option>
@@ -187,7 +232,7 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="bedrooms" id="" class="form-control">
+                    <select name="bedrooms" id="bedrooms" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="1" style="background-color: #21243d;">1</option>
                         <option value="2" style="background-color: #21243d;">2</option>
@@ -202,7 +247,7 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    <select name="income" id="" class="form-control">
+                    <select name="income" id="income" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="very" style="background-color: #21243d;">Very Low Income</option>
                         <option value="low" style="background-color: #21243d;">Low Income</option>
@@ -249,13 +294,7 @@
             <label for="#">Zip Code</label>
             <div class="form-field">
                 <div class="icon"><span class="fa fa-search"></span></div>
-                <input type="text" value="{{ prevZip }}" name="zip" class="form-control" placeholder="Zip Code">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="form-field">
-                <input type="submit"id="search" name="search" value="Search" class="form-control btn btn-primary">
+                <input type="text" id="zip"  name="zip" class="form-control" placeholder="Zip Code">
             </div>
         </div>
 
@@ -332,6 +371,7 @@ window.onload = function() {
             type="text/javascript"></script>
 </head>
 <script type="text/javascript">
+function map_pop(info, ro) {
     var addressesInfo = {{ info|safe }};
     var locations = {{ ro }};
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -349,13 +389,6 @@ window.onload = function() {
                 position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
                 map: map
             });
-//            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-//                return function() {
-//                    var url = `./details?id=${locations[i][2]}&adr=${addressesInfo[i][0]}&coords=${addressesInfo[i][1]}`
-//                    window.open(url)
-//                }
-//            })(marker, i));
-
 
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -375,58 +408,89 @@ window.onload = function() {
                     infowindow.open(map, marker);
                 }
             })(marker, i));
-//            google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
-//                return function() {
-//                    infowindow.close(map, marker);
-//                }
-//            })(marker, i));
-        }
+        } }
     </script>
-<style>
-.gm-style-iw {
-	width: 350px !important;
-	top: 15px !important;
-	left: 0px !important;
-	background-color: #fff;
-	box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
-	border: 1px solid rgba(72, 181, 233, 0.6);
-	border-radius: 2px 2px 10px 10px;
-}
 
 
-a:hover, a:focus,
-button.link:hover,
-button.link:focus {
-  color: #21243d ;
-}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
-#iw-container {
-	margin-bottom: 10px;
-}
-#iw-container .iw-title {
-	font-family: 'Nunito Sans', 'Open Sans Condensed', sans-serif;
-	font-size: 22px;
-	font-weight: 400;
-	padding: 10px;
-	background-color: #FFF;
-	color: white;
-	margin: 0;
-	/* border-radius: 2px 2px 0 0; */
-}
-#iw-container .iw-content {
-	font-size: 13px;
-	line-height: 18px;
-	font-weight: 400;
-	margin-right: 1px;
-	padding: 5px 5px 5px 5px;
-	max-height: 110px;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-.iw-content img {
-	float: right;
-	margin: 0 5px 5px 10px;
-}
-</style>
+    <script>
+      'use strict';
+
+
+      function handleResponse(response)
+       {
+
+         var ro1 = response[0],
+              info1=response[1],
+              counties=response[2],
+              towns=response[3],
+              det=response[4];
+
+              map_pop(ro1, info1);
+       }
+
+       let request = null;
+
+      function getResults()
+      {
+
+        let ownership = $('#ownership').val();
+        ownership = encodeURIComponent(ownership);
+
+        let property = $('#property').val();
+        property = encodeURIComponent(property);
+
+        let bedrooms = $('#bedrooms').val();
+        bedrooms = encodeURIComponent(bedrooms);
+
+        let income = $('#income').val();
+        income = encodeURIComponent(income);
+
+        let town = $('#town').val();
+        town = encodeURIComponent(town);
+
+        let county = $('#county').val();
+        county = encodeURIComponent(county);
+
+        let zip = $('#zip').val();
+        zip = encodeURIComponent(zip);
+
+        let url = '/map-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
+
+        if (request != null)
+          request.abort();
+
+
+      request = $.ajax(
+        {
+          type: 'GET',
+          url: url,
+          dataType: 'json',
+					processData: 'false',
+          success: handleResponse
+        }
+      );
+    }
+
+      function setup()
+      {
+        $('#ownership').focus();
+        $('#ownership').on('input', getResults);
+        $('#property').on('input', getResults);
+        $('#bedrooms').on('input', getResults);
+        $('#income').on('input', getResults);
+        $('#county').on('input', getResults);
+        $('#town').on('input', getResults);
+        $('#county').on('input', getResults);
+        $('#zip').on('input', getResults);
+        // $('#reset').on('click', getResults);
+      }
+
+      $('document').ready(setup);
+      map_pop()
+    </script>
+
+
     </body>
 </html>

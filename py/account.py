@@ -55,6 +55,7 @@ def make_account(user, server):
             i += 1
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
+        print("Hi", email, link)
         auth_email(email, link, server)
 
         query = "update users set temp_id = %s where email = %s ;;"
@@ -213,7 +214,7 @@ def recovery(dict, server):
                     i += 1
 
                 link = "fairsharehousing.herokuapp.com/recovery?id=" + id
-                
+
                 recovery_email(email, link,  server)
 
                 query = "update users set temp_id = %s where email = %s ;;"

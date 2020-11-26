@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <style>
@@ -283,9 +282,8 @@ window.onload = function() {
         The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
       </div>
 
-	<span syle="position: fixed;">
       {% include 'site/footer.html' %}
-	</span>
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
       </script>
 
@@ -348,7 +346,6 @@ window.onload = function() {
           $('#income').on('input', getResults);
           $('#county').on('input', getResults);
           $('#town').on('input', getResults);
-          $('#city').on('input', getResults);
           $('#zip').on('input', getResults);
           $('#reset').on('click', getResults);
         }
