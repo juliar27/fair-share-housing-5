@@ -4,7 +4,7 @@ from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
 from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
 from py.download import download
-from py.auth import Server,  auth_email
+from py.auth import Server
 from py.map import filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
