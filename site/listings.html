@@ -301,26 +301,70 @@ window.onload = function() {
         function getResults()
         {
 
-          let ownership = $('#ownership').val();
-          ownership = encodeURIComponent(ownership);
+        let ownership = $('#ownership').val();
+        ownership = encodeURIComponent(ownership);
+        console.log(ownership)
+        if (ownership != "none") {
+            document.getElementById("ownership").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("ownership").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let property = $('#property').val();
-          property = encodeURIComponent(property);
+        let property = $('#property').val();
+        property = encodeURIComponent(property);
+         if (property != "none") {
+            document.getElementById("property").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("property").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let bedrooms = $('#bedrooms').val();
-          bedrooms = encodeURIComponent(bedrooms);
+        let bedrooms = $('#bedrooms').val();
+        bedrooms = encodeURIComponent(bedrooms);
+          if (bedrooms != "none") {
+            document.getElementById("bedrooms").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("bedrooms").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let income = $('#income').val();
-          income = encodeURIComponent(income);
+        let income = $('#income').val();
+        income = encodeURIComponent(income);
+          if (income != "none") {
+            document.getElementById("income").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("income").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let town = $('#town').val();
-          town = encodeURIComponent(town);
+        let town = $('#town').val();
+        town = encodeURIComponent(town);
+          if (town != "none") {
+            document.getElementById("town").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("town").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let county = $('#county').val();
-          county = encodeURIComponent(county);
+        let county = $('#county').val();
+        county = encodeURIComponent(county);
+          if (county != "none") {
+            document.getElementById("county").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("county").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let zip = $('#zip').val();
-          zip = encodeURIComponent(zip);
+        let zip = $('#zip').val();
+        zip = encodeURIComponent(zip);
+          if (zip != "none") {
+            document.getElementById("zip").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("zip").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
+
 
           let url = '/list-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
 

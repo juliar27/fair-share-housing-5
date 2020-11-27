@@ -24,7 +24,7 @@
 	font-family: 'Nunito Sans', 'Open Sans Condensed', sans-serif;
 	font-size: 22px;
 	font-weight: 400;
-	padding: 10px;
+/*	padding: 10px;*/
 	background-color: #FFF;
 	color: white;
 	margin: 0;
@@ -35,7 +35,7 @@
 	line-height: 18px;
 	font-weight: 400;
 	margin-right: 1px;
-	padding: 5px 5px 5px 5px;
+/*	padding: 5px 5px 5px 5px;*/
 	max-height: 110px;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -55,11 +55,11 @@
         left: 0;
         background-color: #21243d;
         overflow-x: hidden;
-        padding-top: 20px;
+/*        padding-top: 20px;*/
     }
 
     .sidenav a {
-        padding: 6px 8px 6px 16px;
+/*        padding: 6px 8px 6px 16px;*/
         text-decoration: none;
         font-size: 25px;
         color: #818181;
@@ -87,7 +87,7 @@
         color: rgba(255, 255, 255, 0.8); }
     .next .form-group .form-field {
         position: relative;
-        display: block; }
+        display: block;}
     .next .form-group .form-control {
         padding: 0;
         padding-left: 20px;
@@ -98,10 +98,12 @@
         border: none !important;
         color: rgba(255, 255, 255, 0.4) !important;
         background: transparent !important;
+/*        background: transparent !important;*/
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         -ms-border-radius: 0;
         border-radius: 0; }
+/*
     .next .form-group .form-control::-webkit-input-placeholder {
         color: rgba(255, 255, 255, 0.4) !important; }
     .next .form-group .form-control::-moz-placeholder {
@@ -110,8 +112,9 @@
         color: rgba(255, 255, 255, 0.4) !important; }
     .next .form-group .form-control:-moz-placeholder {
         color: rgba(255, 255, 255, 0.4) !important; }
+*/
     .next .form-group .form-control.btn {
-        padding: 22px 10px !important;
+/*        padding: 22px 10px !important;*/
         font-size: 16px;
         background: #24A148 !important;
         border: none !important;
@@ -136,7 +139,7 @@
         .next .form-group .icon {
             right: 10px; } }
 
-
+ 
 
     .main {
         margin-left: 160px; /* Same as the width of the sidenav */
@@ -145,7 +148,7 @@
     }
 
     @media screen and (max-height: 450px) {
-        .sidenav {padding-top: 15px;}
+/*        .sidenav {padding-top: 15px;}*/
         .sidenav a {font-size: 18px;}
     }
 </style>
@@ -181,7 +184,10 @@
     <div class="overlay"></div>
     <div class="container">
     </div>
+    
 </section>
+    
+   
 
 <body>
     <div id="canvas" style="height:100%;width:100%;">
@@ -240,12 +246,14 @@
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <div class="select">
                     <select name="income" id="income" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="very" style="background-color: #21243d;">Very Low Income</option>
                         <option value="low" style="background-color: #21243d;">Low Income</option>
                         <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
                     </select>
+                        </div>
                 </div>
             </div>
         </div>
@@ -266,6 +274,7 @@
             <div class="form-field">
                 <div class="select-wrap" id="towns_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    
                     <select name="town" id="town" class="form-control">
                     </select>
             </div>
@@ -285,6 +294,7 @@
 				<button onclick="document.getElementById('form').reset()" id="reset" class="btn btn-primary">Reset Search</button>
 			</span>
     </div>
+        
 </section>
 
 </div>
@@ -443,24 +453,67 @@ function map_pop() {
 
         let ownership = $('#ownership').val();
         ownership = encodeURIComponent(ownership);
+        console.log(ownership)
+        if (ownership != "none") {
+            document.getElementById("ownership").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("ownership").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let property = $('#property').val();
         property = encodeURIComponent(property);
+          if (property != "none") {
+              document.getElementById("property").style = "background: #24A148 !important; color: white !important";
+        }
+          else {
+              document.getElementById("property").style = "background: transparent !important";
+          }
 
         let bedrooms = $('#bedrooms').val();
         bedrooms = encodeURIComponent(bedrooms);
+          if (bedrooms != "none") {
+            document.getElementById("bedrooms").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("bedrooms").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let income = $('#income').val();
         income = encodeURIComponent(income);
+          if (income != "none") {
+            document.getElementById("income").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("income").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let town = $('#town').val();
         town = encodeURIComponent(town);
+          if (town != "none") {
+            document.getElementById("town").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("town").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let county = $('#county').val();
         county = encodeURIComponent(county);
+          if (county != "none") {
+            document.getElementById("county").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("county").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let zip = $('#zip').val();
         zip = encodeURIComponent(zip);
+          if (zip != "none") {
+            document.getElementById("zip").style = "color: #24A148 !important; font-weight: bold";
+        }
+          else {
+              document.getElementById("zip").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let url = '/map-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
 
@@ -514,7 +567,6 @@ function map_pop() {
 			par[1]= ro1;
 			map_pop.apply(this, par);
     </script>
-
 
     </body>
 </html>
