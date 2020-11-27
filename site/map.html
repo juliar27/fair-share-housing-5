@@ -139,7 +139,7 @@
         .next .form-group .icon {
             right: 10px; } }
 
- 
+
 
     .main {
         margin-left: 160px; /* Same as the width of the sidenav */
@@ -188,9 +188,9 @@
     <div class="overlay"></div>
     <div class="container">
     </div>
-    
+
 </section>
-    
+
    <div class="alert alert-warning" role="alert" style="text-align: center; margin: 0px 0px 0px 0px"> <i class="fas fa-exclamation-triangle"></i>
           The information for some listings may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
         </div>
@@ -281,7 +281,7 @@
             <div class="form-field">
                 <div class="select-wrap" id="towns_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
-                    
+
                     <select name="town" id="town" class="form-control">
                     </select>
             </div>
@@ -301,7 +301,7 @@
 				<button onclick="document.getElementById('form').reset()" id="reset" class="btn btn-primary">Reset Search</button>
 			</span>
     </div>
-        
+
 </section>
 
 </div>
@@ -471,10 +471,10 @@ function map_pop() {
         let property = $('#property').val();
         property = encodeURIComponent(property);
           if (property != "none") {
-              document.getElementById("property").style = "background: #24A148 !important; color: white !important";
+              document.getElementById("property").style = "color: #24A148 !important; font-weight: bold";
         }
           else {
-              document.getElementById("property").style = "background: transparent !important";
+              document.getElementById("property").style = "color: rgba(255, 255, 255, 0.4) !important";
           }
 
         let bedrooms = $('#bedrooms').val();
