@@ -396,7 +396,7 @@ def get_favorite_listings(favorites):
         stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
           " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
           "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-          "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
+          "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + adr + "'"
         cursor.execute(stmt)
         row = cursor.fetchone()
 
