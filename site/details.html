@@ -222,7 +222,7 @@
                       function toggler(x) {
 
                         var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-                        var adr = $('#adr').data('adr'), id = $('#lid').data('lid'), index = favorites.indexOf(id + ";" + adr);
+                        var adr = $('#adr').data('adr').replace(/'/g, '%27'), id = $('#lid').data('lid'), index = favorites.indexOf(id + ";" + adr);
                         if (index == -1) {
                           favorites.push(id + ";" + adr);
                           x.style.color = 'red';

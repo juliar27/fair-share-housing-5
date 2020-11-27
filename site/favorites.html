@@ -18,7 +18,7 @@
 .dataTables_filter, .dataTables_info { display: none; }
 .pageContentWrapper{
   margin-bottom:75px;/* Height of footer*/
-} 
+}
 .fa-home {
     padding-right: 5px;
   }
@@ -120,7 +120,6 @@
             <script src="static/js/jquery.min.js"></script>
                         <script>
                             function toggler(x, id, adr) {
-                                console.log(adr);
                                 var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
                                 var index = favorites.indexOf(id + ";" + adr);
                                 if (index == -1) {
@@ -159,7 +158,8 @@
                                             var rows = e['responseJSON']['out'][0];
                                             var ids = e['responseJSON']['out'][1];
                                             for (let i = 0; i < rows.length; i++) {
-                                                 to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]).replace(/'/g, '%27') + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                              console.log(rows[i][0] )
+                                                 to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0].replace(/'/g, '%27') + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]).replace(/'/g, '%27') + "' target='_blank'>" + rows[i][0] + "</a></td>"];
                                                 for (let j = 2; j < rows[i].length; j++) {
                                                     to_add.push("<td>" + rows[i][j] + "</td>");
                                                 }
@@ -178,7 +178,7 @@
           </div>
       </main>
     </div>
-    
+
     <div class="footer">
       {% include 'site/footer.html' %}
     </div>

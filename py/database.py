@@ -389,7 +389,13 @@ def get_favorite_listings(favorites):
     database.connect()
     ids = []
     rows = []
-    for idadr in favorites:
+    favorites_new = []
+
+    for i in favorites:
+        i = i.replace('%27', "\'")
+        favorites_new.append(i)
+
+    for idadr in favorites_new:
         id = idadr.split(';')[0]
         adr = ';'.join(idadr.split(';')[1:])
         cursor = database._connection.cursor()
@@ -401,6 +407,7 @@ def get_favorite_listings(favorites):
         cursor.execute(stmt)
         row = cursor.fetchone()
 
+    if row is not None:
         ids.append(row[0])
         rows.append(row[1:])
     return rows, ids
