@@ -388,9 +388,7 @@ function map_pop() {
 						                          '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
 						                          '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
 						                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
-						                          '</p><p style="text-align: center;">Click ' +
-						'<a href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[0][i][0]) + '", target="_blank">here</a>' +
-						                      ' to learn more!</p></div>');
+						                          '</p></div>');
 						                    infowindow.open(map, marker);
 						                }
 						            })(marker, i));
