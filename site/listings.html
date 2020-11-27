@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="position:relative; min-height: 100%;">
 <style>
 .dataTable {
   border-collapse: collapse;
@@ -18,6 +18,16 @@
 .fa-home {
     padding-right: 5px;
   }
+.pageContentWrapper{
+  margin-bottom:75px;/* Height of footer*/
+} 
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
 </style>
 <head>
     <script
@@ -27,7 +37,7 @@
       {% include 'site/header.html' %}
 </head>
 <body>
-
+    <div class="pageContentWrapper">
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="index">mapFSH</a>
@@ -281,8 +291,10 @@ window.onload = function() {
       <div class="alert alert-warning" role="alert" style="text-align: center;"> <i class="fas fa-exclamation-triangle"></i>
       The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
     </div>
-
+  </div>
+    <div class="footer">
       {% include 'site/footer.html' %}
+    </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
       </script>
