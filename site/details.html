@@ -123,7 +123,15 @@
                   {% else %}
                   <h1 class="mb-3 bread"><i class="fas fa-home"></i>{{adr}}</h1>
                   {% endif %}
-                  {% set tot = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
+                  {% set tot1 = row['famsale'] + row['famrent'] + row['srsale'] + row['srrent'] + row['ssnsale'] + row['ssnrent'] %}
+                  {% set tot2 = row['vli1'] + row['li1'] + row['m1'] + row['vli2'] + row['li2'] + row['m2'] +
+                      row['vli3'] + row['li3'] + row['m3'] + row['vssn'] + row['lssn'] + row['mssn'] %}
+                  {% set tot = 0 %}
+                  {% if tot1 >= tot2 %}
+                  {% set tot = tot1 %}
+                  {% else %}
+                  {% set tot = tot2%}
+                  {% endif %}
                   <h6 class="mb-3 bread" style="color: white;"><strong> Total Number of Units: </strong> {{ tot }}</h6>
                   {% if tot > 0 %}
                     <h6 class="mb-3 bread" style="color: white;"><strong> Types of units available:</strong>
