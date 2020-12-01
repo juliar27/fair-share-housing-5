@@ -8,7 +8,6 @@ from py.auth import Server
 from py.map import filter_function, query2, query3, query, html_for_listings
 from py.form import AddForm
 from werkzeug.datastructures import MultiDict
-from threading import Thread
 from rq import Queue
 from worker import conn
 from datetime import timedelta
