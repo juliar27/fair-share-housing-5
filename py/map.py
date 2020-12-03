@@ -7,8 +7,7 @@ def querying_location():
     database = Database()
     database.connect()
     cursor = database._connection.cursor()
-    counties = []
-    towns = []
+    
 
     stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
                 "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
@@ -20,6 +19,8 @@ def querying_location():
 
     rows = []
     ids = []
+    towns = set()
+    counties = set()
 
     row = cursor.fetchone()
     while row is not None:
@@ -33,15 +34,13 @@ def querying_location():
         row = cursor.fetchone()
 
     for i in range(len(rows)):
-        if rows[i][3] not in counties:
-            counties.append(rows[i][3])
-
-        if rows[i][2] not in towns:
-            towns.append(rows[i][2])
+        counties.add(rows[i][3])
+        towns.add(rows[i][2])
 
     database.disconnect()
+    
 
-    return rows, ids, counties, towns
+    return rows, ids, list(counties), list(towns)
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------

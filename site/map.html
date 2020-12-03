@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <style>
 .gm-style-iw {
 	width: 350px !important;
@@ -11,21 +13,18 @@
 	border-radius: 2px 2px 10px 10px;
 }
 
-
-a:hover, a:focus,
-button.link:hover,
-button.link:focus {
-  color: #21243d ;
-}
+.links2details:hover { color: #21243d; }
 
 #iw-container {
 	margin-bottom: 10px;
 }
+
+
 #iw-container .iw-title {
 	font-family: 'Nunito Sans', 'Open Sans Condensed', sans-serif;
 	font-size: 22px;
 	font-weight: 400;
-	padding: 10px;
+/*	padding: 10px;*/
 	background-color: #FFF;
 	color: white;
 	margin: 0;
@@ -36,7 +35,7 @@ button.link:focus {
 	line-height: 18px;
 	font-weight: 400;
 	margin-right: 1px;
-	padding: 5px 5px 5px 5px;
+/*	padding: 5px 5px 5px 5px;*/
 	max-height: 110px;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -49,18 +48,18 @@ button.link:focus {
 
     .sidenav {
         height: 735px;
-        width: 25%;
+        width: 18%;
         position: absolute;
         z-index: 1;
         /*  top: 0;*/
         left: 0;
         background-color: #21243d;
         overflow-x: hidden;
-        padding-top: 20px;
+/*        padding-top: 20px;*/
     }
 
     .sidenav a {
-        padding: 6px 8px 6px 16px;
+/*        padding: 6px 8px 6px 16px;*/
         text-decoration: none;
         font-size: 25px;
         color: #818181;
@@ -88,7 +87,7 @@ button.link:focus {
         color: rgba(255, 255, 255, 0.8); }
     .next .form-group .form-field {
         position: relative;
-        display: block; }
+        display: block;}
     .next .form-group .form-control {
         padding: 0;
         padding-left: 20px;
@@ -99,10 +98,12 @@ button.link:focus {
         border: none !important;
         color: rgba(255, 255, 255, 0.4) !important;
         background: transparent !important;
+/*        background: transparent !important;*/
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         -ms-border-radius: 0;
         border-radius: 0; }
+/*
     .next .form-group .form-control::-webkit-input-placeholder {
         color: rgba(255, 255, 255, 0.4) !important; }
     .next .form-group .form-control::-moz-placeholder {
@@ -111,8 +112,9 @@ button.link:focus {
         color: rgba(255, 255, 255, 0.4) !important; }
     .next .form-group .form-control:-moz-placeholder {
         color: rgba(255, 255, 255, 0.4) !important; }
+*/
     .next .form-group .form-control.btn {
-        padding: 22px 10px !important;
+/*        padding: 22px 10px !important;*/
         font-size: 16px;
         background: #24A148 !important;
         border: none !important;
@@ -146,7 +148,7 @@ button.link:focus {
     }
 
     @media screen and (max-height: 450px) {
-        .sidenav {padding-top: 15px;}
+/*        .sidenav {padding-top: 15px;}*/
         .sidenav a {font-size: 18px;}
     }
 </style>
@@ -155,6 +157,10 @@ button.link:focus {
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     {% include 'site/header.html' %}
 </head>
+    <script
+      src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"
+      data-auto-a11y="true"
+    ></script>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -181,24 +187,24 @@ button.link:focus {
 <section class="hero-wrap hero-wrap-3" style="background-image: url('../static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
-        <!-- <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index">Home <i class="fa fa-chevron-right"></i></a></span> <span>Map<i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">Map</h1>
-          </div>
-        </div> -->
     </div>
+
 </section>
+
+   <div class="alert alert-warning" role="alert" style="text-align: center; margin: 0px 0px 0px 0px"> <i class="fas fa-exclamation-triangle"></i>
+          The information for some listings may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
+        </div>
+
 
 <body>
     <div id="canvas" style="height:100%;width:100%;">
-    <div id="map" style="width: 75%; height: 735px; float:right;"></div>
+    <div id="map" style="width: 82%; height: 735px; float:right;"></div>
     <section class="next">
     <div class="sidenav">
         <!--        <h2>Filter Options</h2>-->
 
         <!-- first filter option -->
-        <form action="filtering" method="get">
+        <form id="form">
         <div class="form-group">
             <label for="#">Ownership Type</label>
             <div class="form-field">
@@ -247,25 +253,17 @@ button.link:focus {
             <div class="form-field">
                 <div class="select-wrap">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                    <div class="select">
                     <select name="income" id="income" class="form-control">
                         <option value="none" style="background-color: #21243d;">No Preference</option>
                         <option value="very" style="background-color: #21243d;">Very Low Income</option>
                         <option value="low" style="background-color: #21243d;">Low Income</option>
                         <option value="moderate" style="background-color: #21243d;">Moderate Income</option>
                     </select>
+                        </div>
                 </div>
             </div>
         </div>
-
-<!--
-        <div class="form-group">
-            <label for="#">Town</label>
-            <div class="form-field">
-                <div class="icon"><span class="fa fa-search"></span></div>
-                <input type="text" value="{{ prevTown }}" name="town"class="form-control" placeholder="Town">
-            </div>
-        </div>
--->
 
             <div class="form-group">
             <label for="#">County</label>
@@ -279,10 +277,11 @@ button.link:focus {
         </div>
 
             <div class="form-group">
-            <label for="#">Town</label>
+            <label for="#">Municipality</label>
             <div class="form-field">
                 <div class="select-wrap" id="towns_drop">
                     <div class="icon"><span class="fa fa-chevron-down"></span></div>
+
                     <select name="town" id="town" class="form-control">
                     </select>
             </div>
@@ -297,9 +296,12 @@ button.link:focus {
                 <input type="text" id="zip"  name="zip" class="form-control" placeholder="Zip Code">
             </div>
         </div>
-
         </form>
+				<span style="display: flex; justify-content: left; align-items: center; margin-left: 5%; height: 100px;">
+				<button onclick="document.getElementById('form').reset()" id="reset" class="btn btn-primary">Reset Search</button>
+			</span>
     </div>
+
 </section>
 
 </div>
@@ -371,9 +373,11 @@ window.onload = function() {
             type="text/javascript"></script>
 </head>
 <script type="text/javascript">
-function map_pop(info, ro) {
-    var addressesInfo = {{ info|safe }};
-    var locations = {{ ro }};
+function map_pop() {
+
+		var addressesInfo = arguments[0];
+		var locations = arguments[1];
+
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
             center: new google.maps.LatLng(40.3431, -74.6551),
@@ -384,31 +388,31 @@ function map_pop(info, ro) {
 
         var marker, i;
 
-        for (i = 0; i < locations.length; i++) {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
-                map: map
-            });
+								for (i = 0; i < locations.length; i++) {
 
+				            marker = new google.maps.Marker({
+				                position: new google.maps.LatLng(parseFloat(locations[i][0]), parseFloat(locations[i][1])),
+				                map: map});
 
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infowindow.setContent('<div id="iw-container">' +
-                      '<div class="iw-title" >' +
-'<a class="hover" href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">' +
-                    String(addressesInfo[i][2]) + '</a></div><div class="iw-content">' +
-                 '<img src="/static/images/house_icon.png" height="75" width="83">' +
-                          '<p>Total units: ' + locations[i][3] +
-                          '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
-                          '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
-                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
-                          '</p><p style="text-align: center;">Click ' +
-'<a href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[i][0]) + '", target="_blank">here</a>' +
-                      ' to learn more!</p></div>');
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
-        } }
+												google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						                return function() {
+						                    infowindow.setContent('<div id="iw-container">' +
+						                      '<div class="iw-title" >' +
+						'<a class="links2details" href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[0][i][0]) + '", target="_blank">' +
+						                    String(addressesInfo[0][i][2]) + '</a></div><div class="iw-content">' +
+						                 '<img src="/static/images/house_icon.png" height="75" width="83">' +
+						                          '<p>Total units: ' + locations[i][3] +
+						                          '<br>Units with 1 bedroom: ' + parseInt(locations[i][4]) +
+						                          '<br>Units with 2 bedrooms: ' + parseInt(locations[i][5])  +
+						                          '<br>Units with 3+ bedrooms: ' + parseInt(locations[i][6]) +
+                                                  '</p><p style="text-align: center;">Click <a href="details?id=' + locations[i][2] + '&adr=' + encodeURIComponent(addressesInfo[0][i][0]) + '", target="_blank">here</a> for more info</p></div>');
+						                    infowindow.open(map, marker);
+						                }
+						            })(marker, i));
+
+				        }
+
+			 }
     </script>
 
 
@@ -421,13 +425,32 @@ function map_pop(info, ro) {
       function handleResponse(response)
        {
 
-         var ro1 = response[0],
-              info1=response[1],
-              counties=response[2],
-              towns=response[3],
-              det=response[4];
+         var rowrow = response[0];
+          var info1=response[1];
+          var  counties=response[2];
+            var  towns=response[3];
+            var  det=response[4];
 
-              map_pop(ro1, info1);
+							var myListofArrays2 = [];
+
+
+							function concatAllArrays() {
+								for (var i = 0; i < arguments.length; i++) {
+									if (!Array.isArray(myListofArrays2[i])) {
+										myListofArrays2[i] = [];
+									}
+									myListofArrays2[i] = myListofArrays2[i].concat(arguments[i]);
+								}
+							}
+
+							concatAllArrays(info1);
+							var param2 =  [];
+							param2[0]= myListofArrays2;
+							param2[1]= rowrow;
+
+
+							map_pop.apply(this, param2);
+
        }
 
        let request = null;
@@ -437,24 +460,67 @@ function map_pop(info, ro) {
 
         let ownership = $('#ownership').val();
         ownership = encodeURIComponent(ownership);
+        console.log(ownership)
+        if (ownership != "none") {
+            document.getElementById("ownership").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("ownership").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let property = $('#property').val();
         property = encodeURIComponent(property);
+          if (property != "none") {
+              document.getElementById("property").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("property").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let bedrooms = $('#bedrooms').val();
         bedrooms = encodeURIComponent(bedrooms);
+          if (bedrooms != "none") {
+            document.getElementById("bedrooms").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("bedrooms").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let income = $('#income').val();
         income = encodeURIComponent(income);
+          if (income != "none") {
+            document.getElementById("income").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("income").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let town = $('#town').val();
         town = encodeURIComponent(town);
+          if (town != "none") {
+            document.getElementById("town").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("town").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let county = $('#county').val();
         county = encodeURIComponent(county);
+          if (county != "none") {
+            document.getElementById("county").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("county").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let zip = $('#zip').val();
         zip = encodeURIComponent(zip);
+          if (zip != "none") {
+            document.getElementById("zip").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("zip").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
         let url = '/map-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
 
@@ -484,13 +550,30 @@ function map_pop(info, ro) {
         $('#town').on('input', getResults);
         $('#county').on('input', getResults);
         $('#zip').on('input', getResults);
-        // $('#reset').on('click', getResults);
+        $('#reset').on('click', getResults);
       }
 
       $('document').ready(setup);
-      map_pop()
-    </script>
+			let ro1 = {{ro}};
+			var i = {{info | tojson}};
+			var myListofArrays = [];
 
+
+			function concatAllArrays() {
+			  for (var i = 0; i < arguments.length; i++) {
+			    if (!Array.isArray(myListofArrays[i])) {
+			      myListofArrays[i] = [];
+			    }
+			    myListofArrays[i] = myListofArrays[i].concat(arguments[i]);
+			  }
+			}
+
+			concatAllArrays(i);
+			var par =  [];
+			par[0]=  myListofArrays;
+			par[1]= ro1;
+			map_pop.apply(this, par);
+    </script>
 
     </body>
 </html>

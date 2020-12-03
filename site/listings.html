@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="position:relative; min-height: 100%;">
 <style>
 .dataTable {
   border-collapse: collapse;
@@ -18,6 +18,16 @@
 .fa-home {
     padding-right: 5px;
   }
+.pageContentWrapper{
+  margin-bottom:75px;/* Height of footer*/
+} 
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
 </style>
 <head>
     <script
@@ -27,7 +37,7 @@
       {% include 'site/header.html' %}
 </head>
 <body>
-
+    <div class="pageContentWrapper">
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="index">mapFSH</a>
@@ -67,7 +77,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="search-wrap-1 ftco-animate p-4">
-            <form action="/list-filtering" class="search-property-1" id='form'>
+            <form class="search-property-1" id='form'>
               <div class="row">
                 <div class="col-sm-auto align-items-end">
                   <div class="form-group">
@@ -151,7 +161,7 @@
 
                 <div class="col-sm align-items-end">
                   <div class="form-group">
-                    <label for="#">Town</label>
+                    <label for="#">Municipality</label>
                     <div class="form-field">
                       <div class="select-wrap" id="towns_drop">
                         <div class="icon"><span class="fa fa-chevron-down"></span></div>
@@ -241,7 +251,6 @@ window.onload = function() {
     </script>
 
     <main>
-
       <div class="container-fluid">
           <h1 class="mt-4"></h1>
           <div class="card mb-4">
@@ -278,11 +287,14 @@ window.onload = function() {
         </div>
 
       </main>
-      <div class="alert alert-warning" role="alert" style="text-align: center;"> <i class="fas fa-exclamation-triangle"></i>
-        The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
-      </div>
 
+      <div class="alert alert-warning" role="alert" style="text-align: center;"> <i class="fas fa-exclamation-triangle"></i>
+      The information for each listing may be inconsistent or incomplete. For any questions or concerns, please contact the agent in the Contact Information section, or the municipality.
+    </div>
+  </div>
+    <div class="footer">
       {% include 'site/footer.html' %}
+    </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
       </script>
@@ -301,26 +313,70 @@ window.onload = function() {
         function getResults()
         {
 
-          let ownership = $('#ownership').val();
-          ownership = encodeURIComponent(ownership);
+        let ownership = $('#ownership').val();
+        ownership = encodeURIComponent(ownership);
+        console.log(ownership)
+        if (ownership != "none") {
+            document.getElementById("ownership").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("ownership").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let property = $('#property').val();
-          property = encodeURIComponent(property);
+        let property = $('#property').val();
+        property = encodeURIComponent(property);
+         if (property != "none") {
+            document.getElementById("property").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("property").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let bedrooms = $('#bedrooms').val();
-          bedrooms = encodeURIComponent(bedrooms);
+        let bedrooms = $('#bedrooms').val();
+        bedrooms = encodeURIComponent(bedrooms);
+          if (bedrooms != "none") {
+            document.getElementById("bedrooms").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("bedrooms").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let income = $('#income').val();
-          income = encodeURIComponent(income);
+        let income = $('#income').val();
+        income = encodeURIComponent(income);
+          if (income != "none") {
+            document.getElementById("income").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("income").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let town = $('#town').val();
-          town = encodeURIComponent(town);
+        let town = $('#town').val();
+        town = encodeURIComponent(town);
+          if (town != "none") {
+            document.getElementById("town").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("town").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let county = $('#county').val();
-          county = encodeURIComponent(county);
+        let county = $('#county').val();
+        county = encodeURIComponent(county);
+          if (county != "none") {
+            document.getElementById("county").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("county").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
 
-          let zip = $('#zip').val();
-          zip = encodeURIComponent(zip);
+        let zip = $('#zip').val();
+        zip = encodeURIComponent(zip);
+          if (zip != "none") {
+            document.getElementById("zip").style = "color: #24A148 !important;";
+        }
+          else {
+              document.getElementById("zip").style = "color: rgba(255, 255, 255, 0.4) !important";
+          }
+
 
           let url = '/list-filtering?ownership=' + ownership + "&property=" + property  + "&bedrooms=" + bedrooms + "&income=" + income + "&town="  + town + "&county=" + county + "&zip=" +  zip
 
@@ -359,5 +415,9 @@ window.onload = function() {
       <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
       <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
       <script src="static/assets/demo/datatables-demo.js"></script>
+      <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+
   </body>
 </html>

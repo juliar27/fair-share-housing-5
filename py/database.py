@@ -389,7 +389,13 @@ def get_favorite_listings(favorites):
     database.connect()
     ids = []
     rows = []
-    for idadr in favorites:
+    favorites_new = []
+
+    for i in favorites:
+        i = i.replace('%27', "\'")
+        favorites_new.append(i)
+
+    for idadr in favorites_new:
         id = idadr.split(';')[0]
         adr = ';'.join(idadr.split(';')[1:])
         cursor = database._connection.cursor()
@@ -397,6 +403,7 @@ def get_favorite_listings(favorites):
           " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
           "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
           "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
+
         cursor.execute(stmt)
         row = cursor.fetchone()
         if row is not None and len(row) > 0:

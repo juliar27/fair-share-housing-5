@@ -53,7 +53,7 @@ def auth_email(receiver_email, link, server):
         <html>
           <body>
             <p>
-               Please verify your mapFSH account: {{link}}
+               Thanks for making an account with mapFSH. Please verify your mapFSH account: {{link}}
                <br><br>
                mapFSH
             </p>

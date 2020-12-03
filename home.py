@@ -6,9 +6,7 @@ from py.database import Database, get_tables, edit_listings, add_to_table, get_r
 from py.download import download
 from py.auth import Server
 from py.map import filter_function, query2, query3, query, html_for_listings
-from py.form import AddForm
 from werkzeug.datastructures import MultiDict
-from threading import Thread
 from rq import Queue
 from worker import conn
 from datetime import timedelta

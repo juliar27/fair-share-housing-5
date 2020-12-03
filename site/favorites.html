@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="position:relative; min-height: 100%;">
 <style>
 .table {
   border-collapse: collapse;
@@ -16,17 +16,20 @@
   color: white;
 }
 .dataTables_filter, .dataTables_info { display: none; }
+.pageContentWrapper{
+  margin-bottom:75px;/* Height of footer*/
+}
 .fa-home {
     padding-right: 5px;
   }
 
-  .footer {
-    position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-  }
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
 
 </style>
 <head>
@@ -42,8 +45,30 @@
 </head>
 <body>
 
-	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index">mapFSH</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+
+          <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="map" class="nav-link">Map</a></li>
+      <li class="nav-item"><a href="listings" class="nav-link">Listings</a></li>
+      <li class="nav-item active"><a href="favorites" class="nav-link">Favorites</a></li>
+          <li class="nav-item"><a href="login" class="nav-link">Admin</a></li>
+        </ul>
+      </div>
+
+
+    </div>
+  </nav>
+
+    <div class="pageContentWrapper">
+	  <!-- <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid">
 	      <a class="navbar-brand" href="index">mapFSH</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
@@ -59,7 +84,7 @@
 	        </ul>
 	      </div>
 	    </div>
-	  </nav>
+	  </nav> -->
     <!-- END nav -->
 
     <section class="hero-wrap hero-wrap-7" style="background-image: url('static/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -117,7 +142,6 @@
             <script src="static/js/jquery.min.js"></script>
                         <script>
                             function toggler(x, id, adr) {
-                                console.log(adr);
                                 var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
                                 var index = favorites.indexOf(id + ";" + adr);
                                 if (index == -1) {
@@ -161,7 +185,7 @@
                                             else {
                                               var ids = e['responseJSON']['out'][1];
                                               for (let i = 0; i < rows.length; i++) {
-                                                  to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]) + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0].replace(/'/g, '%27') + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]).replace(/'/g, '%27') + "' target='_blank'>" + rows[i][0] + "</a></td>"];
                                                   for (let j = 2; j < rows[i].length; j++) {
                                                       to_add.push("<td>" + rows[i][j] + "</td>");
                                                   }
@@ -180,12 +204,11 @@
                         </script>
           </div>
       </main>
+    </div>
 
-
-
-      <div class="footer">
-        {% include 'site/footer.html' %}
-      </div>
+    <div class="footer">
+      {% include 'site/footer.html' %}
+    </div>
 
   </body>
 </html>
