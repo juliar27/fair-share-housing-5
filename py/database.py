@@ -399,9 +399,9 @@ def get_favorite_listings(favorites):
           "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
         cursor.execute(stmt)
         row = cursor.fetchone()
-
-        ids.append(row[0])
-        rows.append(row[1:])
+        if row is not None and len(row) > 0:
+            ids.append(row[0])
+            rows.append(row[1:])
     return rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 def get_tables():

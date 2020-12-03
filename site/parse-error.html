@@ -11,7 +11,7 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
-
+                          <p style="color: red">We detected some issues in the file you uploaded. Please correct these issues and click <a href='/upload'>here</a> to try again.</a>.</p>
                           {% if empty_excel !=  []: %}
                           {% for a, y in empty_excel %}
                            Missing Column <span style="color: #24A146;">{{ a }}</span>. This column must be populated with <span style="color: #24A146;">{{ y }}</span>.  <br>

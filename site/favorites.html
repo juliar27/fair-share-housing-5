@@ -154,13 +154,19 @@
                                         url: '/getfavs',
                                         complete: function (e) {
                                             var rows = e['responseJSON']['out'][0];
-                                            var ids = e['responseJSON']['out'][1];
-                                            for (let i = 0; i < rows.length; i++) {
-                                                to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]) + "' target='_blank'>" + rows[i][0] + "</a></td>"];
-                                                for (let j = 2; j < rows[i].length; j++) {
-                                                    to_add.push("<td>" + rows[i][j] + "</td>");
-                                                }
-                                                t.row.add(to_add).draw();
+                                            if (rows.length === 0) {
+                                              $('#resultsParagraph').html('<br>You currently do not have any favorites.<br><br> <a style="font-size:20px" class="btn btn-primary" href="/map">Click here to find some.</a><br><br> ');
+                                              $('#table').html('');
+                                            }
+                                            else {
+                                              var ids = e['responseJSON']['out'][1];
+                                              for (let i = 0; i < rows.length; i++) {
+                                                  to_add = ["<i class='fa fa-heart' style='color:red' onclick=" + '"toggler(this, ' + "'" + ids[i] + "', '" + rows[i][0] + "'" + ')"' + '></i>', "<a href='details?id=" + ids[i] + "&adr=" + encodeURIComponent(rows[i][0]) + "' target='_blank'>" + rows[i][0] + "</a></td>"];
+                                                  for (let j = 2; j < rows[i].length; j++) {
+                                                      to_add.push("<td>" + rows[i][j] + "</td>");
+                                                  }
+                                                  t.row.add(to_add).draw();
+                                              }
                                             }
 
                                         },
