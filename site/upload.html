@@ -1,13 +1,6 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
-{% if not current_user.is_authenticated: %}
-<script>
-    window.location = "/login";
-</script>
-
-  {% else: %}
-
     <head>
       {% include 'site/admin-header.html' %}
     </head>
@@ -16,24 +9,27 @@
 
      <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fllid">
+
+
+                    <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
-                        <p>Please choose a .xls or .xlsx file to upload.</p>
+
+                        <div class="alert alert-info">
+                            <strong> Some things to consider: </strong>
+                            <ul>
+                              <li>For every row in your spreadsheet, if that row's listing ID is not in the current database, that row will be added.</li>
+                              <li>If the listing ID for a spreadsheet row is in the current database, the database will be updated to match the information in the spreadsheet for that row.</li>
+                              <li>This will not remove any rows from the database that are not in the spreadsheet.</li>
+                            </ul>
+                          </div>
+
+                        <p>Please choose a .xls or .xlsx file to upload.</p> 
                         <p id='errorPar' style='color:red'></p>
                         <form id='filesubmit' enctype = "multipart/form-data">
                             <input type = "file" id = 'file' name = "file" accept=".xlsx,.xls"/>
                             <input id='submit' type = "submit"/>
                         </form>
-                        <br>
-                    </div>
-                    <div class="alert alert-info">
-                      <strong> Some things to consider: </strong>
-                      <ul>
-                        <li>For every row in your spreadsheet, if that row's listing ID is not in the current database, that row will be added.</li>
-                        <li>If the listing ID for a spreadsheet row is in the current database, the database will be updated to match the information in the spreadsheet for that row.</li>
-                        <li>This will not remove any rows from the database that are not in the spreadsheet.</li>
-                      </ul>
-                    </div>
+                          </div>
                 </main>
 
 
@@ -72,6 +68,5 @@
         {% include 'site/admin-footer.html' %}
     </body>
 
- {% endif %}
-
 </html>
+
