@@ -18,11 +18,17 @@
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Upload Data</h1>
+                        <p>Please choose a .xls or .xlsx file to upload.</p> 
                         <p id='errorPar' style='color:red'></p>
                         <form id='filesubmit' enctype = "multipart/form-data">
-                        <input type = "file" id = 'file' name = "file" accept=".xlsx,.xls"/>
-                        <input id='submit' type = "submit"/>
-                     </form>
+                            <input type = "file" id = 'file' name = "file" accept=".xlsx,.xls"/>
+                            <input id='submit' type = "submit"/>
+                        </form>
+                        <br>
+                        <p>Some things to consider:</p>
+                        <p> 1. For every row in your spreadsheet, if that row's listing ID is not in the current database, that row will be added.</p>
+                        <p> 2. If the listing ID for a spreadsheet row is in the current database, the database will be updated to match the information in the spreadsheet for that row.</p>
+                        <p> 3. This will not remove any rows from the database that are not in the spreadsheet.</p>
                     </div>
                 </main>
 
