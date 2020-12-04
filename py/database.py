@@ -1,13 +1,75 @@
 import os
 from psycopg2 import connect
 from googlemaps import Client as GoogleMaps
-import py.parse
 
 # ----------------------------------------------------------------------------------------------------------------------
 def double_up(s):
     return s.replace("'", "''")
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+def is_int(s):
+    try:
+        int(s)
+        return True
+    except:
+        return False
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+def parse_hyphen(s, numbers):
+    try:
+        index = s.index('-', 1, -1)
+        start, end = 0, 0
+        if is_int(s[:index]):
+            start = int(s[:index])
+        if is_int(s[index + 1:]):
+            end = int(s[index + 1:])
+
+        if start > 0 and end > 0:
+            numbers += [str(x) for x in range(start, end + 1)]
+    except:
+        if is_int(s) or s[-1].isalpha() and is_int(s[:-1]):
+            numbers.append(s)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+def parse_comma(s):
+    split = s.split(",")
+    commas = len(split)
+    split = [x.split() for x in split]
+    split = [x for y in split for x in y]
+    if split[commas - 1] == 'and':
+        split.pop(commas - 1)
+        commas += 1
+    elif split[commas] == 'and':
+        split.pop(commas)
+        commas += 1
+    numbers = []
+    for i in range(commas):
+        parse_hyphen(split[i], numbers)
+    if len(numbers) == 0:
+        return [s]
+    streetname = ' '.join(split[commas:])
+    return list(dict.fromkeys([x + " " + streetname for x in numbers]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------------------------------
+def parse_address(s):
+    if len(s) == 0:
+        return []
+    split = s.split(';')
+    for i in range(len(split)):
+        if split[i][0] in (' ', '\t', '\n'):
+            split[i] = split[i][1:]
+    split = sum([parse_comma(x) for x in split], [])
+    return split
+#-----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 def get_coordinates(address, county, map):
@@ -59,11 +121,12 @@ class Database:
         cursor.execute("DELETE FROM addresses")
         cursor.execute("DELETE FROM cities")
         cursor.execute("DELETE FROM counties")
+        cursor.close()
 
     # ------------------------------------------------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------------------------------------------------
-    def add_record(self, record, mapsObj):
+    def add_record(self, record):
         stmt = "INSERT INTO listings ("
         values = "VALUES ("
         pruned = record.copy()
@@ -92,9 +155,6 @@ class Database:
         cursor = self._connection.cursor()
         cursor.execute(stmt + values)
         if "address" in pruned:
-            # coordinates = "error"
-            # if "county" in record:
-            #     coordinates = get_coords(record["address"][0],record['county'], mapsObj)
             for address in record["address"]:
                 stmt = "INSERT INTO addresses (listingid, address, coordinates) VALUES " \
                        + "('%s', '%s', '%s')" % (record["listingid"], double_up(address),"40.0,40.0")
@@ -135,7 +195,7 @@ class Database:
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-    def edit_record(self, record, mapsObj):
+    def edit_record(self, record):
         cursor = self._connection.cursor()
         if "addresses" in record:
             stmt = "SELECT addresses FROM listings WHERE listingid = " + record["listingid"]
@@ -194,16 +254,16 @@ class Database:
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-    def insert(self, record, mapsObj):
+    def insert(self, record):
         cursor = self._connection.cursor()
         cursor.execute("SELECT 1 FROM listings WHERE listingid = " + record["listingid"])
         row = cursor.fetchone()
 
         if row is None:
-            self.add_record(record, mapsObj)
+            self.add_record(record)
             addressed = True
         else:
-            addressed = self.edit_record(record, mapsObj)
+            addressed = self.edit_record(record)
         cursor.close()
         return addressed
 # ----------------------------------------------------------------------------------------------------------------------
@@ -263,295 +323,97 @@ class Database:
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def clear():
-    database = Database()
-    database.connect()
-    database.clear()
-    database.disconnect()
+    def get_favorite_listings(self, ids, adrs):
+        final_ids = []
+        final_rows = []
+        for i in range(len(ids)):
+            id = ids[i]
+            adr = adrs[i]
+            cursor = self._connection.cursor()
+            stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
+            " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
+            "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+            "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
+            cursor.execute(stmt)
+            row = cursor.fetchone()
+            if row is not None and len(row) > 0:
+                final_ids.append(row[0])
+                final_rows.append(row[1:])
+        cursor.close()
+        return final_rows, final_ids
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def delete(row):
-    database = Database()
-    database.connect()
-    database.delete_record(row)
-    database.disconnect()
-# ----------------------------------------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------------------------------------
-def edit_listings(form):
-    lookup = {0:'listingid', 1:'name', 2:'developer', 3:'status',
-    4:'compliance', 5:'agent', 6:'address', 7:'municipality', 8:'county', 9:'municode',
-    10:'region', 11:'v1', 12:'v2', 13:'v3', 14:'l1', 15:'l2',
-    16:'l3', 17:'m1', 18:'m2', 19:'m3', 20:'vssn', 21:'lssn', 22:'mssn',
-    23:'famsale', 24:'famrent', 25:'srsale', 26:'srrent', 27:'ssnsale',
-    28:'ssnrent', 29:'total', 30:'family', 31:'sr', 32: 'ssn',
-    33:'br1', 34:'br2', 35:'br3'}
-    records = {}
-    rows = get_tables()
-    for item in form:
-        current = item.split(';')
-        value = form[item]
-        if int(current[1]) > 9 and form[item] == 'None':
-            value = '0'
-        if int(current[0]) <= len(rows) and value == rows[int(current[0]) - 1][int(current[1])]:
-            continue
-        if not current[0] in records:
-            records[current[0]] = {}
-        records[current[0]][lookup[int(current[1])]] = value
-    for record in records:
-        edit_tables(records[record], record)
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------------------------------------
-def get_listings():
-   database = Database()
-   database.connect()
-   cursor = database._connection.cursor()
-   stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
-          " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
-          "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-          "listings.municode = cities.municode AND cities.county = counties.county"
-   cursor.execute(stmt)
-   rows = []
-   ids = []
-   row = cursor.fetchone()
-   while row is not None:
-       ids.append(row[0])
-       rows.append(row[1:])
-       row = cursor.fetchone()
-
-   database.disconnect()
-
-   return rows, ids
-# ----------------------------------------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------------------------------------
-def get_row(listingid):
-   database = Database()
-   database.connect()
-   cursor = database._connection.cursor()
-   stmt = "SELECT listings.*, cities.municipality, counties.county, counties.region FROM " + \
-           "listings, cities, counties WHERE listings.listingid = " + str(listingid) + " AND " + \
-           "listings.municode = cities.municode AND cities.county = counties.county"
-   cursor.execute(stmt)
-   row = list(cursor.fetchone())
-   for i in range(6, 31):
-       if row[i] is None:
-           row[i] = 0
-   result = {}
-   result['id'] = listingid
-   result['name'] = row[1]
-   result['developer'] = row[2]
-   result['status'] = row[3]
-   result['compliance'] = row[4]
-   result['municode'] = row[5]
-   result['vli1'] = row[6]
-   result['vli2'] = row[7]
-   result['vli3'] = row[8]
-   result['li1'] = row[9]
-   result['li2'] = row[10]
-   result['li3'] = row[11]
-   result['m1'] = row[12]
-   result['m2'] = row[13]
-   result['m3'] = row[14]
-   result['vssn'] = row[15]
-   result['lssn'] = row[16]
-   result['mssn'] = row[17]
-   result['famsale'] = row[18]
-   result['famrent'] = row[19]
-   result['srsale'] = row[20]
-   result['srrent'] = row[21]
-   result['ssnsale'] = row[22]
-   result['ssnrent'] = row[23]
-   result['total'] = row[24]
-   result['family'] = row[25]
-   result['senior'] = row[26]
-   result['ssn'] = row[27]
-   result['total1'] = row[28]
-   result['total2'] = row[29]
-   result['total3'] = row[30]
-   result['address'] = row[31]
-   result['agent'] = row[32]
-   result['muni'] = row[33]
-   result['county'] = row[34]
-   result['region'] = row[35]
-   cursor.close()
-   database.disconnect()
-   return result
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-
-def get_favorite_listings(favorites):
-    database = Database()
-    database.connect()
-    ids = []
-    rows = []
-    favorites_new = []
-
-    for i in favorites:
-        i = i.replace('%27', "\'")
-        favorites_new.append(i)
-
-    for idadr in favorites_new:
-        id = idadr.split(';')[0]
-        adr = ';'.join(idadr.split(';')[1:])
-        cursor = database._connection.cursor()
+    def get_listings(self):
+        cursor = self._connection.cursor()
         stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county, listings.status, listings.br1," \
-          " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
-          "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-          "listings.municode = cities.municode AND cities.county = counties.county AND listings.listingid = " + id + " AND addresses.address = '" + double_up(adr) + "'"
-
+                " listings.br2, listings.br3, listings.total, listings.family, listings.sr, listings.ssn FROM " + \
+                "listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+                "listings.municode = cities.municode AND cities.county = counties.county"
         cursor.execute(stmt)
+        rows = []
+        ids = []
         row = cursor.fetchone()
-        if row is not None and len(row) > 0:
+        while row is not None:
             ids.append(row[0])
             rows.append(row[1:])
-    return rows, ids
-# ----------------------------------------------------------------------------------------------------------------------
-def get_tables():
-   database = Database()
-   database.connect()
-   rows = database.get_rows()
-   database.disconnect()
-   return rows
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-def add_to_table(form):
-   mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-
-   record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
-             'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
-             'compliance': form.get('compliance'), 'address': py.parse.parse_address(form.get('address')),
-             'addresses': form.get('address'),
-             'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
-             'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
-             'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),
-             'ssnrent': form.get('ssnrent'), 'v1': form.get('vli1'), 'v2': form.get('vli2'), 'v3': form.get('vli3'),
-             'vssn': form.get('vssn'), 'l1': form.get('li1'), 'l2': form.get('li2'), 'l3': form.get('li3'),
-             'lssn': form.get('lssn'), 'm1': form.get('m1'), 'm2': form.get('m2'), 'm3': form.get('m3'),
-             'mssn': form.get('mssn'), 'br1': form.get('total1'), 'br2': form.get('total2'), 'br3': form.get('total3')}
-
-   deletelist = []
-   for column, value in record.items():
-       if value == '':
-           deletelist.append(column)
-   for i in deletelist:
-       del record[i]
-
-   database = Database()
-   database.connect()
-   cursor = database._connection.cursor()
-   cursor.execute('SELECT listingid from listings')
-   row = cursor.fetchone()
-   new_id = 1
-
-   while row is not None:
-       if int(row[0]) >= new_id:
-           new_id = int(row[0]) + 1
-       row = cursor.fetchone()
-   record['listingid'] = str(new_id)
-   database.add_record(record, mapsObj)
-   cursor.close()
-   database.disconnect()
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-def edit_table(form, listingid):
-   mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-
-   record = {'municode': form.get('municode'), 'municipality': form.get('muni'), 'county': form.get('county'),
-             'region': form.get('region'), 'name': form.get('name'), 'developer': form.get('developer'),
-             'compliance': form.get('compliance'), 'address': py.parse.parse_address(form.get('address')),
-             'addresses': form.get('address'), 'agent': form.get('agent'),
-             'total': form.get('total'), 'family': form.get('family'), 'sr': form.get('senior'),
-             'famsale': form.get('famsale'), 'famrent': form.get('famrent'), 'srsale': form.get('srsale'),
-             'srrent': form.get('srrent'), 'ssn': form.get('ssn'), 'ssnsale': form.get('ssnsale'),
-             'ssnrent': form.get('ssnrent'), 'v1': form.get('vli1'), 'v2': form.get('vli2'), 'v3': form.get('vli3'),
-             'vssn': form.get('vssn'), 'l1': form.get('li1'), 'l2': form.get('li2'), 'l3': form.get('li3'),
-             'lssn': form.get('lssn'), 'm1': form.get('m1'), 'm2': form.get('m2'), 'm3': form.get('m3'),
-             'mssn': form.get('mssn'), 'br1': form.get('total1'), 'br2': form.get('total2'), 'br3': form.get('total3')}
-
-   # deletelist = []
-   # for column, value in record.items():
-   #     if value == '':
-   #         deletelist.append(column)
-   # for i in deletelist:
-   #     del record[i]
-
-   database = Database()
-   database.connect()
-   record['listingid'] = listingid
-   database.edit_record(record, mapsObj)
-   database.disconnect()
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-def edit_tables(record, listingid):
-   mapsObj = None
-   if 'address' in record:
-       record['addresses'] = record['address']
-       record['address'] = py.parse.parse_address(record['address'])
-
-   record['listingid'] = listingid
-   # deletelist = []
-   # for column, value in record.items():
-   #     if value == '':
-   #         deletelist.append(column)
-   # for i in deletelist:
-   #     del record[i]
-
-   database = Database()
-   database.connect()
-   database.insert(record, mapsObj)
-   database.disconnect()
+            row = cursor.fetchone()
+        cursor.close()
+        return rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def coords():
-    rows, ids = get_listings()
-    x = []
-    addressInfo = []
-    for i in range(len(rows)):
-        addr = str(rows[i][0])
-        fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ USA"
-        coords = rows[i][1].split(',')
-        x.append([float(coords[0]), float(coords[1]), ids[i]])
-        addressInfo.append([addr, rows[i][1], fullAddr])
-    return x, addressInfo
+    def get_location(self):
+        cursor = self._connection.cursor()
+        stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
+                    "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
+                    "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
+                    "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
+                    "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
+                    "listings.municode = cities.municode AND cities.county = counties.county"
+        cursor.execute(stmt)
+
+        rows = []
+        ids = []
+
+        row = cursor.fetchone()
+        while row is not None:
+            ids.append(row[0])
+            row = list(row)
+            for i in range(6, 32):
+                if row[i] is None:
+                    row[i] = 0
+            row = tuple(row)
+            rows.append(row[1:])
+            row = cursor.fetchone()
+        cursor.close()
+
+        return rows, ids
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def get_details(self, id, adr):
+        stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
+            "addresses.listingid = %s AND addresses.address = %s"
+
+        cursor = self._connection.cursor()
+        cursor.execute(stmt, (id, adr))
+        row = cursor.fetchone()
+        cursor.close()
+        return row
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-
-def get_details(id, adr):
-    db = Database()
-    db.connect()
-
-    stmt = "SELECT addresses.address, addresses.coordinates FROM addresses WHERE " + \
-        "addresses.listingid = %s AND addresses.address = %s"
-
-    cursor = db._connection.cursor()
-    cursor.execute(stmt, (id, adr))
-    row = cursor.fetchone()
-
-    if row is None:
-        return 'Listing does not exist'
-
-    return row
+    def get_row(self, listingid):
+        cursor = self._connection.cursor()
+        stmt = "SELECT listings.*, cities.municipality, counties.county, counties.region FROM " + \
+                "listings, cities, counties WHERE listings.listingid = " + str(listingid) + " AND " + \
+                "listings.municode = cities.municode AND cities.county = counties.county"
+        cursor.execute(stmt)
+        row = list(cursor.fetchone())
+        cursor.close()
+        return row
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------------------------------------------------
-def get_coords(changed_addresses):
-   database = Database()
-   database.connect()
-   database.get_coords(changed_addresses)
-   database.disconnect()
-# ----------------------------------------------------------------------------------------------------------------------
