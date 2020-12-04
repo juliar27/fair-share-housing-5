@@ -417,3 +417,130 @@ class Database:
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+    def account_get(self, userid):
+        try:
+            cursor = self._connection.cursor()
+            query = "SELECT email from users where id = %s ;;"
+            cursor.execute(query, [str(userid)])
+            email = cursor.fetchone()
+            cursor.close()
+            if email is not None:
+                return email[0]
+            else:
+                return None
+        except:
+            return None
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def start_account(self, user):
+        first_name = user["inputFirstName"]
+        last_name = user["inputLastName"]
+        email = user["inputEmailAddress"]
+        password = user["inputPassword"]
+
+        cursor = self._connection.cursor()
+        query = "SELECT * FROM users WHERE email = %s ;;"
+        cursor.execute(query, [email])
+
+        if cursor.fetchone() is None:
+            query = "INSERT INTO users(email, password, first_name, last_name) VALUES(%s, crypt( %s, gen_salt('bf', 8)), %s, %s );"
+            cursor.execute(query, tuple([email, password, first_name, last_name]))
+        else:
+            cursor.close()
+            return False
+
+        id = self.get_id(email)[0]
+        cursor.close()
+        return id
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def get_password(self, email):
+        cursor = self._connection.cursor()
+        query = "SELECT password FROM users WHERE email = %s ;;"
+        cursor.execute(query, [email])
+        password = cursor.fetchone()
+        cursor.close()
+        return password
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def get_where_email_password(self, email, password, encrypted_password):
+        cursor = self._connection.cursor()
+        query = "SELECT * FROM users WHERE email = %s AND password = crypt(%s, %s);;"
+        cursor.execute(query, tuple([email, password, encrypted_password]))
+        ret = cursor.fetchone()
+        cursor.close()
+        return ret
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def authenticate(self, id):
+        try:
+            cursor = self._connection.cursor()
+            query = "SELECT * FROM users WHERE temp_id = %s ;;"
+            cursor.execute(query, [id])
+
+            if cursor.fetchone() is not None:
+                query = "UPDATE users SET temp_id = NULL, verified = NOT verified WHERE temp_id = %s ;;"
+                cursor.execute(query, [id])
+                cursor.close()
+                return True
+            cursor.close()
+            return False
+        except:
+            return False
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def valid_id(self, id):
+        try:
+            cursor = self._connection.cursor()
+            query = "SELECT * FROM users WHERE temp_id = %s ;;"
+            cursor.execute(query, [id])
+            ret = cursor.fetchone()
+            cursor.close()
+            return ret
+        except:
+            return False
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def update_password(self, password, id):
+        cursor = self._connection.cursor()
+        query = "UPDATE users SET password = crypt(%s, gen_salt('md5')), temp_id = NULL WHERE temp_id = %s ;"
+        cursor.execute(query, tuple([password, id]))
+        cursor.close()
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def get_id(self, email):
+        cursor = self._connection.cursor()
+        query = "SELECT id FROM users WHERE email = %s ;;"
+        cursor.execute(query, [email])
+        id = cursor.fetchone()
+        cursor.close()
+        return id
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def get_verified(self, email):
+        cursor = self._connection.cursor()
+        query = "SELECT verified FROM users WHERE email = %s ;;"
+        cursor.execute(query, [email])
+        verified = cursor.fetchone()
+        cursor.close()
+        return verified
+# ----------------------------------------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+    def set_temp_where_email(self, id, email):
+        cursor = self._connection.cursor()
+        query = "UPDATE users SET temp_id = %s WHERE email = %s ;;"
+        cursor.execute(query, tuple([id, email]))
+        cursor.close()
+# ----------------------------------------------------------------------------------------------------------------------
+

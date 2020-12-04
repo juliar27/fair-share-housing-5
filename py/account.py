@@ -7,63 +7,29 @@ import random
 
 # ----------------------------------------------------------------------------------------------------------------------
 def account_get(userid):
-    try:
-        database = Database()
-        database.connect()
-        cursor = database._connection.cursor()
-        query = "SELECT email from users where id = %s ;;"
-        cursor.execute(query, [str(userid)])
-        email = cursor.fetchone()
-        database.disconnect()
-        if email is not None:
-            return email[0]
-        else:
-            return None
-    except:
-        return None
+    database = Database()
+    database.connect()
+    email = database.account_get(userid)
+    database.disconnect()
+    return email
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
 def make_account(user, server):
     try:
-        first_name = user["inputFirstName"]
-        last_name = user["inputLastName"]
-        email = user["inputEmailAddress"]
-        password = user["inputPassword"]
-
         database = Database()
         database.connect()
-        cursor = database._connection.cursor()
-
-        query = "SELECT * from users where email = %s ;;"
-        cursor.execute(query, [email])
-
-        if cursor.fetchone() is None:
-            query = "INSERT INTO users(email, password, first_name, last_name) VALUES( %s, crypt( %s, gen_salt('bf', 8)),  %s, %s );"
-            cursor.execute(query, tuple([email, password, first_name, last_name]))
-        else:
-            database.disconnect()
-            return False
-
-        query = "SELECT id from users where email = %s ;;"
-        cursor.execute(query, [email])
-        id = cursor.fetchone()[0]
-
+        id = database.start_account(user)
         i = 0
         while i < 10:
             id += random.choice(string.ascii_letters)
             i += 1
 
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
-        print("Hi", email, link)
         auth_email(email, link, server)
 
-        query = "update users set temp_id = %s where email = %s ;;"
-
-        cursor.execute(query, tuple([id, email]))
-        database._connection.commit()
+        database.finish_account(id, email)
         database.disconnect()
-
         return True
 
     except:
@@ -81,39 +47,21 @@ def check_account(user):
 
         database = Database()
         database.connect()
-        cursor = database._connection.cursor()
-
-        query = "SELECT password from users where email = %s ;;"
-        cursor.execute(query, [email])
-
-        possible_password = cursor.fetchone()
-
+        possible_password = database.get_password(email)
         if possible_password:
             encrypted_password = possible_password[0]
-            query = "SELECT * from users where email = %s and password = crypt(%s, %s);;"
-            cursor.execute(query, tuple([email, password, encrypted_password]))
-
-            if cursor.fetchone() is None:
+            ret = database.get_where_email_password(email, password, encrypted_password)
+            if ret is None:
                 database.disconnect()
                 return False, False, False
-
-            else:
-                query = "SELECT verified from users where email = %s ;;"
-                cursor.execute(query, [email])
-                result = cursor.fetchone()[0]
-                if not result:
-                    database.disconnect()
-                    return False, False, True
-                else:
-                    query = "SELECT id from users where email = %s ;;"
-                    cursor.execute(query, [email])
-                    id = cursor.fetchone()
-                    database.disconnect()
-                    return True, id[0], False
-
-        else:
-            database.disconnect()
-            return False, False, False
+            result = database.get_verified(email)[0]
+            if not result:
+                database.disconnect()
+                return False, False, True
+            id = database.get_id(email)
+            return True, id[0], False
+        database.disconnect()
+        return False, False, False
 
     except:
         return False, False, False
@@ -124,19 +72,9 @@ def authenticate(id):
     try:
         database = Database()
         database.connect()
-        cursor = database._connection.cursor()
-        query = "select * from users where temp_id = %s ;;"
-        cursor.execute(query, [id])
-
-        if cursor.fetchone() is not None:
-            query = "update users set temp_id = NULL, verified = not verified where temp_id = %s ;;"
-            cursor.execute(query, [id])
-            database._connection.commit()
-            database.disconnect()
-            return True
-
+        ret = database.authenticate(id)
         database.disconnect()
-        return False
+        return ret
 
     except:
         return False
@@ -147,16 +85,9 @@ def valid_id(id):
     try:
         database = Database()
         database.connect()
-        cursor = database._connection.cursor()
-        query = "select * from users where temp_id = %s ;;"
-        cursor.execute(query, [id])
-
-        if cursor.fetchone() is not None:
-            database.disconnect()
-            return True
-        else:
-            database.disconnect()
-            return False
+        valid = database.valid_id(id)
+        database.disconnect()
+        return (valid is not None)
 
     except:
         return False
@@ -165,20 +96,12 @@ def valid_id(id):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def update_password(dict):
-    try:
-        id = dict['id']
-        password = dict['inputPassword']
-        database = Database()
-        database.connect()
-        cursor = database._connection.cursor()
-        query = "update users set password = crypt(%s, gen_salt('md5')), temp_id = NULL where temp_id = %s ;"
-        cursor.execute(query, tuple([password, id]))
-        database._connection.commit()
-        database.disconnect()
-        return
-
-    except:
-        return
+    id = dict['id']
+    password = dict['inputPassword']
+    database = Database()
+    database.connect()
+    database.update_password(password, id)
+    database.disconnect()
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -188,10 +111,7 @@ def recovery(dict, server):
         email = dict['inputEmailAddress']
         database = Database()
         database.connect()
-        cursor = database._connection.cursor()
-        query = "SELECT id from users where email = %s ;;"
-        cursor.execute(query, [email])
-        id = cursor.fetchone()
+        id = database.get_id(email)
 
         if id is not None:
             id = id[0]
@@ -200,14 +120,9 @@ def recovery(dict, server):
             return False, False
 
         if id is not None:
-            query = "SELECT verified from users where email = %s ;;"
-            cursor.execute(query, [email])
-            verified = cursor.fetchone()[0]
+            verified = database.get_verified(email)[0]
 
             if verified:
-                query = "SELECT temp_id from users where email = %s ;;"
-                cursor.execute(query, [email])
-
                 i = 0
                 while i < 10:
                     id += random.choice(string.ascii_letters)
@@ -217,9 +132,7 @@ def recovery(dict, server):
 
                 recovery_email(email, link,  server)
 
-                query = "update users set temp_id = %s where email = %s ;;"
-                cursor.execute(query, tuple([id, email]))
-                database._connection.commit()
+                database.set_temp_where_email(id, email)
                 database.disconnect()
 
                 return True, True
