@@ -447,13 +447,11 @@ class Database:
         if cursor.fetchone() is None:
             query = "INSERT INTO users(email, password, first_name, last_name) VALUES(%s, crypt( %s, gen_salt('bf', 8)), %s, %s );"
             cursor.execute(query, tuple([email, password, first_name, last_name]))
+            cursor.close()
+            return True
         else:
             cursor.close()
             return False
-
-        id = self.get_id(email)[0]
-        cursor.close()
-        return id
 # ----------------------------------------------------------------------------------------------------------------------
 
 

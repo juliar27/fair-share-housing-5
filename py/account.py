@@ -19,7 +19,10 @@ def make_account(user, server):
     try:
         database = Database()
         database.connect()
-        id = database.start_account(user)
+        is_new = database.start_account(user)
+        if not is_new:
+            return False
+        id = database.get_id(email)[0]
         i = 0
         while i < 10:
             id += random.choice(string.ascii_letters)
