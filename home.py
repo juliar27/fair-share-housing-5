@@ -2,14 +2,17 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 from py.parse import parse_file, parse_address
 from py.account import make_account, check_account, account_get, authenticate, recovery, update_password, valid_id
-from py.database import Database, get_tables, edit_listings, add_to_table, get_row, edit_table, get_coords, edit_tables, clear, delete, coords, get_favorite_listings, get_details
+from py.favorites import get_favorite_listings
 from py.download import download
 from py.auth import Server
-from py.map import filter_function, query2, query3, query, html_for_listings
+from py.query import filter_function, map_query, listings_query
+from py.details import get_details, get_row
+from py.admin import get_tables, edit_listings, delete, clear
 from werkzeug.datastructures import MultiDict
 from rq import Queue
 from worker import conn
 from datetime import timedelta
+from urllib.parse import quote_plus
 
 # ----------------------------------------------------------------------------------------------------------------------
 app = Flask(__name__, template_folder='.')
@@ -93,7 +96,7 @@ def show_home():
 @app.route('/filtering')
 @app.route('/map')
 def show_map():
-    x, addressInfo, counties, towns, rows, ids = query("none", "none", "none", "none", "none", "none", '')
+    x, addressInfo, counties, towns, rows, ids = map_query("none", "none", "none", "none", "none", "none", '')
     t = render_template('site/map.html', ro=x, info=addressInfo, counties=counties, towns=towns, det=rows)
 
     response = make_response(t)
@@ -126,7 +129,7 @@ def show_map_filtering():
     if zipCode is None:
         zipCode = ''
 
-    x, addressInfo, counties, towns, rows, ids = query(owner, prop, bed, income, town, county, zipCode)
+    x, addressInfo, counties, towns, rows, ids = map_query(owner, prop, bed, income, town, county, zipCode)
     y = jsonify([x, addressInfo, counties, towns, rows, ids])
     print(y)
     return make_response(y)
@@ -190,9 +193,14 @@ def show_filtered_listings():
     else:
         zipCode = ""
 
-    filtered_rows, filtered_ids, counties, towns = query2(owner, prop, bed, income, town, county, zipCode)
+    filtered_rows, filtered_ids, counties, towns = listings_query(owner, prop, bed, income, town, county, zipCode)
 
-    html = html_for_listings(filtered_rows, filtered_ids)
+    html = ''
+    for i in range(len(filtered_rows)):
+        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '&adr=' + str(quote_plus(filtered_rows[i][0])) + '\'' + 'target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
+        for j in range(2, len(filtered_rows[i])):
+            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
+        html += '</tr>'
     return make_response(html)
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -200,7 +208,7 @@ def show_filtered_listings():
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/listings')
 def show_listings():
-    filtered_rows, filtered_ids, counties, towns = query2("", "", "", "","none", "none", "")
+    filtered_rows, filtered_ids, counties, towns = listings_query("", "", "", "","none", "none", "")
     t = render_template('site/listings.html', rows=filtered_rows, ids=filtered_ids, counties=counties, towns=towns)
     response = make_response(t)
     return response
@@ -313,8 +321,8 @@ def show_uploaded_get():
 @app.route('/uploaded', methods=['POST'])
 def show_uploaded_post():
     if current_user.is_authenticated:
-        flag, possible_redirect, changed_addresses = parse_file(request.files['file'])
-        q.enqueue(get_coords, changed_addresses)
+        flag, possible_redirect, changed_addresses = parse_file(request.files['file'], q)
+        
 
         if not flag:
             return possible_redirect
@@ -378,7 +386,7 @@ def edit():
             out = request.json
             to_add = out['to_add']
             to_delete = out['to_delete']
-            edit_listings(to_add)
+            edit_listings(to_add, q)
             for row in to_delete:
                 delete(row)
 

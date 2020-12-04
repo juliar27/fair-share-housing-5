@@ -1,8 +1,10 @@
 import xlrd
-import py.database
+from py.database import Database, parse_address
 from sys import argv
 from flask import redirect, url_for
 from googlemaps import Client as GoogleMaps
+from rq import Queue
+from worker import conn
 
 # ----------------------------------------------------------------------------------------------------------------------
 # a Unicode string
@@ -756,12 +758,10 @@ def get_listings(sheet, database):
 
 # ----------------------------------------------------------------------------------------------------------------------
 def insert(database, records):
-    mapsObj = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-
     changed_addresses = []
     for listings in records:
         try:
-            changed_addr = database.insert(records[listings], mapsObj)
+            changed_addr = database.insert(records[listings])
             if changed_addr:
                 changed_addresses.append(records[listings]['listingid'])
         except Exception as e:
@@ -772,13 +772,20 @@ def insert(database, records):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+#-----------------------------------------------------------------------------------------------------------------------
+def get_coords(changed_addresses):
+   database = Database()
+   database.connect()
+   database.get_coords(changed_addresses)
+   database.disconnect()
+#-----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def parse_file(filename):
+def parse_file(filename, q):
     wb = xlrd.open_workbook(file_contents=filename.read())
     sheet = wb.sheet_by_index(0)
 
-    database = py.database.Database()
+    database = Database()
     database.connect()
 
     empty_flag, missing_columns, missing_columns_type, wrongtype, wrongtype_expected, listings = get_listings(sheet, database)
@@ -793,139 +800,12 @@ def parse_file(filename):
         return False, url_for('show_parse_error', missing_columns=missing_columns, missing_columns_type=missing_columns_type, wrongtype=wrongtype,  wrongtype_expected=wrongtype_expected), False
 
     database.disconnect()
+    q.enqueue(get_coords, changed_addresses)
     return True, records, changed_addresses
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-def is_int(s):
-    try:
-        int(s)
-        return True
-    except:
-        return False
 
 
-# ----------------------------------------------------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-def parse_hyphen(s, numbers):
-    try:
-        index = s.index('-', 1, -1)
-        start, end = 0, 0
-        if is_int(s[:index]):
-            start = int(s[:index])
-        if is_int(s[index + 1:]):
-            end = int(s[index + 1:])
-
-        if start > 0 and end > 0:
-            numbers += [str(x) for x in range(start, end + 1)]
-    except:
-        if is_int(s) or s[-1].isalpha() and is_int(s[:-1]):
-            numbers.append(s)
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-def parse_comma(s):
-    split = s.split(",")
-    commas = len(split)
-    split = [x.split() for x in split]
-    split = [x for y in split for x in y]
-    if split[commas - 1] == 'and':
-        split.pop(commas - 1)
-        commas += 1
-    elif split[commas] == 'and':
-        split.pop(commas)
-        commas += 1
-    numbers = []
-    for i in range(commas):
-        parse_hyphen(split[i], numbers)
-    if len(numbers) == 0:
-        return [s]
-    streetname = ' '.join(split[commas:])
-    return list(dict.fromkeys([x + " " + streetname for x in numbers]))
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-def parse_address(s):
-    if len(s) == 0:
-        return []
-    split = s.split(';')
-    for i in range(len(split)):
-        if split[i][0] in (' ', '\t', '\n'):
-            split[i] = split[i][1:]
-    split = sum([parse_comma(x) for x in split], [])
-    return split
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# try:
-#     if row[d['Round']].ctype == XL_CELL_NUMBER:
-#         record['round'] = str(row[d['Round']].value)
-# except:
-#     return False, error('Round', row_number)
-
-# try:
-#     if row[d['Block']].ctype == XL_CELL_NUMBER:
-#         record['block'] = str(row[d['Block']].value)
-# except:
-#     return False, error('Block', row_number)
-
-# try:
-#     if row[d['Lot']].ctype == XL_CELL_NUMBER:
-#         record['lot'] = str(row[d['Lot']].value)
-# except:
-#     return False, error('Lot', row_number)
-# try:
-#     if row[d['DateBuildingPermitReceived']].ctype == XL_CELL_DATE:
-#         record['permit'] = row[d['DateBuildingPermitReceived']].value
-# except:
-#     return False, error('DateBuildingPermitReceived', row_number)
-
-# try:
-#     if row[d['DateSitePlanSubdivision']].ctype == XL_CELL_DATE:
-#         record['datesite'] = row[d['DateSitePlanSubdivision']].value
-# except:
-#     return False, error('DateSitePlanSubdivision', row_number)
-
-# try:
-#     if row[d['ExpectedCompletion']].ctype == XL_CELL_DATE:
-#         record['ecompletion'] = row[d['ExpectedCompletion']].value
-# except:
-#     return False, error('ExpectedCompletion', row_number)
-
-# try:
-#     if row[d['DateControlsBegan']].ctype == XL_CELL_DATE:
-#         record['dcbegan'] = row[d['DateControlsBegan']].value
-# except:
-#     return False, error('DateControlsBegan', row_number)
-
-# try:
-#     if row[d['LengthofControls']].ctype == XL_CELL_NUMBER:
-#         record['locontrols'] = str(row[d['LengthofControls']].value)
-# except:
-#     return False, error('LengthofControls', row_number)
-
-# try:
-#     if row[d['AdminAgent']].ctype == XL_CELL_TEXT:
-#         record['admin_agent'] = row[d['AdminAgent']].value
-# except:
-#     return False, error('AdminAgent', row_number)
-
-# try:
-#     if row[d['Contribution_PIL']].ctype == XL_CELL_NUMBER:
-#         record['cpil'] = row[d['Contribution_PIL']].value
-# except:
-#     return False, error('Contribution_PIL', row_number)
-#   try:
-#      if row[d['TotalSSN']].ctype == XL_CELL_NUMBER:
-#          record["total_ssn"] = str(row[d['TotalSSN']].value)
-#  except:
-#      error('TotalSSN', row_number)

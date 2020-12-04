@@ -1,4 +1,4 @@
-from py.database import Database, get_listings
+from py.database import Database
 from googlemaps import Client as GoogleMaps
 from urllib.parse import quote_plus
 
@@ -6,40 +6,15 @@ from urllib.parse import quote_plus
 def querying_location():
     database = Database()
     database.connect()
-    cursor = database._connection.cursor()
-    
-
-    stmt = "SELECT listings.listingid, addresses.address, addresses.coordinates, cities.municipality, counties.county," + \
-                "listings.status, listings.br1, listings.br2, listings.br3, listings.total, listings.v1, listings.v2, listings.v3, listings.l1, listings.l2," + \
-                "listings.l3, listings.m1, listings.m2, listings.m3, listings.vssn, listings.lssn, listings.mssn, listings.family, listings.sr," + \
-                "listings.total, listings.famsale, listings.famrent, listings.srsale, listings.srrent, listings.ssnsale, listings.ssnrent," + \
-                "listings.ssn FROM listings, addresses, cities, counties WHERE listings.listingid = addresses.listingid AND " + \
-                "listings.municode = cities.municode AND cities.county = counties.county"
-    cursor.execute(stmt)
-
-    rows = []
-    ids = []
-    towns = set()
+    rows, ids = database.get_location()
     counties = set()
-
-    row = cursor.fetchone()
-    while row is not None:
-        ids.append(row[0])
-        row = list(row)
-        for i in range(6, 32):
-            if row[i] is None:
-                row[i] = 0
-        row = tuple(row)
-        rows.append(row[1:])
-        row = cursor.fetchone()
-
+    towns = set()
     for i in range(len(rows)):
         counties.add(rows[i][3])
         towns.add(rows[i][2])
 
     database.disconnect()
     
-
     return rows, ids, list(counties), list(towns)
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -60,11 +35,7 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
             geocode_result = mapVar.geocode(zipCode)
             zipLat = geocode_result[0]['geometry']['location'] ['lat']
             zipLong = geocode_result[0]['geometry']['location'] ['lng']
-
-            print("zip code geocode success")
         except:
-            print("zip is not a number")
-
             zipCode = None
     else:
         zipCode = None
@@ -119,7 +90,6 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
                 flag = False
 
         if flag == True:
-#            print(rows[i][2])
             addr = str(rows[i][0])
             fullAddr = addr + ", " + str(rows[i][2]) + ", " + str(rows[i][3]) + " County, NJ"
             coords = rows[i][1].split(',')
@@ -134,41 +104,15 @@ def filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def query(owner, prop, bed, income, town, county, zipCode):
-    database = Database()
-    database.connect()
-    cursor = database._connection.cursor()
-
-#    if county is not None:
-#        county = county.capitalize()
-#        filtering += " AND counties.county like \'%" + county + "%\'"
-#
-#    if town is not None:
-#        town = town.capitalize()
-#        filtering += " AND cities.municipality like \'%" + town + "%\'"
-
+def map_query(owner, prop, bed, income, town, county, zipCode):
     rows, ids, counties, towns = querying_location()
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
-
-    database.disconnect()
-
     return x, addressInfo, counties, towns, rows, ids
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 # ----------------------------------------------------------------------------------------------------------------------
-def query2(owner, prop, bed, income, town, county, zipCode):
-    database = Database()
-    database.connect()
-    cursor = database._connection.cursor()
-
-
-#    if county is not None and county != '':
-#        county = county.capitalize()
-#        filtering += " AND counties.county like \'%" + county + "%\'"
-#
-#    if town is not None and town != '':
-#        town = town.capitalize()
-#        filtering += " AND cities.municipality like \'%" + town + "%\'"
+def listings_query(owner, prop, bed, income, town, county, zipCode):
 
     rows, ids, counties, towns = querying_location()
     x, addressInfo = filter_function(rows, ids, owner, prop, bed, income, town, county, zipCode)
@@ -178,51 +122,20 @@ def query2(owner, prop, bed, income, town, county, zipCode):
     for i in range(len(x)):
         ids.append(x[i][2])
 
-    listings_rows, listings_ids = get_listings()
+    database = Database()
+    database.connect()
+    listings_rows, listings_ids = database.get_listings()
+    database.disconnect()
 
     filtered_rows = []
     filtered_ids = []
 
-    # i = 0
-    # res = 0
     for i in range(len(listings_rows)):
         if listings_ids[i] in ids:
             filtered_rows.append(listings_rows[i])
             filtered_ids.append(listings_ids[i])
-            # res += 1
-        # i += 1
-
-
-    # insert zip code filtering here !!!!
-
-    database.disconnect()
 
     return filtered_rows, filtered_ids, counties, towns
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-def query3(coords):
-    lat = coords[0]
-    long = coords[1]
-    if lat == '40.0' and long == '40.0':
-        map = GoogleMaps('AIzaSyAnLdUxzZ5jvhDgvM_siJ_DIRHuuirOiwQ')
-        geocode_result = map.geocode(adr + ', NJ, USA')
-        lat = geocode_result[0]['geometry']['location'] ['lat']
-        long = geocode_result[0]['geometry']['location'] ['lng']
-
-    return lat, long
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------------------------------------
-def html_for_listings(filtered_rows, filtered_ids):
-
-    html = ''
-    for i in range(len(filtered_rows)):
-        html += '<tr><td><a href=\'details?id=' + str(filtered_ids[i]) + '&adr=' + str(quote_plus(filtered_rows[i][0])) + '\'' + 'target="_blank">' + str(filtered_rows[i][0]) + '</a></td>'
-        for j in range(2, len(filtered_rows[i])):
-            html += '<td>' + str(filtered_rows[i][j]) + '</td>'
-        html += '</tr>'
-    return html
-# ----------------------------------------------------------------------------------------------------------------------
