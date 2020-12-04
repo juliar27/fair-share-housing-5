@@ -28,7 +28,7 @@ def make_account(user, server):
         link = "fairsharehousing.herokuapp.com/authenticate?id=" + id
         auth_email(email, link, server)
 
-        database.finish_account(id, email)
+        database.set_temp_where_email(id, email)
         database.disconnect()
         return True
 
