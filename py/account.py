@@ -90,7 +90,7 @@ def valid_id(id):
         database.connect()
         valid = database.valid_id(id)
         database.disconnect()
-        return (valid is not None)
+        return valid
 
     except:
         return False

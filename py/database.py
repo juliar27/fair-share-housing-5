@@ -501,7 +501,7 @@ class Database:
             cursor.execute(query, [id])
             ret = cursor.fetchone()
             cursor.close()
-            return ret
+            return (ret is not None)
         except:
             return False
 # ----------------------------------------------------------------------------------------------------------------------
