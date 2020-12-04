@@ -1,6 +1,5 @@
 from py.database import Database, parse_address
 from rq import Queue
-from worker import conn
 # ----------------------------------------------------------------------------------------------------------------------
 def get_tables():
    database = Database()

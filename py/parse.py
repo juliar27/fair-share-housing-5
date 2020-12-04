@@ -4,7 +4,6 @@ from sys import argv
 from flask import redirect, url_for
 from googlemaps import Client as GoogleMaps
 from rq import Queue
-from worker import conn
 
 # ----------------------------------------------------------------------------------------------------------------------
 # a Unicode string
