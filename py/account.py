@@ -20,6 +20,8 @@ def make_account(user, server):
         database = Database()
         database.connect()
         is_new = database.start_account(user)
+        email = user["inputEmailAddress"]
+
         if not is_new:
             return False
         id = database.get_id(email)[0]
@@ -35,7 +37,8 @@ def make_account(user, server):
         database.disconnect()
         return True
 
-    except:
+    except Exception as e:
+        print(e)
         return False
 
 

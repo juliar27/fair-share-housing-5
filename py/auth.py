@@ -63,7 +63,7 @@ def auth_email(receiver_email, link, server):
 
     thread = EmailThreads(server, receiver_email, html, "Verify your mapFSH Account", link)
     thread.start()
-    # thread.join()
+    thread.join()
     return
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -84,6 +84,6 @@ def recovery_email(receiver_email, link, server):
         """
     thread = EmailThreads(server, receiver_email, html, "Reset your mapFSH Password", link)
     thread.start()
-    # thread.join()
+    thread.join()
     return
 # ----------------------------------------------------------------------------------------------------------------------
