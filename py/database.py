@@ -438,7 +438,7 @@ class Database:
         first_name = user["inputFirstName"].strip()
         last_name = user["inputLastName"].strip()
         email = user["inputEmailAddress"].strip()
-        password = user["inputPassword"].strip()
+        password = user["inputPassword"]
 
         cursor = self._connection.cursor()
         query = "SELECT * FROM users WHERE email = %s ;;"
