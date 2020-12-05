@@ -19,7 +19,7 @@ XL_CELL_DATE = 3
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-def get_listings(sheet, database):
+def get_listings(sheet):
     d = {}
 
     expected = {'UNIQUEID': 'a Number',  'Municode': 'a Number', 'Municipality': 'Text',
@@ -787,7 +787,7 @@ def parse_file(filename, q):
     database = Database()
     database.connect()
 
-    empty_flag, missing_columns, missing_columns_type, wrongtype, wrongtype_expected, listings = get_listings(sheet, database)
+    empty_flag, missing_columns, missing_columns_type, wrongtype, wrongtype_expected, listings = get_listings(sheet)
 
     if empty_flag:
         return False, url_for('show_parse_error', missing_columns=missing_columns, missing_columns_type=missing_columns_type, wrongtype=[],  wrongtype_expected=[]), False
