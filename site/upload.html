@@ -56,12 +56,16 @@
                                     contentType: false
                                 })
                                     .done(function(data) {
-                                        console.log(data)
+                                        if (data === '/admin-parsed') {
                                         var form = $('<form action="/admin-parsed" method="post">' +
                                         '<input style="display:none" type="text" name="api_url"  />' +
                                         '</form>');
                                         $('body').append(form);
                                         form.submit();
+                                        }
+                                        else {
+                                            window.location.replace(data);
+                                        }
                                     });
 
                             }
