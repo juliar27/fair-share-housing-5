@@ -322,7 +322,7 @@ def show_uploaded_get():
 def show_uploaded_post():
     if current_user.is_authenticated:
         flag, possible_redirect, changed_addresses = parse_file(request.files['file'], q)
-        
+
 
         if not flag:
             return possible_redirect
@@ -511,7 +511,7 @@ def show_logout():
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/admin-parsed')
-def show_admin():
+def show_admin2():
     if current_user.is_authenticated:
         t = render_template('site/admin.html', rows=get_tables(), parsed=True)
         return make_response(t)
