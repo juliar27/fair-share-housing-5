@@ -58,7 +58,7 @@
                                     .done(function(data) {
                                         console.log(data)
                                         var form = $('<form action="/admin-parsed" method="post">' +
-                                        '<input style="display:none" type="text" name="api_url" value="' + Return_URL + '" />' +
+                                        '<input style="display:none" type="text" name="api_url"  />' +
                                         '</form>');
                                         $('body').append(form);
                                         form.submit();
