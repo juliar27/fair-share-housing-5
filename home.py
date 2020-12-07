@@ -327,7 +327,7 @@ def show_uploaded_post():
         if not flag:
             return possible_redirect
 
-        return '/admin'
+        return '/admin-parsed'
     else:
         '/login'
 
@@ -509,12 +509,24 @@ def show_logout():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+@app.route('/admin-parsed')
+def show_admin():
+    if current_user.is_authenticated:
+        t = render_template('site/admin.html', rows=get_tables(), parsed=True)
+        return make_response(t)
+    else:
+        return redirect('/login')
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 @app.route('/admin')
 def show_admin():
     if current_user.is_authenticated:
-        t = render_template('site/admin.html', rows=get_tables())
+        t = render_template('site/admin.html', rows=get_tables(), parsed=False)
         return make_response(t)
     else:
         return redirect('/login')
