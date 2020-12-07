@@ -57,7 +57,11 @@
                                 })
                                     .done(function(data) {
                                         console.log(data)
-                                        window.location.replace(data);
+                                        var form = $('<form action="/admin-parsed" method="post">' +
+                                        '<input style="display:none" type="text" name="api_url" value="' + Return_URL + '" />' +
+                                        '</form>');
+                                        $('body').append(form);
+                                        form.submit();
                                     });
 
                             }
