@@ -510,11 +510,15 @@ def show_logout():
 # ----------------------------------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
-@app.route('/admin-parsed')
+@app.route('/admin-parsed', methods= ['POST', 'GET'])
 def show_admin2():
     if current_user.is_authenticated:
-        t = render_template('site/admin.html', rows=get_tables(), parsed=True)
-        return make_response(t)
+        if request.method == 'POST':
+            t = render_template('site/admin.html', rows=get_tables(), parsed=True)
+            return make_response(t)
+        else:
+            return redirect('/admin')
+        
     else:
         return redirect('/login')
 
