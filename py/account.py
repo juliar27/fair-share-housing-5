@@ -20,6 +20,8 @@ def make_account(user, server):
         database = Database()
         database.connect()
         is_new = database.start_account(user)
+        email = user["inputEmailAddress"].strip()
+
         if not is_new:
             return False
         id = database.get_id(email)[0]
@@ -35,7 +37,8 @@ def make_account(user, server):
         database.disconnect()
         return True
 
-    except:
+    except Exception as e:
+        print(e)
         return False
 
 
@@ -45,7 +48,7 @@ def make_account(user, server):
 def check_account(user):
 
     try:
-        email = user["inputEmailAddress"]
+        email = user["inputEmailAddress"].strip()
         password = user["inputPassword"]
 
         database = Database()
@@ -111,7 +114,7 @@ def update_password(dict):
 # ----------------------------------------------------------------------------------------------------------------------
 def recovery(dict, server):
     try:
-        email = dict['inputEmailAddress']
+        email = dict['inputEmailAddress'].strip()
         database = Database()
         database.connect()
         id = database.get_id(email)

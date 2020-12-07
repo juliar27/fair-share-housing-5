@@ -435,9 +435,9 @@ class Database:
 
 # ----------------------------------------------------------------------------------------------------------------------
     def start_account(self, user):
-        first_name = user["inputFirstName"]
-        last_name = user["inputLastName"]
-        email = user["inputEmailAddress"]
+        first_name = user["inputFirstName"].strip()
+        last_name = user["inputLastName"].strip()
+        email = user["inputEmailAddress"].strip()
         password = user["inputPassword"]
 
         cursor = self._connection.cursor()
@@ -541,4 +541,3 @@ class Database:
         cursor.execute(query, tuple([id, email]))
         cursor.close()
 # ----------------------------------------------------------------------------------------------------------------------
-
